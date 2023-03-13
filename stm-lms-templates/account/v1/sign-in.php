@@ -1,7 +1,14 @@
 <?php
+    wp_enqueue_style(
+        'stm-lms-sign-in',
+        STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/sign-in.css',
+        [],
+        STM_THEME_CHILD_VERSION
+    );
+
     wp_enqueue_script(
         'stm-lms-sign-in',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/dist/sign-in.js',
+        STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/js/sign-in.js',
         ['jquery', 'vue.js', 'vue-resource.js'],
         STM_THEME_CHILD_VERSION
     );
@@ -20,7 +27,8 @@
          v-bind:class="{'is_vue_loaded' : vue_loaded}">
 
         <div class="stm-lms-login__top">
-            <h3><?php esc_html_e('Login', 'masterstudy-lms-learning-management-system'); ?></h3>
+            <h3><?php esc_html_e('Enter phone number', 'masterstudy-child'); ?></h3>
+            <p><?php esc_html_e('We\'ll send a confirmation code by sms', 'masterstudy-child'); ?></p>
 
             <?php do_action('stm_lms_login_end'); ?>
         </div>
@@ -69,8 +77,7 @@
         </div>
 
         <transition name="slide-fade">
-            <div class="stm-lms-message" v-bind:class="status" v-if="message" v-html="message">
-            </div>
+            <div class="stm-lms-message" v-bind:class="status" v-if="message" v-html="message"></div>
         </transition>
 
     </div>

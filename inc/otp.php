@@ -1,7 +1,7 @@
 <?php
     new STM_THEME_CHILD_OTP();
 
-    class STM_THEME_CHILD_OTP
+    class STM_THEME_CHILD_OTP extends STM_LMS_Play_Mobile
     {
         public $otp_enable   = false;
         public $actions      = array();
@@ -10,6 +10,8 @@
 
         public function __construct()
         {
+            parent::__construct('', '');
+
             $this->otp_enable = STM_LMS_Options::get_option('stm_otp_enable', false);
             $this->nonce      = wp_create_nonce( $this->nonce_action );
             $this->actions    = array(
@@ -52,6 +54,9 @@
             wp_send_json( $response );
         }
 
+        /**
+         * @throws Exception
+         */
         public function verification()
         {
             check_ajax_referer( $this->nonce_action );
@@ -64,10 +69,38 @@
             $data         = json_decode( $request_body, true );
 
             if ( isset( $data['code'] ) && ! empty( $data['code'] ) ) {
-                $response     = array(
-                    'message' => esc_html__('Enter confirmation code', 'masterstudy-child'),
-                    'status'  => 'success',
-                );
+                $play_mobile = new STM_LMS_Play_Mobile('username', 'password');
+                $play_mobile->create([
+                    'baseUrl' => "http://91.204.239.44/broker-api/"
+                ]);
+
+                $response = $play_mobile->send([
+                    [
+                        'recipient' => "998936913932",
+                        'message-id' => "1",
+                        'originator' => "3700",
+                        'text' => "test",
+                    ],
+                    [
+                        'recipient' => "998936913932",
+                        'message-id' => "1",
+                        'originator' => "3700",
+                        'text' => "test",
+                    ],
+                ]);
+
+                if ( $response == false ) {
+                    $response     = array(
+                        'message' => esc_html__('There was an error sending this message, try again later', 'masterstudy-child'),
+                        'status'  => 'error',
+                    );
+                }
+                else {
+                    $response     = array(
+                        'message' => esc_html__('Send successfully', 'masterstudy-child'),
+                        'status'  => 'success',
+                    );
+                }
             }
 
             wp_send_json( $response );

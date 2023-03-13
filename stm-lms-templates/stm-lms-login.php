@@ -25,7 +25,7 @@
                 <div class="col-md-3"></div>
 
                 <div class="col-md-6">
-                    <?php STM_LMS_Templates::show_lms_template( 'account/v1/sing-in' ); ?>
+                    <?php STM_LMS_Templates::show_lms_template( 'account/v1/sign-in' ); ?>
                 </div>
 
                 <div class="col-md-3"></div>

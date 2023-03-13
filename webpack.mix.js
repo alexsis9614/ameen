@@ -26,7 +26,9 @@ mix.webpackConfig({
  |
  */
 
-mix.setResourceRoot('../../').setPublicPath('assets/js/dist')
-  .js(srcPath('/sign-in.js'), 'assets/js/dist/')
+mix.setResourceRoot('../../').setPublicPath('assets/dist')
+  .js(srcPath('/sign-in.js'), 'assets/dist/js')
+  .sass('assets/scss/sign-in.scss', 'assets/dist/css')
+  .sass('assets/scss/buy-plans.scss', 'assets/dist/css')
   .clean()
   .disableNotifications();

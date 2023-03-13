@@ -1,0 +1,67 @@
+.stm_lms_user_float_menu .stm-lms-sign-in {
+  padding: 5px 25px;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .stm-lms-message {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .stm_lms_login_wrapper {
+  padding: 0;
+  background-color: transparent;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .stm_lms_login_wrapper__actions {
+  flex-wrap: wrap;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .stm_lms_login_wrapper__actions .btn {
+  order: -1;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .stm_lms_login_wrapper__actions .btn span {
+  color: #f0f4fa !important;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .stm-lms-login__top,
+.stm_lms_user_float_menu .stm-lms-sign-in .stm_lms_remember_me {
+  display: none;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .form-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .form-group label {
+  display: block;
+  color: #000;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .form-group input {
+  height: 39px;
+  padding: 3px 15px !important;
+  border-radius: 4px;
+  border: 1px solid #c4cbd3;
+  background-color: #eef1f7;
+  font-size: 14px;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .form-group input:active,
+.stm_lms_user_float_menu .stm-lms-sign-in .form-group input:focus {
+  border-color: #f2b91e;
+}
+
+.stm_lms_user_float_menu .stm-lms-sign-in .btn {
+  padding: 13px 25px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #f2b91e !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/*# sourceMappingURL=sign-in.css.map*/
