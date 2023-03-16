@@ -49,7 +49,7 @@
                     'type'        => \Elementor\Controls_Manager::TEXT,
                     'description' => __( 'Title will be shown on the top of section', 'masterstudy-elementor-widgets' ),
                     'condition'   => array(
-                        'style' => array( 'style_1', 'style_2', 'style_3', 'style_4', 'style_5', 'style_6', 'style_9' ),
+                        'style' => array( 'style_1', 'style_2', 'style_3', 'style_4', 'style_5', 'style_6' ),
                     ),
                 )
             );

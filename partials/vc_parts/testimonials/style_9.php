@@ -2,6 +2,7 @@
     /**
      * @var $style
      * @var $testimonials_max_num
+     * @var $testimonials_title
      * @var $testimonials_text_color
      * @var $testimonials_slides_per_row
      * */
@@ -14,6 +15,7 @@
     );
 
     $slide_col = $testimonials_slides_per_row;
+    $slide_col = 3;
 
     wp_enqueue_script( 'owl.carousel' );
     wp_enqueue_style( 'owl.carousel' );
@@ -29,27 +31,8 @@
         [],
         STM_THEME_CHILD_VERSION
     );
-    wp_enqueue_style(
-            'video.js',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/video-js.min.css',
-            null,
-        STM_THEME_CHILD_VERSION,
-            'all'
-    );
-    wp_enqueue_script(
-        'video.min.js',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/video.min.js',
-        array('jquery'),
-        STM_THEME_CHILD_VERSION,
-        true
-    );
-    wp_enqueue_script(
-        'testimonials-video.js',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/init-video.js',
-        array('jquery', 'video.js'),
-        STM_THEME_CHILD_VERSION,
-        true
-    );
+
+    add_action( 'wp_footer', 'stm_modal_testimonials', 20 );
 ?>
 
 <?php
@@ -63,13 +46,12 @@
                 'video_type' => get_post_meta( get_the_ID(), 'testimonial_video_type', true ),
                 'video'      => get_post_meta( get_the_ID(), 'testimonial_video_url', true ),
                 'user'       => get_post_meta( get_the_ID(), 'testimonial_user', true ),
-                'image'      => stm_get_VC_attachment_img_safe( get_post_thumbnail_id(), '100x100', 'thumbnail', true ),
+                'image'      => stm_get_VC_attachment_img_safe( get_post_thumbnail_id(), '700x400', 'thumbnail', true ),
             );
         endwhile;
 ?>
 
     <div class="testimonials_main_wrapper simple_carousel_wrapper">
-
         <div class="stm_testimonials_wrapper_<?php echo $style; ?>" data-slides="<?php echo intval( $slide_col ); ?>">
             <?php
                 foreach ( $testimonials_data as $testimonial ) :
@@ -82,25 +64,30 @@
                         $video_idx = ms_plugin_get_vimeo_id( $testimonial['video'] );
                         $attr     .= 'data-id="' . esc_attr( $video_idx ) . '"';
                     }
-
-//                    $video_idx = 'youtube' === $testimonial['video_type'] ? ms_plugin_get_youtube_id( $testimonial['video'] ) : ms_plugin_get_vimeo_id( $testimonial['video'] );
-//                    $youtube   = 'https://www.youtube.com/embed/' . $video_idx . '?&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1';
-//                    $vimeo     = 'https://player.vimeo.com/video/' . $video_idx . '?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media';
             ?>
                 <div
                     id="video-<?php echo esc_attr( $video_idx ); ?>"
                     class="stm_testimonials_single stm_testimonials_video_single"
                     <?php echo $attr; ?>
-                    data-type="<?php echo esc_attr( $testimonial['video_type'] ); ?>"
                 >
 
                     <div class="testimonials_image">
                         <img src="<?php echo esc_url( $testimonial['image'] ); ?>" title="<?php echo esc_attr( $testimonial['title'] ); ?>"  alt="<?php echo esc_attr( $testimonial['title'] ); ?>"/>
+                        <span class="testimonials-play"
+                              data-toggle="modal"
+                              data-type="<?php echo esc_attr( $testimonial['video_type'] ); ?>"
+                              data-src="https://www.youtube.com/embed/NFWSFbqL0A0"
+                              data-target="#review-video-modal"
+                              <?php echo $attr; ?>>
+                            <svg fill="#f2b91e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 viewBox="0 0 297 297" xml:space="preserve">
+                                <path d="M148.5,0C66.486,0,0,66.486,0,148.5S66.486,297,148.5,297S297,230.514,297,148.5S230.514,0,148.5,0z M202.79,161.734
+                                    l-78.501,45.322c-2.421,1.398-5.326,2.138-8.083,2.138c-8.752,0-16.039-7.12-16.039-15.872v-90.645
+                                    c0-8.752,7.287-15.872,16.039-15.872c2.758,0,5.579,0.739,8.001,2.138l78.542,45.322c4.966,2.867,7.951,8.001,7.951,13.734
+                                    S207.756,158.867,202.79,161.734z"/>
+                            </svg>
+                        </span>
                     </div>
-
-                    <iframe allowfullscreen webkitallowfullscreen
-                            mozallowfullscreen></iframe>
-
                 </div>
             <?php endforeach; ?>
         </div>

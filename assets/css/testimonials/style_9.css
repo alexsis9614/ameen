@@ -1,3 +1,97 @@
 .stm_testimonials_wrapper_style_9 .testimonials_image img{
     width: auto;
 }
+
+.stm_testimonials_wrapper_style_9 .owl-item{
+    transition: transform 0.3s ease-in 0s;
+}
+
+.stm_testimonials_wrapper_style_9 .owl-item:not(.active){
+    opacity: .4;
+    z-index: 0;
+    cursor: pointer;
+    transform: scale(.8);
+}
+
+.stm_testimonials_wrapper_style_9 .owl-item.prev-item,
+.stm_testimonials_wrapper_style_9 .owl-item.next-item{
+    opacity: .4;
+    z-index: 0;
+    cursor: pointer;
+}
+
+.stm_testimonials_wrapper_style_9 .owl-item.prev-item{
+    transform: translatex(40%) scale(.8);
+}
+
+/*.stm_testimonials_wrapper_style_9 .owl-item.pre-prev-item{*/
+/*    transform: translatex(-40%) scale(.8);*/
+/*}*/
+
+/*.stm_testimonials_wrapper_style_9 .owl-item.pre-next-item{*/
+/*    transform: translatex(40%) scale(.8);*/
+/*}*/
+
+.stm_testimonials_wrapper_style_9 .owl-item.next-item{
+    transform: translatex(-40%) scale(.8);
+}
+
+.stm_testimonials_wrapper_style_9 .owl-item.center.active{
+    transform: translatex(0) scale(1);
+    opacity: 1;
+    z-index: 1;
+}
+
+.testimonials-play{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease-in;
+    cursor: pointer;
+}
+
+.testimonials-play svg{
+    width: 90px;
+    height: 90px;
+}
+
+.stm_testimonials_wrapper_style_9 .owl-item.center.active:hover .testimonials-play{
+    opacity: 1;
+    visibility: visible;
+}
+
+#review-video-modal .modal-dialog {
+    max-width: 800px;
+    width: 100%;
+    margin: 30px auto;
+}
+
+#review-video-modal .modal-dialog iframe{
+    width: 100%;
+}
+
+#review-video-modal .modal-body {
+    position:relative;
+    padding:0;
+}
+#review-video-modal .close {
+    position:absolute;
+    right:-30px;
+    top:-40px;
+    z-index:999;
+    font-size:2.5rem;
+    font-weight: normal;
+    color:#fff;
+    opacity:1;
+    background: none;
+    border: none;
+}
+
+#review-video-modal .modal-content{
+    background: none;
+    box-shadow: none !important;
+    overflow: unset;
+}
