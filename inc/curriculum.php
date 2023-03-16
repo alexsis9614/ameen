@@ -715,8 +715,8 @@
                                         'columns'     => 50,
                                         'dependency'  => array(
                                             'key'   => 'not_single_sale',
-                                            'value' => 'empty',
-                                        ),
+                                            'value' => 'empty'
+                                        )
                                     );
 
                                     if ( $plan_index === 0 ) {
@@ -744,6 +744,10 @@
         {
             if ( ! empty( $setups ) ) {
                 foreach ($setups as &$setup) {
+                    if ( 'stm_lms_settings' !== $setup['option_name'] ) {
+                        continue;
+                    }
+
                     if (array_key_exists('fields', $setup)) {
                         $setup['fields']['section_course']['fields']['course_plans'] = array(
                             'type'   => 'repeater',

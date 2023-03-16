@@ -33,6 +33,7 @@
         $item_index      = 0;
         $curriculum      = new STM_THEME_CHILD_Curriculum;
         $plans           = $curriculum->plans;
+        $author_id       = intval( get_post_field( 'post_author', $post_id ) );
 
         foreach ( $sections as $index => $section_info ) {
             $curriculum    = ( ! empty( $section_info['items'] ) ) ? $section_info['items'] : array();
@@ -52,13 +53,15 @@
                     <?php
                     foreach ( $curriculum as $curriculum_item ) {
                         $user     = STM_LMS_User::get_current_user();
-                        $user_id  = $user['id'];
+                        $user_id  = absint( $user['id'] );
 
-                        $stm_lms_course_plan = get_user_meta($user_id, 'stm_lms_course_plan_' . $post_id, true);
-                        $course_plan         = get_post_meta($curriculum_item, 'course_plan_' . strtolower( $stm_lms_course_plan ) . '_' . $post_id, true);
+                        if ( ! STM_LMS_Instructor::is_instructor( $user_id ) || $user_id !== $author_id ) {
+                            $stm_lms_course_plan = get_user_meta($user_id, 'stm_lms_course_plan_' . $post_id, true);
+                            $course_plan         = get_post_meta($curriculum_item, 'course_plan_' . strtolower( $stm_lms_course_plan ) . '_' . $post_id, true);
 
-                        if ( empty( $course_plan ) ) {
-                            continue;
+                            if ( empty( $course_plan ) ) {
+                                continue;
+                            }
                         }
 
                         $curriculum_item    = stm_lms_get_wpml_binded_id( $curriculum_item );

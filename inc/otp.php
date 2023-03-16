@@ -110,6 +110,10 @@
         {
             if ( ! empty( $setups ) ) {
                 foreach ( $setups as &$setup ) {
+                    if ( 'stm_lms_settings' !== $setup['option_name'] ) {
+                        continue;
+                    }
+
                     if ( array_key_exists('fields', $setup) ) {
                         $setup['fields']['stm_otp_auth'] = array(
                             'name'   => esc_html__( 'OTP', 'masterstudy-child' ),
@@ -137,12 +141,6 @@
                                     'pro'     => true,
                                     'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
                                 ),
-                                'stm_otp_firebase_config' => array(
-                                    'type'    => 'textarea',
-                                    'label'   => esc_html__( 'Firebase config', 'masterstudy-child' ),
-                                    'pro'     => true,
-                                    'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
-                                )
                             )
                         );
                     }
