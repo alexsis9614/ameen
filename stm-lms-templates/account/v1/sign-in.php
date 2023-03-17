@@ -72,6 +72,16 @@
                     </button>
 
                 </div>
+
+                <template v-if="verify">
+                    <p class="stm_lms_footer_sign_in text-center">
+                        <?php esc_html_e('Didn\'t get the code? Wrong number?', 'masterstudy-child'); ?> <br />
+                        <button type="submit" class="btn-resend-code" @click="resend = true">
+                            <?php esc_html_e('Resend code', 'masterstudy-child'); ?>
+                        </button>
+                    </p>
+                </template>
+                </p>
             </form>
 
         </div>

@@ -63,5 +63,36 @@
   font-weight: 700;
 }
 
+.stm-lms-modal-login .modal-body {
+  padding: 0;
+}
+
+.stm-lms-modal-login .stm-lms-login__top {
+  padding: 20px 50px 0;
+  position: static;
+}
+
+.stm-lms-modal-login .stm-lms-login__top h3 {
+  display: block;
+}
+
+#stm-lms-sign-in .btn-resend-code {
+  background: none;
+  color: #2d4649;
+  padding: 10px 0 0;
+  border: none;
+}
+
+#stm-lms-sign-in .btn-resend-code:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+#stm-lms-sign-in .stm_lms_footer_sign_in {
+  margin: 20px 0 0;
+  color: #fff;
+}
+
 
 /*# sourceMappingURL=sign-in.css.map*/

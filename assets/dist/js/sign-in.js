@@ -124,6 +124,7 @@ $(window).on('load', function () {
           phone: '',
           code: '',
           verify: false,
+          resend: false,
           message: '',
           status: '',
           object: {}
@@ -146,7 +147,9 @@ $(window).on('load', function () {
       methods: {
         formSubmit: function formSubmit() {
           var vm = this;
-          if (vm.verify) {
+          vm.status = '';
+          vm.message = '';
+          if (vm.verify && !vm.resend) {
             vm.verification();
           } else {
             vm.signIn();
@@ -164,13 +167,16 @@ $(window).on('load', function () {
             vm.status = response.data['status'];
             vm.message = response.data['message'];
             vm.loading = false;
-            setTimeout(function () {
-              vm.status = '';
-              vm.message = '';
-            }, 1000);
+
+            // setTimeout(function () {
+            //     vm.status = '';
+            //     vm.message = '';
+            // }, 1000);
+
             if (vm.status === 'success') {
               vm.verify = true;
             }
+            vm.resend = false;
           });
         },
         verification: function verification() {
@@ -179,13 +185,16 @@ $(window).on('load', function () {
           vm.loading = true;
           vm.message = '';
           var data = {
+            'phone': vm.phone,
             'code': vm.code
           };
           vm.$http.post(url, data).then(function (response) {
-            console.log(response);
             vm.status = response.data['status'];
             vm.message = response.data['message'];
             vm.loading = false;
+            if (response.data['user_page']) {
+              window.location = response.data['user_page'];
+            }
           });
         }
       }

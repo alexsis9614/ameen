@@ -1,7 +1,7 @@
 <?php
     new STM_THEME_CHILD_OTP();
 
-    class STM_THEME_CHILD_OTP extends STM_LMS_Play_Mobile
+    class STM_THEME_CHILD_OTP extends STM_LMS_Eskiz_Uz
     {
         public $otp_enable   = false;
         public $actions      = array();
@@ -10,7 +10,12 @@
 
         public function __construct()
         {
-            parent::__construct('', '');
+            $email    = STM_LMS_Options::get_option('stm_api_eskiz_email', false);
+            $password = STM_LMS_Options::get_option('stm_api_eskiz_password', false);
+
+            if ( $email && $password ) {
+                parent::__construct( $email, $password );
+            }
 
             $this->otp_enable = STM_LMS_Options::get_option('stm_otp_enable', false);
             $this->nonce      = wp_create_nonce( $this->nonce_action );
@@ -33,6 +38,17 @@
             }
         }
 
+        public function valid_phone( $phone )
+        {
+            $valid_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
+
+            if ( $valid_number ) {
+                return preg_replace("/[^0-9]/", '', $valid_number);
+            }
+
+            return $valid_number;
+        }
+
         public function sign_in()
         {
             check_ajax_referer( $this->nonce_action );
@@ -45,10 +61,21 @@
             $data         = json_decode( $request_body, true );
 
             if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
-                $response     = array(
-                    'message' => esc_html__('Enter confirmation code', 'masterstudy-child'),
-                    'status'  => 'success',
-                );
+                $valid_number = $this->valid_phone( $data['phone'] );
+
+                if ( $valid_number ) {
+                    $send = $this->send( $valid_number );
+
+                    if ( $send ) {
+                        $response     = array(
+                            'message' => esc_html__('Enter confirmation code', 'masterstudy-child'),
+                            'status'  => 'success',
+                        );
+                    }
+                }
+                else {
+                    $response['message'] = esc_html__('Validation phone number error', 'masterstudy-child');
+                }
             }
 
             wp_send_json( $response );
@@ -68,38 +95,55 @@
             $request_body = file_get_contents( 'php://input' );
             $data         = json_decode( $request_body, true );
 
-            if ( isset( $data['code'] ) && ! empty( $data['code'] ) ) {
-                $play_mobile = new STM_LMS_Play_Mobile('username', 'password');
-                $play_mobile->create([
-                    'baseUrl' => "http://91.204.239.44/broker-api/"
-                ]);
+            if ( isset( $data['code'] ) && ! empty( $data['code'] ) && isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
+                $valid_number = $this->valid_phone( $data['phone'] );
 
-                $response = $play_mobile->send([
-                    [
-                        'recipient' => "998936913932",
-                        'message-id' => "1",
-                        'originator' => "3700",
-                        'text' => "test",
-                    ],
-                    [
-                        'recipient' => "998936913932",
-                        'message-id' => "1",
-                        'originator' => "3700",
-                        'text' => "test",
-                    ],
-                ]);
+                if ( $valid_number ) {
+                    $response = $this->verification_code($valid_number, $data['code']);
+                }
 
                 if ( $response == false ) {
                     $response     = array(
-                        'message' => esc_html__('There was an error sending this message, try again later', 'masterstudy-child'),
+                        'message' => esc_html__('The check code is not correct', 'masterstudy-child'),
                         'status'  => 'error',
                     );
                 }
                 else {
-                    $response     = array(
-                        'message' => esc_html__('Send successfully', 'masterstudy-child'),
-                        'status'  => 'success',
-                    );
+                    $user_email = $valid_number . '@gmail.com';
+                    $user = wp_create_user( sanitize_user( $valid_number ), wp_generate_password(), $user_email );
+
+                    if ( is_wp_error( $user ) ) {
+                        $code_login  = 'existing_user_login';
+                        $code_email  = 'existing_user_email';
+
+                        if ( $user->get_error_code() === $code_login ) {
+                            $user = get_user_by('login', sanitize_user( $valid_number ));
+                        }
+                        else if ( $user->get_error_code() === $code_email ) {
+                            $user = get_user_by('email', $user_email);
+                        }
+                        else {
+                            $response     = array(
+                                'message' => $user->get_error_message(),
+                                'status'  => 'error',
+                            );
+                        }
+                    }
+                    else {
+                        $user = new WP_User( $user );
+                    }
+
+                    if ( $user && $user->exists() ) {
+                        wp_clear_auth_cookie();
+                        wp_set_current_user( $user->ID );
+                        wp_set_auth_cookie($user->ID, true, is_ssl());
+
+                        $response = array(
+                            'user_page' => STM_LMS_User::user_page_url($user->ID, true),
+                            'message'   => esc_html__('Successfully logged in. Redirecting...', 'masterstudy-child'),
+                            'status'    => 'success',
+                        );
+                    }
                 }
             }
 
@@ -140,6 +184,19 @@
                                     'value' => 'phone',
                                     'pro'     => true,
                                     'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
+                                ),
+                                'stm_api_eskiz_email' => array(
+                                    'group'       => 'started',
+                                    'columns'     => '33',
+                                    'group_title' => esc_html__( 'Eskiz.uz API credentials', 'masterstudy-child' ),
+                                    'type'        => 'text',
+                                    'label'       => esc_html__( 'Email', 'masterstudy-child' ),
+                                ),
+                                'stm_api_eskiz_password' => array(
+                                    'group'       => 'ended',
+                                    'columns'     => '33',
+                                    'type'        => 'text',
+                                    'label'       => esc_html__( 'Password', 'masterstudy-child' ),
                                 ),
                             )
                         );
