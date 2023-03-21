@@ -184,6 +184,11 @@
             return $response;
         }
 
+        public function send_testing( $phone )
+        {
+            return $this->set_verification_code( $phone );
+        }
+
         public function send( $phone )
         {
             $verification_code = $this->set_verification_code( $phone );

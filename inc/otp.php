@@ -7,9 +7,12 @@
         public $actions      = array();
         public $nonce_action = 'stm_lms_sign_in';
         public $nonce        = '';
+        public $testing      = false;
 
         public function __construct()
         {
+            $this->testing = true;
+
             $email    = STM_LMS_Options::get_option('stm_api_eskiz_email', false);
             $password = STM_LMS_Options::get_option('stm_api_eskiz_password', false);
 
@@ -64,11 +67,19 @@
                 $valid_number = $this->valid_phone( $data['phone'] );
 
                 if ( $valid_number ) {
-                    $send = $this->send( $valid_number );
+                    $message = esc_html__('Enter confirmation code', 'masterstudy-child');
+
+                    if ( $this->testing ) {
+                        $send = $this->send_testing( $valid_number );
+                        $message .= ' - ' . $send;
+                    }
+                    else {
+                        $send = $this->send( $valid_number );
+                    }
 
                     if ( $send ) {
                         $response     = array(
-                            'message' => esc_html__('Enter confirmation code', 'masterstudy-child'),
+                            'message' => $message,
                             'status'  => 'success',
                         );
                     }
@@ -112,9 +123,13 @@
                     $user_email = $valid_number . '@gmail.com';
                     $user = wp_create_user( sanitize_user( $valid_number ), wp_generate_password(), $user_email );
 
+                    $user_page = home_url();
+
                     if ( is_wp_error( $user ) ) {
                         $code_login  = 'existing_user_login';
                         $code_email  = 'existing_user_email';
+
+                        $message   = esc_html__('Successfully logged in. Redirecting...', 'masterstudy-child');
 
                         if ( $user->get_error_code() === $code_login ) {
                             $user = get_user_by('login', sanitize_user( $valid_number ));
@@ -128,9 +143,20 @@
                                 'status'  => 'error',
                             );
                         }
+
+                        if ( ! is_wp_error( $user ) && $user && $user->exists() ) {
+                            if ( STM_LMS_Instructor::is_instructor( $user->ID ) ) {
+                                $user_page = STM_LMS_User::user_page_url($user->ID, true);
+                            }
+                            else {
+                                $user_page = STM_LMS_User::enrolled_courses_url();
+                            }
+                        }
                     }
                     else {
-                        $user = new WP_User( $user );
+                        $user      = new WP_User( $user );
+                        $message   = esc_html__('Successfully register in. Redirecting...', 'masterstudy-child');
+                        $user_page = STM_LMS_User::settings_url();
                     }
 
                     if ( $user && $user->exists() ) {
@@ -139,8 +165,8 @@
                         wp_set_auth_cookie($user->ID, true, is_ssl());
 
                         $response = array(
-                            'user_page' => STM_LMS_User::user_page_url($user->ID, true),
-                            'message'   => esc_html__('Successfully logged in. Redirecting...', 'masterstudy-child'),
+                            'user_page' => $user_page,
+                            'message'   => $message,
                             'status'    => 'success',
                         );
                     }

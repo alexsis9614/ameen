@@ -18,3 +18,7 @@
         require_once __DIR__ . '/inc/add-to-cart.php';
         remove_action('template_redirect', 'pmpro_account_redirect');
     }
+
+    if ( class_exists( 'STM_LMS_BuddyPress' ) ) {
+        remove_action('stm_lms_before_user_header', array(STM_LMS_BuddyPress::class, 'before_user_header'));
+    }
