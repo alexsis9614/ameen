@@ -122,6 +122,7 @@ $(window).on('load', function () {
           vue_loaded: true,
           loading: false,
           phone: '',
+          email: '',
           code: '',
           verify: false,
           resend: false,
@@ -161,6 +162,7 @@ $(window).on('load', function () {
           vm.loading = true;
           vm.message = '';
           var data = {
+            'email': vm.email,
             'phone': vm.phone
           };
           vm.$http.post(url, data).then(function (response) {

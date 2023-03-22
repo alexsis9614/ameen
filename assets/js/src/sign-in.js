@@ -20,6 +20,7 @@ $(window).on('load', () => {
                     vue_loaded: true,
                     loading: false,
                     phone: '',
+                    email: '',
                     code: '',
                     verify: false,
                     resend: false,
@@ -66,7 +67,8 @@ $(window).on('load', () => {
                     vm.message = '';
 
                     let data = {
-                        'phone': vm.phone
+                        'email': vm.email,
+                        'phone': vm.phone,
                     };
 
                     vm.$http.post(url, data).then(

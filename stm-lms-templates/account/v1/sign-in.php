@@ -21,6 +21,8 @@
     ));
 
     stm_lms_register_style('login');
+
+    $stm_otp_email_phone = STM_LMS_Options::get_option('stm_otp_email_phone', 'phone');
 ?>
 
     <div id="stm-lms-sign-in<?php if (isset($form_position)) esc_attr_e($form_position); ?>" class="stm-lms-sign-in active vue_is_disabled"
@@ -48,6 +50,16 @@
                     </div>
                 </template>
                 <template v-else>
+                    <?php if ( 'email_or_phone' === $stm_otp_email_phone ) : ?>
+                        <div class="form-group">
+                            <label class="heading_font"><?php esc_html_e( 'E-mail', 'masterstudy-lms-learning-management-system' ); ?></label>
+                            <input class="form-control"
+                                   type="email"
+                                   name="email"
+                                   v-model="email"
+                                   placeholder="<?php esc_html_e( 'Enter your E-mail', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                        </div>
+                    <?php endif; ?>
                     <div class="form-group">
                         <label class="heading_font"><?php esc_html_e( 'Phone', 'masterstudy-child' ); ?></label>
                         <masked-input

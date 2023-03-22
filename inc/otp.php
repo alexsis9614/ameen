@@ -11,7 +11,7 @@
 
         public function __construct()
         {
-            $this->testing = true;
+            $this->testing = STM_LMS_Options::get_option('stm_otp_testing', false);
 
             $email    = STM_LMS_Options::get_option('stm_api_eskiz_email', false);
             $password = STM_LMS_Options::get_option('stm_api_eskiz_password', false);
@@ -62,6 +62,32 @@
             );
             $request_body = file_get_contents( 'php://input' );
             $data         = json_decode( $request_body, true );
+//
+//            $fields = array(
+//                'email'       => array(
+//                    'label' => esc_html__( 'E-mail', 'masterstudy-child' ),
+//                    'type'  => 'email',
+//                ),
+//                'phone'    => array(
+//                    'label' => esc_html__( 'Phone', 'masterstudy-child' ),
+//                    'type'  => 'text',
+//                ),
+//            );
+//
+//            foreach ( $fields as $field_key => $field ) {
+//                if ( empty( $data[ $field_key ] ) ) {
+//                    /* translators: %s: field name */
+//                    $response['message'] = sprintf( esc_html__( '%s field is required', 'masterstudy-child' ), $field['label'] );
+//                    wp_send_json( $response );
+//                } else {
+//                    $data[ $field_key ] = STM_LMS_Helpers::sanitize_fields( $data[ $field_key ], $field['type'] );
+//                    if ( empty( $data[ $field_key ] ) ) {
+//                        /* translators: %s: field key */
+//                        $response['message'] = sprintf( esc_html__( 'Please enter valid %s field', 'masterstudy-child' ), $field['label'] );
+//                        wp_send_json( $response );
+//                    }
+//                }
+//            }
 
             if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
                 $valid_number = $this->valid_phone( $data['phone'] );
@@ -196,33 +222,51 @@
                                     'pro'     => true,
                                     'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
                                 ),
-                                'stm_otp_email_phone' => array(
-                                    'type' => 'radio',
-                                    'label' => esc_html__('Authentication method', 'masterstudy-child'),
-                                    'options' => array(
-                                        'email_or_phone' => esc_html__('Email or Phone', 'masterstudy-child'),
-                                        'phone' => esc_html__('Phone', 'masterstudy-child'),
-                                    ),
+                                'stm_otp_testing' => array(
+                                    'type'    => 'checkbox',
+                                    'label'   => esc_html__( 'OTP Testing', 'masterstudy-child' ),
+                                    'pro'     => true,
+                                    'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
                                     'dependency' => array(
                                         'key'   => 'stm_otp_enable',
                                         'value' => 'not_empty'
                                     ),
-                                    'value' => 'phone',
-                                    'pro'     => true,
-                                    'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
                                 ),
+//                                'stm_otp_email_phone' => array(
+//                                    'type' => 'radio',
+//                                    'label' => esc_html__('Authentication method', 'masterstudy-child'),
+//                                    'options' => array(
+//                                        'email_or_phone' => esc_html__('Email or Phone', 'masterstudy-child'),
+//                                        'phone' => esc_html__('Phone', 'masterstudy-child'),
+//                                    ),
+//                                    'dependency' => array(
+//                                        'key'   => 'stm_otp_enable',
+//                                        'value' => 'not_empty'
+//                                    ),
+//                                    'value' => 'phone',
+//                                    'pro'     => true,
+//                                    'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
+//                                ),
                                 'stm_api_eskiz_email' => array(
                                     'group'       => 'started',
                                     'columns'     => '33',
                                     'group_title' => esc_html__( 'Eskiz.uz API credentials', 'masterstudy-child' ),
                                     'type'        => 'text',
                                     'label'       => esc_html__( 'Email', 'masterstudy-child' ),
+                                    'dependency' => array(
+                                        'key'   => 'stm_otp_enable',
+                                        'value' => 'not_empty'
+                                    ),
                                 ),
                                 'stm_api_eskiz_password' => array(
                                     'group'       => 'ended',
                                     'columns'     => '33',
                                     'type'        => 'text',
                                     'label'       => esc_html__( 'Password', 'masterstudy-child' ),
+                                    'dependency' => array(
+                                        'key'   => 'stm_otp_enable',
+                                        'value' => 'not_empty'
+                                    ),
                                 ),
                             )
                         );
