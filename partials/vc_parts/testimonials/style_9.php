@@ -17,21 +17,6 @@
     $slide_col = $testimonials_slides_per_row;
     $slide_col = 3;
 
-    wp_enqueue_script( 'owl.carousel' );
-    wp_enqueue_style( 'owl.carousel' );
-    wp_enqueue_script(
-        'stm-testimonials',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/testimonials/style_9.js',
-        ['jquery'],
-        STM_THEME_CHILD_VERSION
-    );
-    wp_enqueue_style(
-        'stm-testimonials',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/testimonials/style_9.css',
-        [],
-        STM_THEME_CHILD_VERSION
-    );
-
     add_action( 'wp_footer', 'stm_modal_testimonials', 20 );
 ?>
 

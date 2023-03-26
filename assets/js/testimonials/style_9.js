@@ -3,6 +3,10 @@
 (function ($) {
     let YTPlayer, VPlayer, PlayerType, videoId, sectionVideo = 'review-video';
 
+    $(document).ready(function () {
+        t_carousel();
+    });
+
     $(window).on('load', function () {
         let modal = $('#review-video-modal');
 
