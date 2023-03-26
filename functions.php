@@ -30,3 +30,7 @@
     if ( class_exists( 'STM_LMS_BuddyPress' ) ) {
         remove_action('stm_lms_before_user_header', array(STM_LMS_BuddyPress::class, 'before_user_header'));
     }
+
+    if ( defined('BOOKIT_VERSION') ) {
+        require_once __DIR__ . '/inc/bookit/main.php';
+    }

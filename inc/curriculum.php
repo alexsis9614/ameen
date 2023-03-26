@@ -35,6 +35,9 @@
 
                 remove_all_actions('wp_ajax_stm_lms_dashboard_set_student_item_progress', 10);
                 add_action( 'wp_ajax_stm_lms_dashboard_set_student_item_progress', [$this, 'set_student_progress'] );
+
+                remove_all_actions('wp_ajax_stm_lms_dashboard_get_student_progress', 10);
+                add_action( 'wp_ajax_stm_lms_dashboard_get_student_progress', array( $this, 'student_progress' ) );
             }
 
             if ( class_exists( 'STM_LMS_Quiz' ) ) {
@@ -54,6 +57,9 @@
                 remove_action('wp_ajax_nopriv_stm_lms_complete_lesson', 'STM_LMS_Lesson::complete_lesson');
                 add_action('wp_ajax_stm_lms_complete_lesson', [$this, 'complete_lesson']);
                 add_action('wp_ajax_nopriv_stm_lms_complete_lesson', [$this, 'complete_lesson']);
+
+                remove_action('wp_ajax_stm_lms_total_progress', 'STM_LMS_Lesson::total_progress');
+                add_action('wp_ajax_stm_lms_total_progress', get_class() . '::total_progress');
             }
 
             if ( class_exists( 'STM_LMS_Assignments_Columns' ) ) {
@@ -386,6 +392,32 @@
             wp_send_json( $user_quiz );
         }
 
+        public function student_progress()
+        {
+            check_ajax_referer( 'stm_lms_dashboard_get_student_progress', 'nonce' );
+
+            if ( ! STM_LMS_User_Manager_Interface::isInstructor() ) {
+                die;
+            }
+
+            $request_body = file_get_contents( 'php://input' );
+
+            $data = json_decode( $request_body, true );
+
+            if ( empty( $data['user_id'] ) || empty( $data['course_id'] ) ) {
+                die;
+            }
+
+            $course_id  = intval( $data['course_id'] );
+            $student_id = intval( $data['user_id'] );
+
+            wp_set_current_user( $student_id );
+
+            $data = self::_student_progress( $course_id, $student_id );
+
+            wp_send_json( $data );
+        }
+
         public function set_student_progress()
         {
             check_ajax_referer( 'stm_lms_dashboard_set_student_item_progress', 'nonce' );
@@ -433,7 +465,64 @@
 
             self::update_course_progress( $student_id, $course_id );
 
-            wp_send_json( STM_LMS_User_Manager_Course_User::_student_progress( $course_id, $student_id ) );
+            wp_send_json( self::_student_progress( $course_id, $student_id ) );
+        }
+
+        public static function _student_progress( $course_id, $student_id ) {
+            $curriculum = get_post_meta( $course_id, 'curriculum', true );
+
+            $curriculum    = explode( ',', $curriculum );
+            $curriculum    = self::curriculum_filter( $course_id, $curriculum );
+            $sections_data = STM_LMS_Lesson::create_sections( $curriculum );
+
+            $sections = array();
+            foreach ( $sections_data as $sections_datum ) {
+                $sections[] = $sections_datum;
+            }
+
+            foreach ( $sections as $index => &$section_info ) {
+
+                $curriculum = ( ! empty( $section_info['items'] ) ) ? $section_info['items'] : array();
+
+                foreach ( $curriculum as $curriculum_index => $curriculum_item ) {
+
+                    $item_data = STM_LMS_User_Manager_Course_User::course_item_data( intval( $curriculum_item ), $student_id, $course_id );
+
+                    $section_info['section_items'][] = $item_data;
+
+                    if ( ! isset( $user_id ) ) {
+                        $user_id = 0;
+                    }
+                }
+            }
+
+            $user_stats = STM_LMS_Helpers::simplify_db_array(
+                stm_lms_get_user_course(
+                    $student_id,
+                    $course_id,
+                    array(
+                        'current_lesson_id',
+                        'progress_percent',
+                    )
+                )
+            );
+            if ( empty( $user_stats['current_lesson_id'] ) ) {
+                $user_stats['current_lesson_id'] = self::get_first_lesson( $course_id );
+            }
+
+            $lesson_type = get_post_meta( $user_stats['current_lesson_id'], 'type', true );
+            if ( empty( $lesson_type ) ) {
+                $lesson_type = 'text';
+            }
+
+            $user_stats['lesson_type'] = $lesson_type;
+
+            $data = array_merge( $user_stats, array( 'sections' => $sections ) );
+
+            $data['user']         = STM_LMS_User::get_current_user( $student_id );
+            $data['course_title'] = get_the_title( $course_id );
+
+            return $data;
         }
 
         public function reset_student_progress()
@@ -567,6 +656,12 @@
             if ( ! in_array( $item_id, (array)$sections['curriculum']) && ! $is_scorm ) {
                 STM_LMS_User::js_redirect( STM_LMS_Lesson::get_lesson_url( $course_id, ( self::get_first_lesson( $course_id ) ) ) );
             }
+        }
+
+        public static function get_last_lesson($post_id, $item_id) {
+            $curriculum = STM_LMS_Helpers::only_array_numbers(explode(',', get_post_meta($post_id, 'curriculum', true)));
+            $curriculum = self::curriculum_filter($post_id, $curriculum);
+            return end($curriculum);
         }
 
         public static function get_first_lesson($course_id)
@@ -997,5 +1092,74 @@
         public static function curriculum_load_template( $tpl )
         {
             require STM_THEME_CHILD_DIRECTORY . "/settings/curriculum/tpls/{$tpl}.php";
+        }
+
+        public static function total_progress() {
+
+            check_ajax_referer('stm_lms_total_progress', 'nonce');
+
+            $user_id = get_current_user_id();
+            $post_id = intval($_GET['course_id']);
+
+            wp_send_json(self::get_total_progress($user_id, $post_id));
+        }
+
+        public static function get_total_progress($user_id, $course_id) {
+            if( empty( $user_id ) ) return null;
+
+            $data = array(
+                'course' => STM_LMS_Helpers::simplify_db_array(stm_lms_get_user_course($user_id, $course_id)),
+                'curriculum' => array(),
+                'course_completed' => false
+            );
+
+            if((!empty($data['course']['progress_percent'])) && $data['course']['progress_percent'] > 100) $data['course']['progress_percent'] = 100;
+
+            /*Curriculum*/
+            $curriculum = STM_LMS_Helpers::only_array_numbers(explode(',', get_post_meta($course_id, 'curriculum', true)));
+            $curriculum = self::curriculum_filter($course_id, $curriculum);
+            $curriculum_data = array();
+            foreach($curriculum as $item_id) {
+                $type = get_post_meta($item_id, 'type', true);
+                if(empty($type)) $type = 'text';
+                $lesson = STM_LMS_Lesson::get_lesson_info($curriculum, $item_id);
+                $lesson['completed'] = STM_LMS_Lesson::is_lesson_completed($user_id, $course_id, $item_id);
+                if($lesson['type'] === 'lesson') {
+                    $lesson_type = get_post_meta($item_id, 'type', true);
+                    if(empty($lesson_type)) $lesson_type = 'text';
+                    $lesson['lesson_type'] = $lesson_type;
+                }
+                $curriculum_data[] = $lesson;
+            }
+
+            foreach($curriculum_data as $item_data) {
+                $type = ($item_data['type'] === 'lesson' && $item_data['lesson_type'] !== 'text') ? 'multimedia' : $item_data['type'];
+                if(empty($data['curriculum'][$type])) $data['curriculum'][$type] = array(
+                    'total' => 0,
+                    'completed' => 0
+                );
+
+                $data['curriculum'][$type]['total']++;
+
+                if($item_data['completed']) $data['curriculum'][$type]['completed']++;
+
+            }
+
+            $data['title'] = get_the_title($course_id);
+            $data['url'] = get_permalink($course_id);
+
+            if(empty($data['course'])) {
+                $data['course'] = array(
+                    'progress_percent' => 0,
+                );
+                return $data;
+            }
+
+            /*Completed label*/
+            $threshold = STM_LMS_Options::get_option('certificate_threshold', 70);
+            $data['course_completed'] = intval($threshold) <= intval($data['course']['progress_percent']);
+            $data['certificate_url'] = STM_LMS_Course::certificates_page_url($course_id);
+
+            return $data;
         }
     }
