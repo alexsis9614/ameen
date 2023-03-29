@@ -139,10 +139,11 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						<a :href="stats.url" class="btn btn-default btn-green">
 							<?php esc_html_e( 'View course', 'masterstudy-lms-learning-management-system' ); ?>
 						</a>
-
-                        <a :href="stats.url" class="btn btn-default btn-green">
-                            <?php esc_html_e( 'Booking zoom', 'masterstudy-child' ); ?>
-                        </a>
+                        <?php if ( defined('BOOKIT_VERSION') ) : ?>
+                            <a :href="stats.booking_url" class="btn btn-default btn-green">
+                                <?php esc_html_e( 'Booking zoom', 'masterstudy-child' ); ?>
+                            </a>
+                        <?php endif; ?>
 					</div>
 
 				</div>

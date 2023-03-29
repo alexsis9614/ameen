@@ -71,6 +71,23 @@
                 remove_all_actions('wp_ajax_stm_lms_edit_user_answer', 10);
                 add_action( 'wp_ajax_stm_lms_edit_user_answer', array( $this, 'stm_lms_edit_user_answer' ) );
             }
+
+            if ( class_exists( 'STM_LMS_Page_Router' ) ) {
+                add_filter('stm_lms_custom_routes_config', array($this, 'pages_config'));
+            }
+        }
+
+        public function pages_config( $page_routes )
+        {
+            if ( is_array( $page_routes ) && ! empty( $page_routes ) ) {
+                $page_routes['user_url']['sub_pages']['booking_url'] = array(
+                    'template'  => 'stm-lms-user-booking',
+                    'protected' => true,
+                    'url'       => 'booking',
+                );
+            }
+
+            return $page_routes;
         }
 
         public function stm_lms_edit_user_answer()
@@ -844,43 +861,50 @@
                     }
 
                     if (array_key_exists('fields', $setup)) {
-                        $setup['fields']['section_course']['fields']['course_plans'] = array(
-                            'type'   => 'repeater',
-                            'label'  => esc_html__( 'Course plans', 'masterstudy-child' ),
+                        $setup['fields']['stm_course_plans'] = array(
+                            'name'   => esc_html__( 'Plans', 'masterstudy-child' ),
+                            'label'  => esc_html__( 'Plans settings', 'masterstudy-child' ),
+                            'icon'   => 'fas fa-sliders-h',
                             'fields' => array(
-                                'name'    => array(
-                                    'type'    => 'text',
-                                    'label'   => esc_html__( 'Name', 'masterstudy-child' ),
-                                    'columns' => '50',
-                                ),
-                                'description' => array(
-                                    'type'    => 'editor',
-                                    'label'   => esc_html__( 'Description', 'masterstudy-child' ),
-                                    'columns' => '50',
-                                ),
-                                'text_button' => array(
-                                    'type'    => 'text',
-                                    'label'   => esc_html__( 'Text button', 'masterstudy-child' ),
-                                    'columns' => '50',
-                                ),
-                            ),
-                            'value'  => array(
-                                array(
-                                    'name'        => esc_html__('Basic', 'masterstudy-child'),
-                                    'description' => '',
-                                    'text_button' => esc_html__( 'Get plan', 'masterstudy-child' ),
-                                ),
-                                array(
-                                    'name'        => esc_html__('Standard', 'masterstudy-child'),
-                                    'description' => '',
-                                    'text_button' => esc_html__( 'Get plan', 'masterstudy-child' ),
-                                ),
-                                array(
-                                    'name'        => esc_html__('VIP', 'masterstudy-child'),
-                                    'description' => '',
-                                    'text_button' => esc_html__( 'Get plan', 'masterstudy-child' ),
-                                ),
-                            ),
+                                'course_plans' => array(
+                                    'type'   => 'repeater',
+                                    'label'  => esc_html__( 'List plans', 'masterstudy-child' ),
+                                    'fields' => array(
+                                        'name'    => array(
+                                            'type'    => 'text',
+                                            'label'   => esc_html__( 'Name', 'masterstudy-child' ),
+                                            'columns' => '50',
+                                        ),
+                                        'description' => array(
+                                            'type'    => 'editor',
+                                            'label'   => esc_html__( 'Description', 'masterstudy-child' ),
+                                            'columns' => '50',
+                                        ),
+                                        'text_button' => array(
+                                            'type'    => 'text',
+                                            'label'   => esc_html__( 'Text button', 'masterstudy-child' ),
+                                            'columns' => '50',
+                                        ),
+                                    ),
+                                    'value'  => array(
+                                        array(
+                                            'name'        => esc_html__('Basic', 'masterstudy-child'),
+                                            'description' => '',
+                                            'text_button' => esc_html__( 'Get plan', 'masterstudy-child' ),
+                                        ),
+                                        array(
+                                            'name'        => esc_html__('Standard', 'masterstudy-child'),
+                                            'description' => '',
+                                            'text_button' => esc_html__( 'Get plan', 'masterstudy-child' ),
+                                        ),
+                                        array(
+                                            'name'        => esc_html__('VIP', 'masterstudy-child'),
+                                            'description' => '',
+                                            'text_button' => esc_html__( 'Get plan', 'masterstudy-child' ),
+                                        ),
+                                    ),
+                                )
+                            )
                         );
                     }
                 }
@@ -1145,8 +1169,18 @@
 
             }
 
-            $data['title'] = get_the_title($course_id);
-            $data['url'] = get_permalink($course_id);
+            $pages_config = STM_LMS_Page_Router::pages_config();
+
+            if ( isset( $pages_config['user_url']['sub_pages']['booking_url'] ) ) {
+                $booking_url = STM_LMS_User::login_page_url() . $pages_config['user_url']['sub_pages']['booking_url']['url'];
+            }
+            else {
+                $booking_url = STM_LMS_User::login_page_url();
+            }
+
+            $data['title']       = get_the_title($course_id);
+            $data['url']         = get_permalink($course_id);
+            $data['booking_url'] = $booking_url;
 
             if(empty($data['course'])) {
                 $data['course'] = array(
