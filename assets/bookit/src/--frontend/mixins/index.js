@@ -300,7 +300,7 @@ export default {
      * @returns {boolean}
      */
     isArrayItemsInArray( arraySeek, arrayWhere ) {
-      for (var i = 0; i < arraySeek.length; i ++ ) {
+      for (var i = 0; i < arraySeek.length; i++ ) {
         if ( !arrayWhere.includes(arraySeek[i]) ) {
           return false;
         }
@@ -376,14 +376,14 @@ export default {
         errors.email = bookit_window.translations.invalid_email;
       }
 
-      if ( settings.booking_type === 'registered' && ! appointment.user_id ) {
-        if ( ! appointment.password || appointment.password.length === 0) {
-          errors.password = 'Please enter a password';
-        }
-        if ( appointment.password !== appointment.password_confirmation ) {
-          errors.password_confirmation = bookit_window.translations.confirmation_mismatched;
-        }
-      }
+      // if ( settings.booking_type === 'registered' && ! appointment.user_id ) {
+      //   if ( ! appointment.password || appointment.password.length === 0) {
+      //     errors.password = 'Please enter a password';
+      //   }
+      //   if ( appointment.password !== appointment.password_confirmation ) {
+      //     errors.password_confirmation = bookit_window.translations.confirmation_mismatched;
+      //   }
+      // }
       return errors;
     },
 

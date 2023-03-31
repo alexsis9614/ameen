@@ -6,9 +6,9 @@ export default {
       <booking_exam :navigation="navigation" :attributes="attributes"></booking_exam>
     </div>
   `,
-    components: {
-        booking_exam,
-    },
+  components: {
+    booking_exam,
+  },
   props: {
     language: String,
     attributes: {

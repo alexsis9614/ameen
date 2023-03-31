@@ -1169,18 +1169,9 @@
 
             }
 
-            $pages_config = STM_LMS_Page_Router::pages_config();
-
-            if ( isset( $pages_config['user_url']['sub_pages']['booking_url'] ) ) {
-                $booking_url = STM_LMS_User::login_page_url() . $pages_config['user_url']['sub_pages']['booking_url']['url'];
-            }
-            else {
-                $booking_url = STM_LMS_User::login_page_url();
-            }
-
             $data['title']       = get_the_title($course_id);
             $data['url']         = get_permalink($course_id);
-            $data['booking_url'] = $booking_url;
+            $data['booking_url'] = STM_LMS_Bookit_Sync::menu_url();
 
             if(empty($data['course'])) {
                 $data['course'] = array(

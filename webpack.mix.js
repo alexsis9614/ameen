@@ -7,6 +7,8 @@ const srcPath = extraPath => path.resolve(__dirname, `./assets/js/src/${extraPat
 
 const srcFrontendPath = extraPath => path.resolve(__dirname, `./assets/bookit/src/frontend${extraPath}`);
 
+const srcDashboardPath = extraPath => path.resolve(__dirname, `./assets/bookit/src/dashboard${extraPath}`);
+
 mix.webpackConfig({
     resolve: {
         extensions: ['.js', '.json'],
@@ -19,6 +21,16 @@ mix.webpackConfig({
             '@sections': srcFrontendPath('/components/sections'),
             '@mixins': srcFrontendPath('/mixins'),
             '@store': srcFrontendPath('/store'),
+
+            // Dashboard Aliases
+            '@dashboard': srcDashboardPath(),
+            '@dashboard-components': srcDashboardPath('/components'),
+            '@dashboard-addons': srcDashboardPath('/components/addons'),
+            '@dashboard-partials': srcDashboardPath('/components/partials'),
+            '@dashboard-sections': srcDashboardPath('/components/sections'),
+            '@dashboard-calendar': srcDashboardPath('/components/calendar'),
+            '@dashboard-mixins': srcDashboardPath('/mixins'),
+            '@dashboard-store': srcDashboardPath('/store'),
         },
     },
   devtool: isDev ? 'source-map' : ''
@@ -44,5 +56,6 @@ mix.setResourceRoot('../../').setPublicPath('assets/dist')
 
 mix.setResourceRoot('../../').setPublicPath('assets/bookit/dist')
     .js(srcFrontendPath('/app.js'), 'assets/bookit/dist/frontend/js/')
+    .js(srcDashboardPath('/app.js'), 'assets/bookit/dist/dashboard/js/')
     .clean()
     .disableNotifications();

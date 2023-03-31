@@ -23,7 +23,7 @@
                 );
 
                 if ( defined('BOOKIT_VERSION') ) {
-                    echo do_shortcode('[bookit]');
+                    echo do_shortcode('[bookit-booking-zoom]');
                 }
                 else {
                     esc_html_e('Bookit plugin disabled', 'masterstudy-child');

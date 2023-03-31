@@ -1,15 +1,14 @@
-import category from '@components/step_by_step/sections/step-category'
-import confirmation from '@components/step_by_step/sections/step-confirmation'
-import dateTime from '@components/step_by_step/sections/step-datetime'
-import detailsForm from '@components/step_by_step/sections/step-details'
-import footerNavigation from '@components/step_by_step/sections/footer-navigation'
-import mobileFooterNavigation from '@components/step_by_step/sections/mobile/footer-navigation'
-import mobileNavigation from '@components/step_by_step/sections/mobile/navigation'
-import navigation from '@components/step_by_step/sections/navigation'
-import payment from '@components/step_by_step/sections/step-payment'
-import result from '@components/step_by_step/sections/book-result'
-import result_header from '@components/step_by_step/sections/result-header'
-import service from '@components/step_by_step/sections/step-service'
+import category from '@components/booking_exam/sections/step-category'
+import confirmation from '@components/booking_exam/sections/step-confirmation'
+import dateTime from '@components/booking_exam/sections/step-datetime'
+import footerNavigation from '@components/booking_exam/sections/footer-navigation'
+import mobileFooterNavigation from '@components/booking_exam/sections/mobile/footer-navigation'
+import mobileNavigation from '@components/booking_exam/sections/mobile/navigation'
+import navigation from '@components/booking_exam/sections/navigation'
+import payment from '@components/booking_exam/sections/step-payment'
+import result from '@components/booking_exam/sections/book-result'
+import result_header from '@components/booking_exam/sections/result-header'
+import service from '@components/booking_exam/sections/step-service'
 
 export default {
     name: 'booking_exam',
@@ -63,7 +62,6 @@ export default {
       confirmation,
       footerNavigation,
       dateTime,
-      detailsForm,
       mobileFooterNavigation,
       mobileNavigation,
       navigation,
@@ -95,17 +93,30 @@ export default {
         },
     },
     created () {
-      this.setCorrectStepByAttributes();
+      let vm = this;
+
+      vm.setCorrectStepByAttributes();
 
       /** set data to store **/
-      this.$store.commit('setStepNavigation', this.stepNavigation);
+      vm.$store.commit('setStepNavigation', vm.stepNavigation);
 
         /** set today by default at first **/
-      if ( !this.appointment.date_timestamp ) {
-        var appointment            = Object.assign({}, this.appointment);
-        appointment.date_timestamp = this.moment().startOf('day').unix();
-        this.appointment           = appointment;
-        this.setDisabledTimeSlots();
+      if ( !vm.appointment.date_timestamp ) {
+        let appointment            = Object.assign({}, vm.appointment);
+        appointment.date_timestamp = vm.moment().startOf('day').unix();
+        vm.appointment             = appointment;
+        vm.setDisabledTimeSlots();
+      }
+
+      if ( typeof bookit_window.user !== undefined ) {
+          vm.user = {
+              ID:  bookit_window.user.wp_user_id,
+              display_name: bookit_window.user.full_name,
+              user_email: bookit_window.user.email,
+          };
+
+          vm.appointment.full_name = vm.user.display_name;
+          vm.appointment.email     = vm.user.user_email;
       }
     },
     computed: {
@@ -246,44 +257,6 @@ export default {
         };
 
         var errors = {};
-        if ( this.appointment.payment_method === 'stripe' ) {
-          await this.stripe.stripe.createPaymentMethod('card', this.stripe.card)
-              .then(async (result) => {
-                if ( result.error !== undefined && result.error.message !== undefined ) {
-                  errors.stripe = result.error.message;
-                } else {
-                  let payment_data = {
-                    nonce: bookit_window.nonces.bookit_book_appointment,
-                    total: data.clear_price,
-                    payment_method_id: result.paymentMethod.id
-                  };
-
-                  await this.axios.post(`${bookit_window.ajax_url}?action=bookit_stripe_intent_payment`, this.generateFormData(payment_data), this.getPostHeaders())
-                      .then(async (ajax_res) => {
-                        let response = ajax_res.data;
-                        if ( response.success ) {
-                          if ( response.data.requires_action ) {
-                            // Card requires Auhentication
-                            await this.handleStripeCard(response.data, data.clear_price);
-                          } else {
-                            // Order Complete
-                            this.stripe.client_secret = response.data.client_secret;
-                          }
-                        } else {
-                          errors.stripe   = response.data.message;
-                          this.stripe.client_secret = false;
-                        }
-                      });
-
-                  if ( this.stripe.client_secret ) {
-                    await this.stripe.stripe.retrievePaymentIntent(this.stripe.client_secret)
-                        .then((retrieve_result) => {
-                          data.token = retrieve_result.paymentIntent.id
-                        });
-                  }
-                }
-              });
-        }
         if ( Object.keys(errors).length > 0 ) {
           this.errors = errors;
           this.loading    = false;
@@ -330,75 +303,56 @@ export default {
         }
         await this.axios.post(`${bookit_window.ajax_url}?action=bookit_day_appointments`, this.generateFormData(data), this.getPostHeaders()).then((res) => {
             let response = res.data;
+            // && response.data.length >= 10
             if ( response.success ) {
               this.$store.commit('setDisabledTimeSlots', response.data);
             }
         });
       },
-      generateStripe() {
-        this.$nextTick( () => {
-          const stripe_id = this.payment_methods.stripe.publish_key;
-
-          if ( ! stripe_id.length ) {
-            var errors = {};
-            errors.stripe = bookit_window.translations.something_went_wrong;
-            this.errors   = errors;
-            return false;
-          }
-
-          this.stripe.stripe    = Stripe(stripe_id);
-          this.stripe.elements  = this.stripe.stripe.elements();
-          this.stripe.card      = this.stripe.elements.create('card');
-
-          this.stripe.card.mount(this.$refs.stripe_card);
-        });
-      },
       nextStep() {
-        if ( this.isDisabled ) {
+        let vm = this;
+
+        if ( vm.isDisabled ) {
           return;
         }
 
-        this.validation( true );
+        vm.validation( true );
 
-        if ( this.currentStepKey == 'confirmation') {
-          this.bookNow();
-
+        if ( vm.currentStepKey == 'confirmation') {
+            vm.bookNow();
         }else{
           /** go to next step **/
-          var currentStepIndex = this.navigation.findIndex(step => step.key === this.currentStepKey);
+          let currentStepIndex = vm.navigation.findIndex(step => step.key === vm.currentStepKey);
 
-          if (this.navigation.hasOwnProperty(currentStepIndex + 1)
-              && this.isArrayItemsInArray(this.navigation[currentStepIndex + 1].requiredFields, Object.keys(this.appointment))
-              && ( Object.keys(this.errors).length === 0 )
+          if (vm.navigation.hasOwnProperty(currentStepIndex + 1)
+              && vm.isArrayItemsInArray(vm.navigation[currentStepIndex + 1].requiredFields, Object.keys(vm.appointment))
+              && ( Object.keys(vm.errors).length === 0 )
           ){
-            var nextStep = this.navigation[currentStepIndex + 1];
+            let nextStep = this.navigation[currentStepIndex + 1];
 
             /** skip payment step if service price is zero **/
-            if ( nextStep.key == 'payment' && parseFloat( this.selectedStaff.staff_services.find(staff_service => staff_service.id == this.selectedService.id).price ) == 0 ) {
-              nextStep = this.navigation[this.navigation.findIndex(step => step.key === 'confirmation')];
+            if ( nextStep.key == 'payment' && parseFloat( vm.selectedStaff.staff_services.find(staff_service => staff_service.id == vm.selectedService.id).price ) == 0 ) {
+              nextStep = vm.navigation[vm.navigation.findIndex(step => step.key === 'confirmation')];
             }
-            this.$store.commit('setCurrentStepKey', nextStep.key);
+            vm.$store.commit('setCurrentStepKey', nextStep.key);
 
-          } else if (this.navigation.hasOwnProperty(currentStepIndex + 1) && this.currentStepKey != 'detailsForm' ) {
-
-            var errors = {};
-            this.navigation[currentStepIndex + 1].requiredFields.forEach( requiredField => {
-              if ( this.translations.hasOwnProperty('error_' + requiredField) && !Object.keys(this.appointment).includes(requiredField)) {
-                errors[requiredField] = this.translations['error_' + requiredField];
-              }
-            });
-            this.errors = errors;
           }
         }
       },
       newBooking() {
-        var appointment = {};
+        let appointment = {};
         if ( this.categories.length <= 1 || ( this.attributes.hasOwnProperty('category_id') && this.attributes.category_id !== null ) ) {
 
           if ( this.categories.length <= 0 ){ this.categories.push({id: false})}
 
-          appointment = {'category_id': this.categories[0].id};
-          var step        = 'service';
+          appointment = {
+              'category_id': this.categories[0].id,
+              'staff_id': this.appointment.staff_id,
+              'email': this.appointment.email,
+              'full_name': this.appointment.full_name,
+              'payment_method': this.appointment.payment_method,
+          };
+          let step        = 'service';
 
           this.$store.commit('setSelectedCategory', this.categories[0].id);
 
@@ -416,11 +370,11 @@ export default {
           this.$store.commit('setCurrentStepKey', step);
         }else{
           this.$store.commit('setCurrentStepKey', 'category');
-          this.$store.commit('setSelectedService', null);
+          this.$store.commit('setSelectedService', null);s
         }
 
         this.appointment = appointment;
-        this.$store.commit('setSelectedStaff', null)
+        // this.$store.commit('setSelectedStaff', null)
       },
       previousStep() {
         if ( this.isDisabled ) {
@@ -445,29 +399,20 @@ export default {
         }
       },
       validation( next = false ) {
-        this.$store.commit('setErrors', {});
-        var currentStep = this.navigation.find(step => step.key === this.currentStepKey);
+        let vm = this;
+        vm.$store.commit('setErrors', {});
+        let currentStep = vm.navigation.find(step => step.key === vm.currentStepKey);
 
         if ( currentStep.validation && next == true ){
-          if ( this.currentStepKey == 'detailsForm' || this.currentStepKey == 'confirmation') {
-            var errors = this.formValidation( this.appointment, this.settings );
-            this.errors = errors;
+          if ( vm.currentStepKey == 'confirmation') {
+            vm.errors = vm.formValidation(vm.appointment, vm.settings);
           }
         }
       },
     },
     watch: {
-      currentStepKey(value) {
-        if ( value == 'confirmation' && this.appointment.payment_method == 'stripe' ) {
-          this.generateStripe();
-        }
-      },
       selectedStaff () {
-        var appointment = Object.assign({}, this.appointment);
-        let staffPrice  = 0;
         if ( this.selectedStaff == null ) {
-          var paymentStep   = this.stepNavigation.find(step => step.key === 'payment');
-          paymentStep.class = '';
           this.$store.commit('setStepNavigation', this.stepNavigation);
         }
       },

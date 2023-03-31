@@ -32,6 +32,14 @@
     "vue-axios": "^2.1.5",
     "vue-masked-input": "^0.5.2",
     "vue-toasted": "^1.1.28",
-    "vuex": "^3.5.1"
+    "vuejs-datatable": "^2.0.0-alpha.7",
+    "vue-input-autowidth": "^1.0.10",
+    "vue-color": "^2.7.1",
+    "vue-ctk-date-time-picker": "^2.5.0",
+    "vuex": "^3.5.1",
+    "moment-timezone": "^0.5.31",
+    "lodash": "^3.10.0",
+    "hooper": "^0.3.4",
+    "@riophae/vue-treeselect": "0.4.0"
   }
 }
