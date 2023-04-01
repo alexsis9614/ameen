@@ -167,7 +167,6 @@ export default {
           <li v-if="staffFreeHours[employee.id].length" @click="selectStaff( employee.id )" v-for="employee in availableStaff" :key="employee.id" :class="[{'disabled': !isStaffFreeTime(employee.id) },{'active': selectedStaff && employee.id == selectedStaff.id}]">
             <div class="info">
               <span class="name">{{ employee.full_name }}</span>
-              <span class="price">{{ translations.service_price }}: {{ getStaffPrice(employee, selectedService, settings) }}</span>
             </div>
             <span class="selected-icon" v-if="selectedStaff && employee.id == selectedStaff.id"></span>
           </li>
@@ -508,7 +507,7 @@ export default {
     selectedStaff () {
       var appointment = Object.assign({}, this.appointment);
       let staffPrice  = 0;
-      var paymentStep = this.navigation.find(step => step.key === 'payment');
+      var dateTimeStep = this.navigation.find(step => step.key === 'dateTime');
 
       if ( this.selectedStaff != null && this.selectedStaff ){
         appointment.staff_id = this.selectedStaff.id;
@@ -517,14 +516,25 @@ export default {
         delete appointment.staff_id;
       }
 
+        if ( typeof bookit_window.user !== undefined ) {
+            this.user = {
+                ID:  bookit_window.user.wp_user_id,
+                display_name: bookit_window.user.full_name,
+                user_email: bookit_window.user.email,
+            };
+
+            appointment.full_name = this.user.display_name;
+            appointment.email     = this.user.user_email;
+        }
+
       /** disable payment step if zero price **/
       if ( parseFloat(staffPrice) == 0 ) {
-        paymentStep.class          = 'skip';
-        appointment.payment_method = 'locally';
+        dateTimeStep.class          = 'skip';
       } else {
-        paymentStep.class          = '';
+        dateTimeStep.class          = '';
         delete appointment.payment_method;
       }
+      appointment.payment_method = 'locally';
       this.appointment = appointment;
     },
     activeStartTime() {

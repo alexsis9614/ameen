@@ -96,11 +96,29 @@
             $time_slot_list = TimeSlotHelper::getTimeList($service_start, $service_end);
 
             if ( ! empty( $services ) ) {
-                foreach ( $services as &$service ) {
+                foreach ( $services as $index => &$service ) {
+                    if ( ! empty( $user->ID ) ) {
+                        $course_id = STM_LMS_Bookit_Service::get_course_id( $service['id'] );
+                        $plan = $user->__get('stm_lms_course_plan_' . $course_id);
+
+                        if ( $plan !== 'vip' ) {
+                            $categories = wp_list_filter( $categories, array('id' => $service['category_id']), 'NOT' );
+                            unset( $services[ $index ] );
+                            continue;
+                        }
+                    }
+
                     if ( is_array( $service ) ) {
                         $service['icon_url'] = ( ! empty( $service['icon_id'] ) ) ? wp_get_attachment_url($service['icon_id']) : null;
                     }
                 }
+            }
+
+            if ( empty( $services ) ) {
+                $categories = array();
+            }
+            else {
+                $services = array_values( $services );
             }
 
             if ( ! empty( $user->ID ) ) {

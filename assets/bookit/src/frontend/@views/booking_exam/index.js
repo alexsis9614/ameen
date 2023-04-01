@@ -95,17 +95,18 @@ export default {
         },
     },
     created () {
-      this.setCorrectStepByAttributes();
+      let vm = this;
+        vm.setCorrectStepByAttributes();
 
       /** set data to store **/
-      this.$store.commit('setStepNavigation', this.stepNavigation);
+      vm.$store.commit('setStepNavigation', vm.stepNavigation);
 
         /** set today by default at first **/
-      if ( !this.appointment.date_timestamp ) {
-        var appointment            = Object.assign({}, this.appointment);
-        appointment.date_timestamp = this.moment().startOf('day').unix();
-        this.appointment           = appointment;
-        this.setDisabledTimeSlots();
+      if ( !vm.appointment.date_timestamp ) {
+        var appointment            = Object.assign({}, vm.appointment);
+        appointment.date_timestamp = vm.moment().startOf('day').unix();
+        vm.appointment           = appointment;
+        vm.setDisabledTimeSlots();
       }
     },
     computed: {
@@ -466,8 +467,8 @@ export default {
         var appointment = Object.assign({}, this.appointment);
         let staffPrice  = 0;
         if ( this.selectedStaff == null ) {
-          var paymentStep   = this.stepNavigation.find(step => step.key === 'payment');
-          paymentStep.class = '';
+          var dateTimeStep   = this.stepNavigation.find(step => step.key === 'dateTime');
+          dateTimeStep.class = '';
           this.$store.commit('setStepNavigation', this.stepNavigation);
         }
       },

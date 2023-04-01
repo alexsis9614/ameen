@@ -40,29 +40,6 @@ export default {
             <span class="value">{{ appointment.full_name }}</span>
           </div>
         </div>
-
-        <div class="appointment-detail" v-if="parseFloat(clearPrice) > 0">
-          <div class="detail-icon">
-            <span class="icon price"><i></i></span>
-          </div>
-          <div class="info">
-            <span class="title">{{ translations.price }}:</span>
-            <span class="value">{{ staffPrice }}</span>
-          </div>
-        </div>
-        <div class="appointment-detail" v-if="parseFloat(clearPrice) > 0">
-          <div class="detail-icon">
-            <span class="icon payment"><i></i></span>
-          </div>
-          <div class="info">
-            <span class="title">{{ translations.payment_method }}:</span>
-            <span class="value">{{ appointment.payment_method }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="total">
-        <label>{{ translations.total }}:</label>
-        <span>{{ staffPrice }}</span>
       </div>
     </div>
     `,
@@ -105,9 +82,6 @@ export default {
     },
     settings () {
       return this.$store.getters.getSettings;
-    },
-    staffPrice() {
-      return this.getStaffPrice(this.selectedStaff, this.selectedService, this.settings);
     },
     wpTimeFormat() {
       return this.getWPSettingsTimeFormat();

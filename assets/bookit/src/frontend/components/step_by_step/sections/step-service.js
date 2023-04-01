@@ -9,10 +9,6 @@
         
         <div class="info">
           <span class="title">{{ service.title }}</span>
-          <span class="price">
-            <span v-if="isServicePriceEqualForAllStaff(service) === false">{{ translations.from }}:</span>
-            {{ generatePrice(serviceMinPrice(service), settings) }}
-          </span>
         </div>
         <span class="selected-icon" v-if="service.id == appointment.service_id"></span>
       </li>
@@ -88,18 +84,6 @@
       return prices;
     },
 
-    isServicePriceEqualForAllStaff ( service ) {
-      /** check if setting not exist and disabled **/
-      if ( !this.settings.hasOwnProperty('hide_from_for_equal_service_price')
-          || this.settings.hide_from_for_equal_service_price === false ){
-        return false;
-      }
-
-      /** if enabled , check is equal price **/
-      let prices = this.getStaffPricesForService(service);
-      return prices.every( (val, i, arr) => val === prices[0] );
-    },
-
     selectService( service ) {
       this.selectedService = service;
       this.$store.commit('setSelectedService', this.selectedService);
@@ -114,20 +98,6 @@
       }
       /** go to next step **/
       this.$store.commit('setCurrentStepKey', 'dateTime');
-    },
-
-    serviceMinPrice( service ) {
-      let min_price = service.price;
-      let staff     = [...this.$store.getters.getStaff];
-      staff         = staff.filter( staff => {
-        return staff.staff_services.some( staff_service => staff_service.id == service.id )
-      });
-
-      let prices = this.getStaffPricesForService(service);
-      if ( prices.length > 0 ){
-        min_price  = Math.min(...prices);
-      }
-      return parseFloat(min_price);
     },
   },
 }
