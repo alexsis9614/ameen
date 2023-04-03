@@ -70,6 +70,7 @@
                 }
 
                 do_action( 'stm_lms_woocommerce_order_approved', $course, $user_id );
+                do_action( 'stm_lms_woocommerce_send_message_approved', $course, $user_id, $order_id );
             }
         }
 
