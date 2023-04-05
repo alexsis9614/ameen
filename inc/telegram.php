@@ -129,10 +129,10 @@
         public function statistic_month()
         {
             $query = new WC_Order_Query( array(
-                'limit' => 10,
+                'limit'   => 10,
                 'orderby' => 'date',
-                'order' => 'DESC',
-                'return' => 'ids',
+                'order'   => 'DESC',
+                'return'  => 'ids',
             ) );
             try {
                 $orders = $query->get_orders();
