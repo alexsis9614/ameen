@@ -101,7 +101,18 @@
                         $course_id = STM_LMS_Bookit_Service::get_course_id( $service['id'] );
                         $plan = $user->__get('stm_lms_course_plan_' . $course_id);
 
-                        if ( $plan !== 'vip' ) {
+                        $progress = 0;
+                        if ( is_user_logged_in() ) {
+                            $my_progress = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( get_current_user_id(), $course_id, array( 'progress_percent' ) ) );
+                            if ( ! empty( $my_progress['progress_percent'] ) ) {
+                                $progress = (int) $my_progress['progress_percent'];
+                            }
+                            if ( $progress > 100 ) {
+                                $progress = 100;
+                            }
+                        }
+
+                        if ( $plan !== 'vip' || $progress !== 100 ) {
                             $categories = wp_list_filter( $categories, array('id' => $service['category_id']), 'NOT' );
                             unset( $services[ $index ] );
                             continue;

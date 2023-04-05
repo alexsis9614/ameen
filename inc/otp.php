@@ -23,8 +23,8 @@
             $this->otp_enable = STM_LMS_Options::get_option('stm_otp_enable', false);
             $this->nonce      = wp_create_nonce( $this->nonce_action );
             $this->actions    = array(
-                'sign_in'      => $this->nonce_action,
-                'verification' => $this->nonce_action . '_verification'
+                'sign_in'       => $this->nonce_action,
+                'verification'  => $this->nonce_action . '_verification'
             );
 
             add_filter('wpcfto_options_page_setup', [$this, 'options'], 20, 1);
@@ -34,7 +34,7 @@
                     $hook = 'wp_ajax_nopriv_' . $action;
                     $callback = [$this, $method];
 
-                    if ( ! has_action( $hook, $callback ) ) {
+                    if ( ! has_action( $hook, $callback ) && method_exists(__CLASS__, $method) ) {
                         add_action('wp_ajax_nopriv_' . $action, $callback);
                     }
                 }
@@ -189,6 +189,11 @@
                         wp_clear_auth_cookie();
                         wp_set_current_user( $user->ID );
                         wp_set_auth_cookie($user->ID, true, is_ssl());
+
+                        update_user_meta($user->ID, 'billing_phone', $valid_number);
+                        update_user_meta($user->ID, 'shipping_phone', $valid_number);
+
+                        do_action( 'stm_lms_after_user_register', $user, $data );
 
                         $response = array(
                             'user_page' => $user_page,
