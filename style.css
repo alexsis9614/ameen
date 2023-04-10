@@ -11,3 +11,70 @@
 	Tags: classes, courses, education, education center, learning center, tutoring, teaching, study, studying, learning, lessons, instructor, teacher, mentor
 	Text Domain: masterstudy-child
 */
+
+.stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--title h5{
+    min-height: 52px;
+}
+
+.stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--info_meta .button,
+.stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--info_meta .button:not(:active),
+.stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--info_meta .button:not(:hover){
+    visibility: visible;
+    opacity: 1;
+}
+
+.stm_lms_user_info_top .stm_lms_user_info_top__sort{
+    display: flex;
+    align-items: center;
+}
+
+.btn.stm_lms_browse_courses.btn-default{
+    min-width: 195px;
+    margin: 0 20px 0 0;
+    background-color: var(--e-global-color-a01067b);
+    border-color: var(--e-global-color-a01067b);
+}
+
+@media screen and (max-width: 480px) {
+    .stm_lms_user_info_top .stm_lms_user_info_top__sort{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn.stm_lms_browse_courses.btn-default{
+        margin: 0 0 30px;
+    }
+}
+
+.top_bar_right_part .stm_header_links a{
+    margin: 0 10px;
+}
+
+.top_bar_right_part .stm_header_links a > i{
+    padding: 0 5px 0 0;
+}
+
+.center-unit .header_main_menu_wrapper .header-menu > li > a{
+    color: #222222;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: Open sans, sans-serif;
+}
+
+.center-unit .header_main_menu_wrapper .header-menu > li.current-menu-item > .magic_line{
+    opacity: 1;
+    visibility: visible;
+}
+
+.header_2 .top_bar_right_part .stm_header_links a.loading i,
+.header_2 .top_bar_right_part .stm_header_links a.loading span{
+    opacity: 0;
+}
+
+.stm_header_links a.loading{
+    min-height: auto;
+}
+
+.stm_header_links a.loading:before{
+    top: -6px;
+}

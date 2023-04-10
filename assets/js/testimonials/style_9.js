@@ -125,6 +125,7 @@
                 dots: true,
                 // items: slides,
                 autoplay: false,
+                smartSpeed: 900,
                 autoplayHoverPause: true,
                 loop: (slides > 1),
                 slideBy: 1,

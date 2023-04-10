@@ -34,3 +34,7 @@
     if ( defined('BOOKIT_VERSION') ) {
         require_once __DIR__ . '/inc/bookit/main.php';
     }
+
+    if ( class_exists( 'STM_LMS_Course' ) ) {
+        remove_action('stm_lms_archive_card_price', 'STM_LMS_Course::archive_card_price');
+    }
