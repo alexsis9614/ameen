@@ -183,6 +183,8 @@
                         $user      = new WP_User( $user );
                         $message   = esc_html__('Successfully register in. Redirecting...', 'masterstudy-child');
                         $user_page = STM_LMS_User::settings_url();
+
+                        do_action( 'stm_lms_after_user_register', $user, $data );
                     }
 
                     if ( $user && $user->exists() ) {
@@ -192,8 +194,6 @@
 
                         update_user_meta($user->ID, 'billing_phone', $valid_number);
                         update_user_meta($user->ID, 'shipping_phone', $valid_number);
-
-                        do_action( 'stm_lms_after_user_register', $user, $data );
 
                         $response = array(
                             'user_page' => $user_page,
