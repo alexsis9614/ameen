@@ -16,11 +16,24 @@
 
             add_shortcode('lms_send_telegram_statistic_month', [$this, 'statistic_month']);
 
+            add_shortcode('lms_send_telegram_statistic_week', [$this, 'statistic_week']);
+
             add_action('stm_lms_after_user_register', [$this, 'user_register'], 10, 2);
 
             add_action('bookit_appointment_created', [$this, 'appointment_created']);
 
             add_action('stm_lms_progress_updated', [$this, 'progress_updated'], 10, 2);
+
+            add_action('wp', [$this, 'cron_statistic_every_day']);
+
+            add_action( 'every_day_statistic', [$this, 'statistic'] );
+        }
+
+        public function cron_statistic_every_day()
+        {
+            if( ! wp_next_scheduled( 'every_day_statistic' ) ) {
+                wp_schedule_event( strtotime('17:00:00'), 'daily', 'every_day_statistic');
+            }
         }
 
         public function boxes( $boxes )
@@ -126,21 +139,196 @@
             }
         }
 
-        public function statistic_month()
+        public function get_orders_info( $date = 'now' )
         {
-            $query = new WC_Order_Query( array(
-                'limit'   => 10,
-                'orderby' => 'date',
-                'order'   => 'DESC',
-                'return'  => 'ids',
-            ) );
+
+            $date = wp_date("Y-m-d H:i:s", strtotime( $date ));
+            $date_string = "> '$date'";
+
+            global $wpdb;
+
+            return $wpdb->get_row( "
+                SELECT DISTINCT count(p.ID) as count, SUM(pm.meta_value) as total_earned FROM {$wpdb->prefix}posts as p
+                LEFT JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id AND pm.meta_key = '_order_total'
+                WHERE p.post_type = 'shop_order' AND p.post_date {$date_string}
+                AND p.post_status IN ('wc-on-hold','wc-processing','wc-completed')
+            ", ARRAY_A);
+        }
+
+        public function get_users_info( $date = 'today' )
+        {
+            if ( $date === 'today' ) {
+                $args = [
+                    'date_query' => [
+                        [ 'after'  => 'today', 'inclusive' => true ],
+                    ]
+                ];
+            }
+            else if ( $date === 'month' ) {
+                $args = [
+                    'date_query' => [
+                        [
+                            'year'  => current_time( 'Y' ),
+                            'month' => current_time( 'm' )
+                        ],
+                    ]
+                ];
+            }
+            else if ( $date === 'week' ) {
+                $day = wp_date('W', time());
+                $week_start_day = wp_date('d', strtotime('-' . $day . ' days'));
+                $week_end = wp_date('d', strtotime('+'.(6 - $day).' days'));
+                $args = [
+                    'date_query' => [
+                        [
+                            'before' => array(
+                                'year'   => current_time( 'Y' ),
+                                'month'  => current_time( 'm' ),
+                                'day'    => $week_start_day,
+                            ),
+                            'after'  => array(
+                                'year'   => current_time( 'Y' ),
+                                'month'  => current_time( 'm' ),
+                                'day'    => $week_end,
+                            ),
+                        ],
+                    ]
+                ];
+            }
+
+            if ( ! empty( $args ) ) {
+                $args['role'] = 'subscriber';
+                error_log( print_r( $args, true ) );
+                $query = new WP_User_Query( $args );
+
+                return $query->total_users ?? 0;
+            }
+
+            return 0;
+        }
+
+        public function get_popular_course()
+        {
+            $args = array(
+                'post_type' 	 => array( 'product' ),
+                'meta_key'  	 => 'total_sales',
+                'orderby'   	 => 'meta_value_num',
+                'order' 		 => 'desc',
+                'posts_per_page' => 1,
+                'fields'         => 'ids',
+                'meta_query'     => array(
+                    array(
+                        'key'     => 'stm_lms_product_id',
+                        'compare' => 'EXISTS'
+                    )
+                )
+            );
+
+            $popular_products = new WP_Query( $args );
+
+            if ( ! empty( $popular_products->posts ) ) {
+                return get_the_title( array_shift( $popular_products->posts ) );
+            }
+
+            return '';
+        }
+
+        public function statistic_week()
+        {
+            $message = esc_html__('No orders current week', 'masterstudy-child');
+
             try {
-                $orders = $query->get_orders();
+                $day          = wp_date('w', time());
+                $week_start   = wp_date('Y-m-d 00:00:00', strtotime('-' . $day . ' days'));
+                $orders_info  = $this->get_orders_info( $week_start );
+                $found_orders = $orders_info['count'];
+                $total_earned = $orders_info['total_earned'];
+
+                $message = sprintf(
+                    esc_html__('From the date: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('Count orders: %d', 'masterstudy-child') . "\n" .
+                    esc_html__('Total earned: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('User count registered: %d', 'masterstudy-child'),
+                    wp_date('d F Y', strtotime( $week_start )),
+                    $found_orders,
+                    wc_price( $total_earned ),
+                    $this->get_users_info('week')
+                );
+
+                $popular_course = $this->get_popular_course();
+
+                if ( ! empty( $popular_course ) ) {
+                    $message .= sprintf( "\n" . esc_html__('Popular course on sale: %s', 'masterstudy-child'),
+                        $popular_course
+                    );
+                }
+
             } catch (Exception $e) {
                 telegram_log('', '', $e->getMessage());
             }
 
-            return '123';
+            return $message;
+        }
+
+        public function statistic_month()
+        {
+            $message = esc_html__('No orders current month', 'masterstudy-child');
+
+            try {
+                $orders_info  = $this->get_orders_info( current_time( 'Y-m-01 00:00:00' ) );
+                $found_orders = $orders_info['count'];
+                $total_earned = $orders_info['total_earned'];
+
+                $message = sprintf(
+                    esc_html__('From the date: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('Count orders: %d', 'masterstudy-child') . "\n" .
+                    esc_html__('Total earned: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('User count registered: %d', 'masterstudy-child'),
+                    current_time( '01 F Y' ),
+                    $found_orders,
+                    wc_price( $total_earned ),
+                    $this->get_users_info('month')
+                );
+
+                $popular_course = $this->get_popular_course();
+
+                if ( ! empty( $popular_course ) ) {
+                    $message .= sprintf( "\n" . esc_html__('Popular course on sale: %s', 'masterstudy-child'),
+                        $popular_course
+                    );
+                }
+
+            } catch (Exception $e) {
+                telegram_log('', '', $e->getMessage());
+            }
+
+            return $message;
+        }
+
+        public function statistic()
+        {
+            $message = esc_html__('No orders today', 'masterstudy-child');
+
+            try {
+                $orders_info  = $this->get_orders_info( current_time( 'Y-m-d 00:00:00' ) );
+                $found_orders = $orders_info['count'];
+                $total_earned = $orders_info['total_earned'];
+
+                $message = sprintf(
+                    esc_html__('Day: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('Count orders: %d', 'masterstudy-child') . "\n" .
+                    esc_html__('Total earned: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('User count registered: %d', 'masterstudy-child'),
+                    current_time('d F Y'),
+                    $found_orders,
+                    wc_price( $total_earned ),
+                    $this->get_users_info()
+                );
+            } catch (Exception $e) {
+                telegram_log('', '', $e->getMessage());
+            }
+
+            $this->send_message( $message );
         }
 
         public function user_register(WP_User $user, $data)
