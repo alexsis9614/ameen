@@ -27,6 +27,71 @@
             add_action('wp', [$this, 'cron_statistic_every_day']);
 
             add_action( 'every_day_statistic', [$this, 'statistic'] );
+
+            add_action( 'save_post_stm-reviews', [$this, 'add_review'], 10, 3 );
+
+//            add_action( 'stm_lms_filter_email_data', [$this, 'add_review_notification'], 10, 1 );
+        }
+
+        public function add_review_notification( $data )
+        {
+            if ( isset( $data['filter_name'] ) && $data['filter_name'] === 'stm_lms_new_review' ) {
+
+//                $vars         = $data['vars'];
+//                $course_title = $vars['course_title'];
+//                $login        = $vars['login'];
+//
+//                $message = sprintf(
+//                    '%s' . "\n" .
+//                    esc_html__('Created new review', 'masterstudy-child') . "\n" .
+//                    esc_html__('Course name: %s', 'masterstudy-child') . "\n" .
+//                    esc_html__('Review owner: %s', 'masterstudy-child') . "\n" .
+//                    esc_html__('Review: %s', 'masterstudy-child'),
+//                    $sticker,
+//                    get_the_title( $course_id ),
+//                    $user['login'],
+//                    $post->post_content
+//                );
+//
+//                $this->send_message( $message );
+            }
+
+            return $data;
+        }
+
+        public function add_review( $post_id, $post, $update )
+        {
+            if ( ! $update ) {
+                $course_id = intval( $_POST['post_id'] );;
+                $mark      = ( ! empty( $_POST['mark'] ) ) ? intval( $_POST['mark'] ) : 0;
+                $user      = STM_LMS_User::get_current_user();
+
+                /*
+                 * Emoji codes getting is https://www.phpclasses.org/browse/file/155930.html
+                 * */
+                if ( $mark >= 0 && $mark <= 2 ) {
+                    $sticker = "\u{1f621}";
+                }
+                else if ( $mark > 2 && $mark <= 3 ) {
+                    $sticker = "\u{1f61e}";
+                }
+                else{
+                    $sticker = "\u{1f44c}";
+                }
+
+                $message = sprintf(
+                    esc_html__('Created new review %s', 'masterstudy-child') . "\n" .
+                    esc_html__('Course name: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('Review owner: %s', 'masterstudy-child') . "\n" .
+                    esc_html__('Review: %s', 'masterstudy-child'),
+                    $sticker,
+                    get_the_title( $course_id ),
+                    $user['login'],
+                    $post->post_content
+                );
+
+                $this->send_message( $message );
+            }
         }
 
         public function cron_statistic_every_day()
@@ -198,7 +263,6 @@
 
             if ( ! empty( $args ) ) {
                 $args['role'] = 'subscriber';
-                error_log( print_r( $args, true ) );
                 $query = new WP_User_Query( $args );
 
                 return $query->total_users ?? 0;
