@@ -29,34 +29,6 @@
             add_action( 'every_day_statistic', [$this, 'statistic'] );
 
             add_action( 'save_post_stm-reviews', [$this, 'add_review'], 10, 3 );
-
-//            add_action( 'stm_lms_filter_email_data', [$this, 'add_review_notification'], 10, 1 );
-        }
-
-        public function add_review_notification( $data )
-        {
-            if ( isset( $data['filter_name'] ) && $data['filter_name'] === 'stm_lms_new_review' ) {
-
-//                $vars         = $data['vars'];
-//                $course_title = $vars['course_title'];
-//                $login        = $vars['login'];
-//
-//                $message = sprintf(
-//                    '%s' . "\n" .
-//                    esc_html__('Created new review', 'masterstudy-child') . "\n" .
-//                    esc_html__('Course name: %s', 'masterstudy-child') . "\n" .
-//                    esc_html__('Review owner: %s', 'masterstudy-child') . "\n" .
-//                    esc_html__('Review: %s', 'masterstudy-child'),
-//                    $sticker,
-//                    get_the_title( $course_id ),
-//                    $user['login'],
-//                    $post->post_content
-//                );
-//
-//                $this->send_message( $message );
-            }
-
-            return $data;
         }
 
         public function add_review( $post_id, $post, $update )
@@ -206,7 +178,6 @@
 
         public function get_orders_info( $date = 'now' )
         {
-
             $date = wp_date("Y-m-d H:i:s", strtotime( $date ));
             $date_string = "> '$date'";
 
@@ -233,8 +204,12 @@
                 $args = [
                     'date_query' => [
                         [
-                            'year'  => current_time( 'Y' ),
-                            'month' => current_time( 'm' )
+                            'column' => 'user_registered',
+                            'after' => array(
+                                'year'  => current_time( 'Y' ),
+                                'month' => current_time( 'm' )
+                            ),
+                            'inclusive' => true
                         ],
                     ]
                 ];
@@ -246,6 +221,7 @@
                 $args = [
                     'date_query' => [
                         [
+                            'column' => 'user_registered',
                             'before' => array(
                                 'year'   => current_time( 'Y' ),
                                 'month'  => current_time( 'm' ),
@@ -256,6 +232,7 @@
                                 'month'  => current_time( 'm' ),
                                 'day'    => $week_end,
                             ),
+                            'inclusive' => true
                         ],
                     ]
                 ];
@@ -297,8 +274,44 @@
             return '';
         }
 
-        public function statistic_week()
+        public function statistic_week( $atts )
         {
+            $atts = shortcode_atts( array(
+                'chat_id' => 0
+            ), $atts );
+
+            $chat_id = $atts['chat_id'];
+            $message = esc_html__('To receive notifications, the site administrator must approve your account in the admin panel', 'masterstudy-child');
+
+            if ( ! $chat_id ) {
+                $json    = file_get_contents('php://input');
+                $data    = (array)json_decode($json, true);
+
+                if ( $data['message']['chat']['type'] == 'private' ) {
+                    $chat_id = $data['message']['from']['id'];
+                } else if ( $data['message']['chat']['type'] == 'group' || $data['message']['chat']['type'] == 'supergroup' ) {
+                    $chat_id = $data['message']['chat']['id'];
+                } else if ( $data['callback_query']['message']['text'] ) {
+                    $chat_id = $data['callback_query']['message']['chat']['id'];
+                }
+            }
+
+            if ( ! $chat_id ) {
+                return $message;
+            }
+
+            $post = get_page_by_title( $chat_id, OBJECT, 'telegram_subscribers');
+
+            if ( $post ) {
+                $chat_id = $post->ID;
+            }
+
+            $access = get_post_meta($chat_id, 'send_notification', true);
+
+            if ( $access !== 'approve' ) {
+                return $message;
+            }
+
             $message = esc_html__('No orders current week', 'masterstudy-child');
 
             try {
@@ -334,8 +347,50 @@
             return $message;
         }
 
-        public function statistic_month()
+        public function statistic_month( $atts )
         {
+            $atts = shortcode_atts( array(
+                'chat_id' => 0
+            ), $atts );
+
+            $chat_id = $atts['chat_id'];
+            $message = esc_html__('To receive notifications, the site administrator must approve your account in the admin panel', 'masterstudy-child');
+
+            if ( ! $chat_id ) {
+                $json    = file_get_contents('php://input');
+                $data    = (array)json_decode($json, true);
+
+                if ( $data['message']['chat']['type'] == 'private' ) {
+                    $chat_id = $data['message']['from']['id'];
+                } else if ( $data['message']['chat']['type'] == 'group' || $data['message']['chat']['type'] == 'supergroup' ) {
+                    $chat_id = $data['message']['chat']['id'];
+                } else if ( $data['callback_query']['message']['text'] ) {
+                    $chat_id = $data['callback_query']['message']['chat']['id'];
+                }
+
+                $post = get_page_by_title( $chat_id, OBJECT, 'telegram_subscribers');
+
+                if ( $post ) {
+                    $chat_id = $post->ID;
+                }
+            }
+
+            if ( ! $chat_id ) {
+                return $message;
+            }
+
+            $post = get_page_by_title( $chat_id, OBJECT, 'telegram_subscribers');
+
+            if ( $post ) {
+                $chat_id = $post->ID;
+            }
+
+            $access = get_post_meta($chat_id, 'send_notification', true);
+
+            if ( $access !== 'approve' ) {
+                return $message;
+            }
+
             $message = esc_html__('No orders current month', 'masterstudy-child');
 
             try {
