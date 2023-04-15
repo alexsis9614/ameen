@@ -78,3 +78,47 @@
 .stm_header_links a.loading:before{
     top: -6px;
 }
+
+/* Account styles */
+.stm_lms_edit_socials .form-group label{
+    color: #222222;
+}
+.stm_lms_edit_name .stm_lms_edit_socials_list .form-control{
+    background: #fff;
+}
+/* END Account styles */
+
+/* Checkout form */
+form.checkout.woocommerce-checkout #customer_details > *:first-child{
+    width: 100%;
+}
+form.checkout.woocommerce-checkout #customer_details > *:last-child{
+    display: none;
+}
+.shop_table.woocommerce-checkout-review-order-table .product-total{
+    min-width: 200px;
+}
+.woocommerce-checkout-payment .wc_payment_method img{
+    max-width: 100px;
+    margin: 0 0 0 10px;
+}
+form.checkout.woocommerce-checkout #customer_details .form-row{
+    opacity: 0.5;
+    pointer-events: none;
+}
+form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-input-wrapper{
+    display: block;
+}
+form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-input-wrapper input[type="radio"]{
+    width: auto;
+}
+form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-input-wrapper input[type="radio"] + label{
+    display: inline-block;
+    padding: 0 10px 0 10px;
+}
+#order_review .woocommerce-checkout-payment .woocommerce-form__input-checkbox{
+    position: static;
+    margin: 0;
+    width: auto;
+}
+/* END Checkout form */

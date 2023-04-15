@@ -139,7 +139,7 @@
                 $mixed_classes   = array( 'stm_lms_mixed_button' );
                 $mixed_classes[] = ( $dropdown_enabled ) ? 'subscription_enabled' : 'subscription_disabled';
 
-                $show_buttons = apply_filters( 'stm_lms_pro_show_button', true, $course_id );
+                $show_buttons = apply_filters( 'stm_lms_pro_show_button', empty( $course_plans ), $course_id );
                 if ( $show_buttons ) :
         ?>
                 <div class="<?php echo esc_attr( implode( ' ', $mixed_classes ) ); ?>">
@@ -294,6 +294,11 @@
                 </div>
             <?php
                     else :
+            ?>
+                        <a href="#" class="btn btn-default" <?php echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) ); ?>>
+                            <span><?php esc_html_e( 'Get course', 'masterstudy-lms-learning-management-system-pro' ); ?></span>
+                        </a>
+            <?php
                         do_action( 'stm_lms_pro_instead_buttons', $course_id );
                     endif;
                 endif;

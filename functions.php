@@ -38,3 +38,7 @@
     if ( class_exists( 'STM_LMS_Course' ) ) {
         remove_action('stm_lms_archive_card_price', 'STM_LMS_Course::archive_card_price');
     }
+
+    if ( class_exists( 'Woocommerce' ) ) {
+        require_once __DIR__ . '/inc/woocommerce.php';
+    }
