@@ -8,7 +8,6 @@ if (class_exists('STM_LMS_Form_Builder') && !empty($forms) && is_array($forms)) 
         }
     }
 }
-var_dump($profile_form);
 if (!empty($profile_form)):
     $profile_form = json_encode($profile_form);
     ?>

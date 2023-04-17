@@ -8,7 +8,7 @@
 
     wp_enqueue_script(
         'stm-lms-sign-in',
-        STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/js/sign-in.js',
+        STM_THEME_CHILD_DIRECTORY_URI . '/assets/bookit/dist/auth/sign-in.js',
         ['jquery', 'vue.js', 'vue-resource.js'],
         STM_THEME_CHILD_VERSION
     );
@@ -49,6 +49,26 @@
                         />
                     </div>
                 </template>
+                <template v-else-if="password">
+                    <div class="form-group">
+                        <label class="heading_font"><?php esc_html_e( 'Password', 'masterstudy-lms-learning-management-system' ); ?></label>
+                        <input class="form-control"
+                               type="password"
+                               name="password"
+                               v-model="enter_password"
+                               placeholder="<?php esc_html_e( 'Enter password', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                    </div>
+                    <template v-if="register">
+                        <div class="form-group">
+                            <label class="heading_font"><?php esc_html_e( 'Password again', 'masterstudy-lms-learning-management-system' ); ?></label>
+                            <input class="form-control"
+                                   type="password"
+                                   name="password_re"
+                                   v-model="password_re"
+                                   placeholder="<?php esc_html_e( 'Confirm password', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                        </div>
+                    </template>
+                </template>
                 <template v-else>
                     <?php if ( 'email_or_phone' === $stm_otp_email_phone ) : ?>
                         <div class="form-group">
@@ -80,6 +100,7 @@
                        v-bind:class="{'loading': loading}"
                        v-bind:disabled="loading">
                         <span v-if="verify"><?php esc_html_e('Submit', 'masterstudy-child'); ?></span>
+                        <span v-else-if="password"><?php esc_html_e('Submit', 'masterstudy-child'); ?></span>
                         <span v-else><?php esc_html_e('Get code', 'masterstudy-child'); ?></span>
                     </button>
 

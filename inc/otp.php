@@ -23,8 +23,9 @@
             $this->otp_enable = STM_LMS_Options::get_option('stm_otp_enable', false);
             $this->nonce      = wp_create_nonce( $this->nonce_action );
             $this->actions    = array(
-                'sign_in'       => $this->nonce_action,
-                'verification'  => $this->nonce_action . '_verification'
+                'sign_in'        => $this->nonce_action,
+                'verification'   => $this->nonce_action . '_verification',
+                'create_account' => $this->nonce_action . '_create_account'
             );
 
             add_filter('wpcfto_options_page_setup', [$this, 'options'], 20, 1);
@@ -52,61 +53,60 @@
             return $valid_number;
         }
 
+        public function get_user_email( $text )
+        {
+            return $text . '@gmail.com';
+        }
+
         public function sign_in()
         {
             check_ajax_referer( $this->nonce_action );
 
+            $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
+            $status       = 'error';
             $response     = array(
-                'message' => esc_html__('An error occurred, please try again later', 'masterstudy-child'),
-                'status'  => 'error',
+                'message' => $message,
+                'status'  => $status,
             );
             $request_body = file_get_contents( 'php://input' );
             $data         = json_decode( $request_body, true );
-//
-//            $fields = array(
-//                'email'       => array(
-//                    'label' => esc_html__( 'E-mail', 'masterstudy-child' ),
-//                    'type'  => 'email',
-//                ),
-//                'phone'    => array(
-//                    'label' => esc_html__( 'Phone', 'masterstudy-child' ),
-//                    'type'  => 'text',
-//                ),
-//            );
-//
-//            foreach ( $fields as $field_key => $field ) {
-//                if ( empty( $data[ $field_key ] ) ) {
-//                    /* translators: %s: field name */
-//                    $response['message'] = sprintf( esc_html__( '%s field is required', 'masterstudy-child' ), $field['label'] );
-//                    wp_send_json( $response );
-//                } else {
-//                    $data[ $field_key ] = STM_LMS_Helpers::sanitize_fields( $data[ $field_key ], $field['type'] );
-//                    if ( empty( $data[ $field_key ] ) ) {
-//                        /* translators: %s: field key */
-//                        $response['message'] = sprintf( esc_html__( 'Please enter valid %s field', 'masterstudy-child' ), $field['label'] );
-//                        wp_send_json( $response );
-//                    }
-//                }
-//            }
 
             if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
                 $valid_number = $this->valid_phone( $data['phone'] );
 
                 if ( $valid_number ) {
-                    $message = esc_html__('Enter confirmation code', 'masterstudy-child');
+                    $user = get_user_by('login', sanitize_user( $valid_number ));
+                    $send = false;
 
-                    if ( $this->testing ) {
-                        $send = $this->send_testing( $valid_number );
-                        $message .= ' - ' . $send;
+                    if ( is_wp_error( $user ) || ! $user ) {
+                        $user_email = $this->get_user_email( $valid_number );
+                        $user       = get_user_by('email', $user_email);
+
+                        if ( is_wp_error( $user ) || ! $user ) {
+                            $message = esc_html__('Enter confirmation code', 'masterstudy-child');
+
+                            if ( $this->testing ) {
+                                $send = $this->send_testing( $valid_number );
+                                $message .= ' - ' . $send;
+                            }
+                            else {
+                                $send = $this->send( $valid_number );
+                            }
+
+                            $status = 'success';
+                        }
                     }
-                    else {
-                        $send = $this->send( $valid_number );
+
+                    if ( $user && $user->exists() ) {
+                        $send    = true;
+                        $status  = 'password';
+                        $message = esc_html__('Enter a password for your account', 'masterstudy-child');
                     }
 
                     if ( $send ) {
                         $response     = array(
                             'message' => $message,
-                            'status'  => 'success',
+                            'status'  => $status,
                         );
                     }
                 }
@@ -146,8 +146,92 @@
                     );
                 }
                 else {
-                    $user_email = $valid_number . '@gmail.com';
-                    $user = wp_create_user( sanitize_user( $valid_number ), wp_generate_password(), $user_email );
+                    $response = array(
+                        'message'   => esc_html__('Successfully code validation. Think of a password for your account', 'masterstudy-child'),
+                        'status'    => 'success',
+                    );
+                }
+            }
+
+            wp_send_json( $response );
+        }
+
+        public function create_account()
+        {
+            check_ajax_referer( $this->nonce_action );
+
+            $response     = array(
+                'message' => esc_html__('An error occurred, please try again later', 'masterstudy-child'),
+                'status'  => 'error',
+            );
+            $request_body = file_get_contents( 'php://input' );
+            $data         = json_decode( $request_body, true );
+
+            if (
+                isset( $data['phone'] ) && ! empty( $data['phone'] ) &&
+                isset( $data['register'] ) &&
+                isset( $data['password'] ) && ! empty( $data['password'] ) &&
+                isset( $data['password_re'] )
+            ) {
+                $valid_number     = $this->valid_phone( $data['phone'] );
+                $user_password    = $data['password'];
+                $user_password_re = $data['password_re'];
+                $register         = $data['register'];
+
+                if ($valid_number) {
+                    $user_email   = $this->get_user_email( $valid_number );
+                    $pass_invalid = false;
+
+                    if ( $register ) {
+                        if ( $user_password !== $user_password_re ) {
+                            $response['message'] = esc_html__( 'Passwords do not match', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* If Password shorter than 8 characters*/
+                        if ( strlen( $user_password ) < 8 ) {
+                            $response['message'] = esc_html__( 'Password must have at least 8 characters', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if Password longer than 20 -for some tricky user try to enter long characters to block input.*/
+                        if ( strlen( $user_password ) > 20 ) {
+                            $response['message'] = esc_html__( 'Password too long', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains letter */
+                        if ( ! preg_match( '#[a-z]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one lowercase letter!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains number */
+                        if ( ! preg_match( '#[0-9]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one number!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains CAPS */
+                        if ( ! preg_match( '#[A-Z]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one capital letter!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        if ( $pass_invalid ) {
+                            wp_send_json( $response );
+                        }
+
+                        /* Now we have valid data */
+                        $user = wp_create_user( sanitize_user( $valid_number ), $user_password, $user_email );
+                    }
+                    else {
+                        $user = wp_signon( array(
+                            'user_login'    => $valid_number,
+                            'user_password' => $user_password,
+                            'remember'      => false
+                        ), is_ssl() );
+                    }
 
                     $user_page = home_url();
 
@@ -181,10 +265,23 @@
                     }
                     else {
                         $user      = new WP_User( $user );
-                        $message   = esc_html__('Successfully register in. Redirecting...', 'masterstudy-child');
-                        $user_page = STM_LMS_User::settings_url();
 
-                        do_action( 'stm_lms_after_user_register', $user, $data );
+                        if ( ! empty( $register ) ) {
+                            $message   = esc_html__('Successfully register in. Redirecting...', 'masterstudy-child');
+                            $user_page = STM_LMS_User::settings_url();
+
+                            do_action( 'stm_lms_after_user_register', $user, $data );
+                        }
+                        else {
+                            $message   = esc_html__('Successfully logged in. Redirecting...', 'masterstudy-child');
+
+                            if ( STM_LMS_Instructor::is_instructor( $user->ID ) ) {
+                                $user_page = STM_LMS_User::user_page_url($user->ID, true);
+                            }
+                            else {
+                                $user_page = STM_LMS_User::enrolled_courses_url();
+                            }
+                        }
                     }
 
                     if ( $user && $user->exists() ) {
@@ -194,6 +291,13 @@
 
                         update_user_meta($user->ID, 'billing_phone', $valid_number);
                         update_user_meta($user->ID, 'shipping_phone', $valid_number);
+
+                        if ( isset( $_COOKIE['redirect_trial_lesson'] ) ) {
+                            $last_visit = $_COOKIE['redirect_trial_lesson'];
+                            unset( $_COOKIE['redirect_trial_lesson'] );
+                        }
+
+                        $user_page = ( ! empty( $last_visit ) ) ? $last_visit : $user_page;
 
                         $response = array(
                             'user_page' => $user_page,

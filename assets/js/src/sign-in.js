@@ -22,7 +22,11 @@ $(window).on('load', () => {
                     phone: '',
                     email: '',
                     code: '',
+                    enter_password: '',
+                    password_re: '',
                     verify: false,
+                    register: false,
+                    password: false,
                     resend: false,
                     message: '',
                     status: '',
@@ -55,6 +59,9 @@ $(window).on('load', () => {
 
                     if (vm.verify && ! vm.resend) {
                         vm.verification();
+                    }
+                    else if ( vm.password ) {
+                        vm.create_account();
                     } else {
                         vm.signIn();
                     }
@@ -77,13 +84,11 @@ $(window).on('load', () => {
                             vm.message = response.data['message'];
                             vm.loading = false;
 
-                            // setTimeout(function () {
-                            //     vm.status = '';
-                            //     vm.message = '';
-                            // }, 1000);
-
                             if (vm.status === 'success') {
                                 vm.verify = true;
+                            }
+                            else if ( vm.status === 'password' ) {
+                                vm.password = true;
                             }
 
                             vm.resend = false;
@@ -107,6 +112,40 @@ $(window).on('load', () => {
                             vm.status = response.data['status'];
                             vm.message = response.data['message'];
                             vm.loading = false;
+
+                            if (vm.status === 'success') {
+                                vm.password = true;
+                                vm.register = true;
+                                vm.verify   = false;
+                            }
+                        }
+                    );
+                },
+                create_account: function () {
+                    let vm = this,
+                        url = stm_lms_ajaxurl + '?action=' + vm.object.actions.create_account + '&_ajax_nonce=' + vm.object.nonce;
+
+                    vm.loading = true;
+                    vm.message = '';
+
+                    let data = {
+                        'phone': vm.phone,
+                        'register': vm.register,
+                        'password': vm.enter_password,
+                        'password_re': vm.password_re
+                    };
+
+                    vm.$http.post(url, data).then(
+                        function (response) {
+                            vm.status  = response.data['status'];
+                            vm.message = response.data['message'];
+                            vm.loading = false;
+
+                            if (vm.status === 'success') {
+                                vm.password = true;
+                            }
+
+                            vm.register = false;
 
                             if ( response.data['user_page'] ) {
                                 window.location = response.data['user_page'];

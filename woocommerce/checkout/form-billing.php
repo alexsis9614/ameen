@@ -58,11 +58,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         if ( ! empty( $profile_form ) ) {
             foreach ( $profile_form as $field ) {
+                if ( $field['slug'] === 'address' ) {
+                    continue;
+                }
+
                 $response = true;
                 $args = array(
                     'type'     => $field['type'],
                     'label'    => $field['label'],
-                    'required' => true,
+                    'required' => $field['required'],
                 );
 
                 if ( in_array($field['type'], array('select', 'radio')) ) {

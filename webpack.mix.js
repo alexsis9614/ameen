@@ -36,6 +36,25 @@ mix.webpackConfig({
   devtool: isDev ? 'source-map' : ''
 });
 
+mix.setResourceRoot('../../').setPublicPath('assets/bookit/dist')
+    .js(srcFrontendPath('/app.js'), 'assets/bookit/dist/frontend/js/')
+    .js(srcDashboardPath('/app.js'), 'assets/bookit/dist/dashboard/js/')
+    .js(srcPath('/sign-in.js'), 'auth')
+    .sass('assets/scss/sign-in.scss', '../../../assets/dist/css')
+    .sass('assets/scss/buy-plans.scss', '../../../assets/dist/css')
+    .clean()
+    .disableNotifications();
+
+// mixTwo.webpackConfig({
+//     resolve: {
+//         extensions: ['.js', '.json'],
+//         alias: {
+//             '@auth': srcPath(),
+//         },
+//     },
+//     devtool: isDev ? 'source-map' : ''
+// });
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -47,15 +66,9 @@ mix.webpackConfig({
  |
  */
 
-mix.setResourceRoot('../../').setPublicPath('assets/dist')
-  .js(srcPath('/sign-in.js'), 'assets/dist/js')
-  .sass('assets/scss/sign-in.scss', 'assets/dist/css')
-  .sass('assets/scss/buy-plans.scss', 'assets/dist/css')
-  .clean()
-  .disableNotifications();
-
-mix.setResourceRoot('../../').setPublicPath('assets/bookit/dist')
-    .js(srcFrontendPath('/app.js'), 'assets/bookit/dist/frontend/js/')
-    .js(srcDashboardPath('/app.js'), 'assets/bookit/dist/dashboard/js/')
-    .clean()
-    .disableNotifications();
+// mixTwo.setResourceRoot('../../').setPublicPath('assets/dist')
+//   .js(srcPath('/sign-in.js'), 'assets/dist/js')
+//   .sass('assets/scss/sign-in.scss', 'assets/dist/css')
+//   .sass('assets/scss/buy-plans.scss', 'assets/dist/css')
+//   .clean()
+//   .disableNotifications();
