@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 $args = array(
                     'type'     => $field['type'],
                     'label'    => $field['label'],
-                    'required' => $field['required'],
+                    'required' => $field['required'] ?? false,
                 );
 
                 if ( in_array($field['type'], array('select', 'radio')) ) {
