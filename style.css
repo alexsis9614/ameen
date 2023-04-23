@@ -122,3 +122,7 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
     width: auto;
 }
 /* END Checkout form */
+
+#footer, footer{
+    position: static !important;
+}
