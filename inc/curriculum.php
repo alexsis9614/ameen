@@ -1171,7 +1171,15 @@
 
             $data['title']       = get_the_title($course_id);
             $data['url']         = get_permalink($course_id);
-            $data['booking_url'] = STM_LMS_Bookit_Sync::menu_url();
+
+
+            $booking_url = '';
+            $stm_lms_course_plan = get_user_meta($user_id, 'stm_lms_course_plan_' . $course_id, true);
+            if ( $stm_lms_course_plan === 'vip' ) {
+                $booking_url = STM_LMS_Bookit_Sync::menu_url();
+            }
+
+            $data['booking_url'] = $booking_url;
 
             if(empty($data['course'])) {
                 $data['course'] = array(

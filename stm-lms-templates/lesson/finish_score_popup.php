@@ -54,18 +54,18 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 				<div class="stm_lms_finish_score__head">
 					<?php if ( ! $disable_smile ) : ?>
 						<?php
-						if ( ! empty( $custom_failed_image_id ) ) {
-							$custom_failed_image_url = wp_get_attachment_image_url( $custom_failed_image_id, 'thumbnail' );
-							if ( ! empty( $custom_failed_image_url ) ) {
-								$failed_image = $custom_failed_image_url;
-							}
-						}
-						if ( ! empty( $custom_success_image_id ) ) {
-							$custom_success_image_url = wp_get_attachment_image_url( $custom_success_image_id, 'thumbnail' );
-							if ( ! empty( $custom_success_image_url ) ) {
-								$success_image = $custom_success_image_url;
-							}
-						}
+                            if ( ! empty( $custom_failed_image_id ) ) {
+                                $custom_failed_image_url = wp_get_attachment_image_url( $custom_failed_image_id, 'thumbnail' );
+                                if ( ! empty( $custom_failed_image_url ) ) {
+                                    $failed_image = $custom_failed_image_url;
+                                }
+                            }
+                            if ( ! empty( $custom_success_image_id ) ) {
+                                $custom_success_image_url = wp_get_attachment_image_url( $custom_success_image_id, 'thumbnail' );
+                                if ( ! empty( $custom_success_image_url ) ) {
+                                    $success_image = $custom_success_image_url;
+                                }
+                            }
 						?>
 						<div class="stm_lms_finish_score__face">
 							<img src="<?php echo esc_url( $failed_image ); ?>"
@@ -140,9 +140,11 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 							<?php esc_html_e( 'View course', 'masterstudy-lms-learning-management-system' ); ?>
 						</a>
                         <?php if ( defined('BOOKIT_VERSION') ) : ?>
-                            <a :href="stats.booking_url" class="btn btn-default btn-green">
-                                <?php esc_html_e( 'Booking zoom', 'masterstudy-child' ); ?>
-                            </a>
+                            <template v-if="stats.booking_url">
+                                <a :href="stats.booking_url" class="btn btn-default btn-green">
+                                    <?php esc_html_e( 'Booking zoom', 'masterstudy-child' ); ?>
+                                </a>
+                            </template>
                         <?php endif; ?>
 					</div>
 
