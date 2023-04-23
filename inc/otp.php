@@ -97,7 +97,7 @@
                         }
                     }
 
-                    if ( $user && $user->exists() ) {
+                    if ( $user && method_exists($user, 'exists') && $user->exists() ) {
                         $send    = true;
                         $status  = 'password';
                         $message = esc_html__('Enter a password for your account', 'masterstudy-child');
@@ -284,7 +284,7 @@
                         }
                     }
 
-                    if ( $user && $user->exists() ) {
+                    if ( $user && method_exists($user, 'exists') && $user->exists() ) {
                         wp_clear_auth_cookie();
                         wp_set_current_user( $user->ID );
                         wp_set_auth_cookie($user->ID, true, is_ssl());
