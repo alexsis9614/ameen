@@ -126,12 +126,16 @@
             let vm = this,
                 additionalFields = vm.additionalFields,
                 response   = true,
-                ownerField = {};
+                ownerField = {},
+                occupationField = {};
 
             if ( additionalFields.length ) {
                 additionalFields.forEach(itemField => {
                     if ( itemField.slug === 'business-owner' ) {
                         ownerField = itemField;
+                    }
+                    else if ( itemField.slug === 'occupation' ) {
+                        occupationField = itemField;
                     }
                 });
             }
@@ -147,6 +151,12 @@
             }
             else if ( field.slug === 'area-specialization' ) {
                 response = 'No' === vm.data.meta[ownerField.id];
+            }
+            else if ( field.slug === 'region' ) {
+                response = 'Yes' === vm.data.meta[ownerField.id];
+            }
+            else if ( field.slug === 'other-occupation' ) {
+                response = 'Other (write yourself)' === vm.data.meta[occupationField.id];
             }
 
             return response;
