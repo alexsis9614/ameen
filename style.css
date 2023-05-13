@@ -126,3 +126,58 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
 #footer, footer{
     position: static !important;
 }
+
+@media screen and (max-width: 768px) {
+    #main-offer h1, #main-offer .h1{
+        font-size: 50px !important;
+        line-height: 62px !important;
+    }
+    #main-offer{
+        margin-left: auto;
+        text-align: right;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .stm_header_top_search{
+        margin: 0;
+    }
+
+    #header.sticky_header .header_default.fixed .logo-unit,
+    .header_mobile .logo-unit{
+        margin: 0 auto;
+        padding: 0 10px;
+        max-width: 70% !important;
+        order: 1;
+    }
+
+    .stm_header_top_toggler{
+        order: 2;
+    }
+
+    .stm_header_top_search.navbar-toggle{
+        padding-left: 0;
+        width: 29px;
+    }
+
+    #header .header_mobile .header_top img.avatar.avatar-32.photo{
+        width: 40px;
+        height: 40px;
+    }
+
+    .stm_header_top_toggler, .stm_header_top_search:not(.navbar-toggle){
+        width: 40px;
+        height: 40px;
+        font-size: 15px;
+        line-height: 30px;
+        text-indent: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #main-offer h1, #main-offer .h1{
+        margin-top: 110px;
+        font-size: 30px !important;
+        line-height: 42px !important;
+    }
+}

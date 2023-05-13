@@ -36,7 +36,6 @@
 					<?php get_template_part('partials/headers/parts/logo'); ?>
                 </div>
 
-
                 <div class="center-unit">
 					<?php get_template_part('partials/headers/parts/center'); ?>
                 </div>
