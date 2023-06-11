@@ -23,6 +23,8 @@
     stm_lms_register_style('login');
 
     $stm_otp_email_phone = STM_LMS_Options::get_option('stm_otp_email_phone', 'phone');
+    $settings            = get_option( 'stm_lms_settings', array() );
+    $user_account        = ! empty( $settings['user_url'] ) ? $settings['user_url'] : 0;
 ?>
 
     <div id="stm-lms-sign-in<?php if (isset($form_position)) esc_attr_e($form_position); ?>" class="stm-lms-sign-in active vue_is_disabled"
@@ -30,7 +32,9 @@
 
         <div class="stm-lms-login__top">
             <h3><?php esc_html_e('Enter phone number', 'masterstudy-child'); ?></h3>
-            <p><?php esc_html_e('We\'ll send a confirmation code by sms', 'masterstudy-child'); ?></p>
+            <?php if ( is_page( $user_account ) ) : ?>
+                <p><?php esc_html_e('We\'ll send a confirmation code by sms', 'masterstudy-child'); ?></p>
+            <?php endif; ?>
 
             <?php do_action('stm_lms_login_end'); ?>
         </div>

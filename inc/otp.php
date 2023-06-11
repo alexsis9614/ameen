@@ -188,9 +188,9 @@
                             $pass_invalid = true;
                         }
 
-                        /* If Password shorter than 8 characters*/
-                        if ( strlen( $user_password ) < 8 ) {
-                            $response['message'] = esc_html__( 'Password must have at least 8 characters', 'masterstudy-lms-learning-management-system' );
+                        /* If Password shorter than 5 characters*/
+                        if ( strlen( $user_password ) < 5 ) {
+                            $response['message'] = esc_html__( 'Password must have at least 5 characters', 'masterstudy-lms-learning-management-system' );
                             $pass_invalid = true;
                         }
 
@@ -201,10 +201,10 @@
                         }
 
                         /* if contains letter */
-                        if ( ! preg_match( '#[a-z]+#', $user_password ) ) {
-                            $response['message'] = esc_html__( 'Password must include at least one lowercase letter!', 'masterstudy-lms-learning-management-system' );
-                            $pass_invalid = true;
-                        }
+//                        if ( ! preg_match( '#[a-z]+#', $user_password ) ) {
+//                            $response['message'] = esc_html__( 'Password must include at least one lowercase letter!', 'masterstudy-lms-learning-management-system' );
+//                            $pass_invalid = true;
+//                        }
 
                         /* if contains number */
                         if ( ! preg_match( '#[0-9]+#', $user_password ) ) {
@@ -213,10 +213,10 @@
                         }
 
                         /* if contains CAPS */
-                        if ( ! preg_match( '#[A-Z]+#', $user_password ) ) {
-                            $response['message'] = esc_html__( 'Password must include at least one capital letter!', 'masterstudy-lms-learning-management-system' );
-                            $pass_invalid = true;
-                        }
+//                        if ( ! preg_match( '#[A-Z]+#', $user_password ) ) {
+//                            $response['message'] = esc_html__( 'Password must include at least one capital letter!', 'masterstudy-lms-learning-management-system' );
+//                            $pass_invalid = true;
+//                        }
 
                         if ( $pass_invalid ) {
                             wp_send_json( $response );
