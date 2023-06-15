@@ -141,11 +141,10 @@ $(window).on('load', () => {
                             vm.message = response.data['message'];
                             vm.loading = false;
 
-                            if (vm.status === 'success') {
+                            if ( vm.status === 'success' ) {
                                 vm.password = true;
+                                vm.register = false;
                             }
-
-                            vm.register = false;
 
                             if ( response.data['user_page'] ) {
                                 window.location = response.data['user_page'];

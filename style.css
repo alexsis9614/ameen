@@ -127,6 +127,11 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
     position: static !important;
 }
 
+#main > .container{
+    padding: 0;
+    max-width: 100%;
+}
+
 @media screen and (max-width: 768px) {
     #main-offer h1, #main-offer .h1{
         font-size: 50px !important;

@@ -189,13 +189,13 @@
                         }
 
                         /* If Password shorter than 5 characters*/
-                        if ( strlen( $user_password ) < 5 ) {
+                        if ( ! $pass_invalid && strlen( $user_password ) < 5 ) {
                             $response['message'] = esc_html__( 'Password must have at least 5 characters', 'masterstudy-lms-learning-management-system' );
                             $pass_invalid = true;
                         }
 
                         /* if Password longer than 20 -for some tricky user try to enter long characters to block input.*/
-                        if ( strlen( $user_password ) > 20 ) {
+                        if ( ! $pass_invalid && strlen( $user_password ) > 20 ) {
                             $response['message'] = esc_html__( 'Password too long', 'masterstudy-lms-learning-management-system' );
                             $pass_invalid = true;
                         }
@@ -207,7 +207,7 @@
 //                        }
 
                         /* if contains number */
-                        if ( ! preg_match( '#[0-9]+#', $user_password ) ) {
+                        if ( ! $pass_invalid && ! preg_match( '#[0-9]+#', $user_password ) ) {
                             $response['message'] = esc_html__( 'Password must include at least one number!', 'masterstudy-lms-learning-management-system' );
                             $pass_invalid = true;
                         }
