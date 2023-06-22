@@ -3,6 +3,10 @@
     define('STM_THEME_CHILD_DIRECTORY', get_stylesheet_directory());
     define('STM_THEME_CHILD_DIRECTORY_URI', get_stylesheet_directory_uri());
 
+    add_action( 'after_setup_theme', function () {
+        load_theme_textdomain( 'masterstudy-child', STM_THEME_CHILD_DIRECTORY . '/languages' );
+    });
+
     require_once __DIR__ . '/inc/enqueue.php';
 //    require_once __DIR__ . '/inc/sms/play-mobile-uz.php';
     require_once __DIR__ . '/inc/sms/eskiz-uz.php';
