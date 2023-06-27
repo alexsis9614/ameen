@@ -132,6 +132,31 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
     max-width: 100%;
 }
 
+#offer-promo .icon-btn{
+    border: none !important;
+    display: inline-block;
+    padding: 0;
+    width: 130px;
+    height: 130px;
+}
+
+#offer-promo .icon-btn > .icon_in_btn{
+    font-size: 130px !important;
+    color: #fff;
+    padding: 0;
+    width: 130px;
+    height: 130px;
+    border: none;
+}
+
+#offer-promo .icon-btn > .link-title {
+    display: none;
+}
+
+.jet-popup__close-button{
+
+}
+
 @media screen and (max-width: 768px) {
     #main-offer h1, #main-offer .h1{
         font-size: 50px !important;
