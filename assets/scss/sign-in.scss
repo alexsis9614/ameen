@@ -3,7 +3,7 @@
         padding: 5px 25px;
         .stm-lms-message{
             padding: 10px 20px;
-            font-size: 14px
+            font-size: 14px;
         }
         .stm_lms_login_wrapper{
             padding: 0;
@@ -54,7 +54,17 @@
     }
 }
 
-#stm-lms-sign-in{
+.stm-lms-lost-password,
+.stm-lms-sign-in{
+    .stm-lms-message{
+        &.password{
+            background-color: #66BB6A;
+            color: #fff;
+        }
+    }
+}
+
+#stm-lms-sign-in, #stm-lms-lost-password{
     .btn-resend-code{
         background: none;
         color: #2d4649;

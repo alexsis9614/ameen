@@ -16,8 +16,9 @@
     $otp = new STM_THEME_CHILD_OTP();
 
     wp_localize_script('stm-lms-sign-in', 'stm_lms_sign_in', array(
-        'actions' => $otp->actions,
-        'nonce'   => $otp->nonce
+        'actions'             => $otp->actions,
+        'nonce'               => $otp->nonce,
+        'lost_password_nonce' => $otp->lost_password_nonce
     ));
 
     stm_lms_register_style('login');

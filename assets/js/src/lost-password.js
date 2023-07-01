@@ -7,7 +7,7 @@ const $ = require('jquery');
 $(window).on('load', () => {
     Vue.use( VueAxios, Axios );
 
-    $('.stm-lms-sign-in:not(.loaded)').each(function () {
+    $('.stm-lms-lost-password:not(.loaded)').each(function () {
         $(this).addClass('loaded');
 
         new Vue({
@@ -49,20 +49,20 @@ $(window).on('load', () => {
                         vm.verification();
                     }
                     else if ( vm.password ) {
-                        vm.create_account();
-                    } else {
-                        vm.signIn();
+                        vm.reset_password();
+                    }
+                    else {
+                        vm.lostPassword();
                     }
                 },
-                signIn: function () {
+                lostPassword: function () {
                     let vm = this,
-                        url = stm_lms_ajaxurl + '?action=' + vm.object.actions.sign_in + '&_ajax_nonce=' + vm.object.nonce;
+                        url = stm_lms_ajaxurl + '?action=' + vm.object.actions.lost_password + '&_ajax_nonce=' + vm.object.lost_password_nonce;
 
                     vm.loading = true;
                     vm.message = '';
 
                     let data = {
-                        'email': vm.email,
                         'phone': vm.phone,
                     };
 
@@ -109,16 +109,15 @@ $(window).on('load', () => {
                         }
                     );
                 },
-                create_account: function () {
+                reset_password: function () {
                     let vm = this,
-                        url = stm_lms_ajaxurl + '?action=' + vm.object.actions.create_account + '&_ajax_nonce=' + vm.object.nonce;
+                        url = stm_lms_ajaxurl + '?action=' + vm.object.actions.reset_password + '&_ajax_nonce=' + vm.object.lost_password_nonce;
 
                     vm.loading = true;
                     vm.message = '';
 
                     let data = {
                         'phone': vm.phone,
-                        'register': vm.register,
                         'password': vm.enter_password,
                         'password_re': vm.password_re
                     };
