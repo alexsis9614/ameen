@@ -127,7 +127,7 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
     position: static !important;
 }
 
-#main > .container{
+.home #main > .container{
     padding: 0;
     max-width: 100%;
 }
@@ -151,6 +151,14 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
 
 #offer-promo .icon-btn > .link-title {
     display: none;
+}
+
+.header_2{
+    padding-top: 25px !important;
+}
+
+div#wpadminbar{
+    position: fixed;
 }
 
 .jet-popup__close-button{
@@ -205,7 +213,7 @@ form.checkout.woocommerce-checkout #customer_details .form-row .woocommerce-inpu
 }
 
 @media screen and (max-width: 480px) {
-    #main-offer h1, #main-offer .h1{
+        #main-offer h1, #main-offer .h1{
         margin-top: 110px;
         font-size: 30px !important;
         line-height: 42px !important;
