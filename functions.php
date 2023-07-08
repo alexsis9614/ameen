@@ -18,17 +18,17 @@
 //        require_once __DIR__ . '/inc/referral-program.php';
 //    }
 
-    if ( is_plugin_active('telegram-bot/telegram-bot.php') ) {
-        require_once __DIR__ . '/inc/telegram.php';
-    }
-
     if ( class_exists( 'STM_LMS_Curriculum' ) ) {
         require_once __DIR__ . '/inc/curriculum.php';
-    }
 
-    if ( class_exists('STM_LMS_Cart') ) {
-        require_once __DIR__ . '/inc/add-to-cart.php';
-        remove_action('template_redirect', 'pmpro_account_redirect');
+        if ( class_exists('STM_LMS_Cart') ) {
+            require_once __DIR__ . '/inc/add-to-cart.php';
+            remove_action('template_redirect', 'pmpro_account_redirect');
+        }
+
+        if ( is_plugin_active('telegram-bot/telegram-bot.php') ) {
+            require_once __DIR__ . '/inc/telegram.php';
+        }
     }
 
     if ( class_exists( 'STM_LMS_BuddyPress' ) ) {

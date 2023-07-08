@@ -502,7 +502,12 @@
 
         public function progress_updated($course_id, $user_id)
         {
-            $total_progress = STM_THEME_CHILD_Curriculum::get_total_progress( $user_id, $course_id );
+            if ( class_exists( 'STM_THEME_CHILD_Curriculum' ) ) {
+                $total_progress = STM_THEME_CHILD_Curriculum::get_total_progress( $user_id, $course_id );
+            }
+            else {
+                $total_progress = STM_LMS_Lesson::get_total_progress( $user_id, $course_id );
+            }
 
             if ( ! empty( $total_progress ) && $total_progress['course_completed']  ) {
                 $date_format  = get_option( 'date_format', 'Y F j' );
