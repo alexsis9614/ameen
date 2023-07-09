@@ -18,7 +18,7 @@
 //        require_once __DIR__ . '/inc/referral-program.php';
 //    }
 
-    if ( class_exists( 'STM_LMS_Curriculum' ) ) {
+    if ( class_exists( 'STM_LMS_Curriculum' ) || file_exists( STM_LMS_PATH . '/settings/curriculum/main.php' ) ) {
         require_once __DIR__ . '/inc/curriculum.php';
 
         if ( class_exists('STM_LMS_Cart') ) {

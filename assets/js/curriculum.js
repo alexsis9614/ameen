@@ -1,5 +1,5 @@
 Vue.component('curriculum', {
-    props: ['curriculum_saved'],
+    props: ['current_course_id'],
     components: [
         'section_items',
         'curriculum_add_item'
@@ -13,98 +13,177 @@ Vue.component('curriculum', {
             search : false,
             addedItems : [],
             searchItems : [],
-            plans: []
+            plans: [],
+            course_id : null,
         };
     },
     mounted: function () {
         this.getSavedCurriculum()
+    },
+    created: function () {
+        this.course_id = (typeof stm_lms_manage_course_id !== 'undefined') ? stm_lms_manage_course_id : this.current_course_id;
     },
     methods: {
         startDrag : function() {
             this.onDrag = true;
         },
         endDrag : function() {
-
-            var _this = this;
+            let _this = this;
             _this.onDrag = false;
 
             _this.sections.forEach(function (section) {
                 _this.$set(section, 'hovered', false);
-                section.items.forEach(function (item) {
-                    _this.$set(item, 'class', '');
+                section.materials.forEach(function (material) {
+                    _this.$set(material, 'class', '');
                 });
             });
         },
         getSavedCurriculum: function () {
-
-            var vm = this;
-
-            var url = stm_wpcfto_ajaxurl + '?action=stm_lms_get_curriculum_v2&ids=' +
-                encodeURIComponent(vm.curriculum_saved) +
-                '&nonce=' + stm_lms_nonces['stm_lms_get_curriculum_v2'];
-
-            if (typeof stm_lms_manage_course_id !== 'undefined') {
-                url += '&course_id=' + stm_lms_manage_course_id;
-            }
+            let vm = this,
+                url = stm_wpcfto_ajaxurl + '?action=stm_lms_get_curriculum_v2&nonce='
+                + stm_lms_nonces['stm_lms_get_curriculum_v2']
+                + '&course_id='
+                + vm.course_id;
 
             vm.isLoading(true);
-            this.$http.get(url).then(function (response) {
+            vm.$http.get(url).then(function (response) {
                 vm.$set(vm, 'sections', response.body);
-                this.sections.forEach( (section) => {
+                vm.sections.forEach( (section) => {
                     section.title = decodeURIComponent(section.title);
                 });
                 vm.isLoading(false);
             });
-
         },
         isLoading(isLoading) {
             this.loading = isLoading;
         },
         addSection() {
             var vm = this;
-            vm.sections.push({
-                title: '',
-                items: [],
-                opened: true,
-                touched: false,
-                editingSectionTitle: true,
-                activeTab: 'stm-lessons'
-            });
 
-            Vue.nextTick(() => {
-                vm.$refs['section_' + (vm.sections.length - 1)][0].focus();
+            this.$http.post(
+                `${ms_lms_resturl}/courses/${this.course_id}/curriculum/section`,
+                {'title': 'Section'},
+                {headers: {'X-WP-Nonce': ms_lms_nonce}}
+            ).then(function (response) {
+                vm.sections.push({
+                    id: response.body.section.id,
+                    title: '',
+                    order: response.body.section.order,
+                    materials: [],
+                    opened: true,
+                    touched: false,
+                    editingSectionTitle: true,
+                    activeTab: 'stm-lessons'
+                });
+
+                Vue.nextTick(() => {
+                    vm.$refs['section_' + (vm.sections.length - 1)][0].focus();
+                });
             });
         },
         addSectionTitle(section, section_key) {
-
             var vm = this;
-            this.$set(section, 'editingSectionTitle', false);
-            this.$set(section, 'opened', true);
-            this.$set(section, 'touched', true);
+            let data = {
+                'id': section.id,
+                'title': section.title,
+            };
+            this.$http.put(
+                `${ms_lms_resturl}/courses/${this.course_id}/curriculum/section`,
+                data,
+                {headers: {'X-WP-Nonce': ms_lms_nonce}}
+            ).then(function () {
+                this.$set(section, 'editingSectionTitle', false);
+                this.$set(section, 'opened', true);
+                this.$set(section, 'touched', true);
 
-            Vue.nextTick(function() {
-                vm.$refs['section_' + section_key][0].blur();
+                Vue.nextTick(function() {
+                    vm.$refs['section_' + section_key][0].blur();
+                });
             });
         },
         openSection(section) {
             this.$set(section, 'opened', !section.opened);
         },
-        deleteSection(section_key, message) {
-            if (!confirm(message)) return false;
-            this.sections.splice(section_key, 1);
+        reorderSection(item) {
+            let id = null,
+                order = null;
 
-            /*For deep watcher*/
-            this.sections = this.sections;
+            if (typeof item.moved !== 'undefined' && typeof item.moved.element !== 'undefined') {
+                id = item.moved.element.id;
+                order = item.moved.newIndex;
+            }
+
+            if (id) {
+                let data = {
+                    'id': id,
+                    'order': ++order,
+                };
+                this.$http.put(
+                    `${ms_lms_resturl}/courses/${this.course_id}/curriculum/section`,
+                    data,
+                    {headers: {'X-WP-Nonce': ms_lms_nonce}}
+                );
+            }
+        },
+        deleteSection(section_key, section_id, message) {
+            if (!confirm(message)) return false;
+
+            this.$http.delete(
+                `${ms_lms_resturl}/courses/${this.course_id}/curriculum/section`,
+                {headers: {'X-WP-Nonce': ms_lms_nonce}, body: {'id': section_id}},
+            ).then(function () {
+                this.sections.splice(section_key, 1);
+                /*For deep watcher*/
+                this.sections = this.sections;
+            });
+        },
+        itemAdded(section, item) {
+            let data = {
+                'post_id': item.id,
+                'section_id': section.id,
+            };
+            this.$http.post(
+                `${ms_lms_resturl}/courses/${this.course_id}/curriculum/material`,
+                data,
+                {headers: {'X-WP-Nonce': ms_lms_nonce}}
+            ).then(function () {
+                section['materials'].push(item);
+            });
         },
         itemChanged(item) {
-            var _this = this;
+            let _this = this;
 
             if(!item.title) return false;
 
-            var url = stm_wpcfto_ajaxurl;
-            url += '?action=stm_save_title&nonce=' + stm_lms_nonces['stm_save_title'] + '&title=' + item.title + '&id=' + item.id;
+            let url = stm_wpcfto_ajaxurl + '?action=stm_save_title&nonce=' + stm_lms_nonces['stm_save_title'] + '&title=' + item.title + '&id=' + item.post_id;
 
-            this.$http.get(url);
+            _this.$http.get(url);
+        },
+        itemReordered(item, section_id) {
+            let id = null,
+                order = null;
+
+            if (typeof item.moved !== 'undefined' && typeof item.moved.element !== 'undefined') {
+                id = item.moved.element.id;
+                order = item.moved.newIndex;
+            }
+            if (typeof item.added !== 'undefined' && typeof item.added.element !== 'undefined') {
+                id = item.added.element.id;
+                order = item.added.newIndex;
+            }
+
+            if (id) {
+                let data = {
+                    'id': id,
+                    'section_id': section_id,
+                    'order': ++order,
+                };
+                this.$http.put(
+                    `${ms_lms_resturl}/courses/${this.course_id}/curriculum/material`,
+                    data,
+                    {headers: {'X-WP-Nonce': ms_lms_nonce}}
+                );
+            }
         },
         emitMethod(item) {
             WPCFTO_EventBus.$emit('STM_LMS_Curriculum_item', item);
@@ -114,22 +193,18 @@ Vue.component('curriculum', {
         sections: {
             deep: true,
             handler: function () {
-                var value = [], vm = this;
+                let value = [], vm = this;
 
                 vm.plans = [];
 
                 vm.sections.forEach(function (section, indexSection) {
-                    value.push(encodeURIComponent(section.title));
+                    value.push(section.title);
 
                     vm.plans[indexSection] = [];
 
-                    section.items.forEach(function (item, index) {
-                        value.push(item.id);
-                        vm.plans[indexSection][index] = {
-                            id: item.id,
-                            plans: item.plans
-                        };
-                        item.title = decodeEntities(item.title);
+                    section.materials.forEach(function (material) {
+                        value.push(material.id);
+                        material.title = decodeEntities(material.title);
                     });
                 });
 
@@ -143,11 +218,18 @@ Vue.component('curriculum', {
 
 
 Vue.component('section_items', {
-    props: ['items'],
+    props: ['materials', 'current_course_id'],
     methods : {
-        deleteItem(item_key, message) {
+        deleteItem(item_key, id, message) {
             if (!confirm(message)) return false;
-            this.items.splice(item_key, 1);
+            let course_id = (typeof stm_lms_manage_course_id !== 'undefined') ? stm_lms_manage_course_id : this.current_course_id;
+
+            this.$http.delete(
+                `${ms_lms_resturl}/courses/${course_id}/curriculum/material`,
+                {headers: {'X-WP-Nonce': ms_lms_nonce}, body: {'id': id}},
+            ).then(function () {
+                this.materials.splice(item_key, 1);
+            });
         },
     },
 });

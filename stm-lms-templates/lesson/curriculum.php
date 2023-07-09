@@ -29,7 +29,26 @@
         $curriculum      = explode( ',', $curriculum );
         $has_access      = STM_LMS_User::has_course_access( $post_id );
         $lesson_number   = 1;
-        $sections        = STM_LMS_Lesson::create_sections( $curriculum );
+        if ( method_exists('STM_LMS_Lesson', 'create_sections') ) {
+            $sections        = STM_LMS_Lesson::create_sections( $curriculum );
+        }
+        else {
+            $materials    = ( new \MasterStudy\Lms\Repositories\CurriculumMaterialRepository() )->get_course_materials( $course_id, false );
+            $material_ids = array_column( $materials, 'post_id' );
+            $sections     = array();
+
+            if ( ! empty( $material_ids ) ) {
+                foreach ( $material_ids as $index => $material_id ) {
+                    $section  = ( new \MasterStudy\Lms\Repositories\CurriculumSectionRepository() )->find( $materials[ $index ]['section_id'] ?? null );
+
+                    $sections[] = array(
+                        'label'  => $section->title,
+                        'number' => $section->order,
+                        'items'  => ''
+                    );
+                }
+            }
+        }
         $item_index      = 0;
 //        $curriculum      = new STM_THEME_CHILD_Curriculum;
 //        $plans           = $curriculum->plans;

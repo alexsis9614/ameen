@@ -1,13 +1,13 @@
 <div class="section_items" v-if="section.opened">
 
-    <section_items inline-template
-                   :items="section.items">
+    <section_items inline-template :materials="section.materials" :current_course_id="<?php echo esc_attr( get_the_ID() ); ?>">
 
-        <draggable :list="items"
-                   v-bind:class="'count_' + items.length"
+        <draggable :list="materials"
+                   v-bind:class="'count_' + materials.length"
                    class="dragArea items"
                    @start="startDrag"
                    @end="endDrag"
+                   @change="itemReordered($event, section.id)"
                    handle=".item_move"
                    :options="{ group: 'member', dragoverBubble: true }">
 
