@@ -202,8 +202,12 @@ Vue.component('curriculum', {
 
                     vm.plans[indexSection] = [];
 
-                    section.materials.forEach(function (material) {
+                    section.materials.forEach(function (material, index) {
                         value.push(material.id);
+                        vm.plans[indexSection][index] = {
+                            id: material.post_id,
+                            plans: material.plans
+                        };
                         material.title = decodeEntities(material.title);
                     });
                 });
