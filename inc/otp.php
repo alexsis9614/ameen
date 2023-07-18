@@ -10,6 +10,8 @@
         public $nonce                = '';
         public $lost_password_nonce  = '';
         public $testing              = false;
+        public $routes               = false;
+        public $path_api             = __DIR__ . '/routes';
 
         public function __construct()
         {
@@ -34,6 +36,11 @@
                 'verification'    => $this->nonce_action . '_verification',
                 'create_account'  => $this->nonce_action . '_create_account'
             );
+            $this->routes               = array(
+                'login-otp',
+                'login-verify',
+                'create_account',
+            );
 
             add_filter('wpcfto_options_page_setup', [$this, 'options'], 20, 1);
 
@@ -46,6 +53,16 @@
                         add_action('wp_ajax_nopriv_' . $action, $callback);
                     }
                 }
+            }
+
+            add_action('rest_api_init', [$this, 'api_init']);
+        }
+
+        public function api_init()
+        {
+            foreach ( $this->routes as $route ) {
+                if ( empty( $route ) ) continue;
+                require_once $this->path_api . '/' . $route . '.php';
             }
         }
 
@@ -92,9 +109,13 @@
             return $text . '@gmail.com';
         }
 
-        public function sign_in()
+        public function sign_in( $data = array() )
         {
-            check_ajax_referer( $this->nonce_action );
+            $doing_ajax = wp_doing_ajax();
+
+            if ( $doing_ajax ) {
+                check_ajax_referer( $this->nonce_action );
+            }
 
             $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
             $status       = 'error';
@@ -102,8 +123,11 @@
                 'message' => $message,
                 'status'  => $status,
             );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
+
+            if ( $doing_ajax ) {
+                $request_body = file_get_contents( 'php://input' );
+                $data         = json_decode( $request_body, true );
+            }
 
             if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
                 $valid_number = $this->valid_phone( $data['phone'] );
@@ -149,7 +173,12 @@
                 }
             }
 
-            wp_send_json( $response );
+            if ( $doing_ajax ) {
+                wp_send_json( $response );
+            }
+            else {
+                return $response;
+            }
         }
 
         public function lost_password()
@@ -265,16 +294,23 @@
         /**
          * @throws Exception
          */
-        public function verification()
+        public function verification( $data = array() )
         {
-            check_ajax_referer( $this->nonce_action );
+            $doing_ajax = wp_doing_ajax();
+
+            if ( $doing_ajax ) {
+                check_ajax_referer( $this->nonce_action );
+            }
 
             $response     = array(
                 'message' => esc_html__('An error occurred, please try again later', 'masterstudy-child'),
                 'status'  => 'error',
             );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
+
+            if ( $doing_ajax ) {
+                $request_body = file_get_contents( 'php://input' );
+                $data         = json_decode( $request_body, true );
+            }
 
             if ( isset( $data['code'] ) && ! empty( $data['code'] ) && isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
                 $valid_number = $this->valid_phone( $data['phone'] );
@@ -297,19 +333,31 @@
                 }
             }
 
-            wp_send_json( $response );
+            if ( $doing_ajax ) {
+                wp_send_json( $response );
+            }
+            else {
+                return $response;
+            }
         }
 
-        public function create_account()
+        public function create_account( $data = array() )
         {
-            check_ajax_referer( $this->nonce_action );
+            $doing_ajax = wp_doing_ajax();
+
+            if ( $doing_ajax ) {
+                check_ajax_referer( $this->nonce_action );
+            }
 
             $response     = array(
                 'message' => esc_html__('An error occurred, please try again later', 'masterstudy-child'),
                 'status'  => 'error',
             );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
+
+            if ( $doing_ajax ) {
+                $request_body = file_get_contents( 'php://input' );
+                $data         = json_decode( $request_body, true );
+            }
 
             if (
                 isset( $data['phone'] ) && ! empty( $data['phone'] ) &&
@@ -416,11 +464,21 @@
                             'message'   => $message,
                             'status'    => 'success',
                         );
+
+                        if ( ! $doing_ajax ) {
+                            unset( $response['user_page'] );
+                            $response['user'] = $user;
+                        }
                     }
                 }
             }
 
-            wp_send_json( $response );
+            if ( $doing_ajax ) {
+                wp_send_json( $response );
+            }
+            else {
+                return $response;
+            }
         }
 
         public function options( $setups )
