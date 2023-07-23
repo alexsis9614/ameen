@@ -3,19 +3,15 @@
 
     class STM_THEME_CHILD_OTP extends STM_LMS_Eskiz_Uz
     {
-        public $otp_enable           = false;
-        public $actions              = array();
-        public $prefix               = 'stm_lms_';
-        public $nonce_action         = 'sign_in';
-        public $nonce                = '';
-        public $lost_password_nonce  = '';
-        public $testing              = false;
+        public $otp_enable   = false;
+        public $actions      = array();
+        public $nonce_action = 'stm_lms_sign_in';
+        public $nonce        = '';
+        public $testing      = false;
 
         public function __construct()
         {
             $this->testing = STM_LMS_Options::get_option('stm_otp_testing', false);
-
-            $this->nonce_action = $this->prefix . $this->nonce_action;
 
             $email    = STM_LMS_Options::get_option('stm_api_eskiz_email', false);
             $password = STM_LMS_Options::get_option('stm_api_eskiz_password', false);
@@ -24,15 +20,12 @@
                 parent::__construct( $email, $password );
             }
 
-            $this->otp_enable           = STM_LMS_Options::get_option('stm_otp_enable', false);
-            $this->nonce                = wp_create_nonce( $this->nonce_action );
-            $this->lost_password_nonce  = wp_create_nonce( $this->prefix . 'lost_password' );
-            $this->actions              = array(
-                'sign_in'         => $this->nonce_action,
-                'lost_password'   => $this->prefix . 'custom_lost_password',
-                'reset_password'  => $this->prefix . 'custom_reset_password',
-                'verification'    => $this->nonce_action . '_verification',
-                'create_account'  => $this->nonce_action . '_create_account'
+            $this->otp_enable = STM_LMS_Options::get_option('stm_otp_enable', false);
+            $this->nonce      = wp_create_nonce( $this->nonce_action );
+            $this->actions    = array(
+                'sign_in'        => $this->nonce_action,
+                'verification'   => $this->nonce_action . '_verification',
+                'create_account' => $this->nonce_action . '_create_account'
             );
 
             add_filter('wpcfto_options_page_setup', [$this, 'options'], 20, 1);
@@ -47,33 +40,6 @@
                     }
                 }
             }
-        }
-
-        public function pass_invalid( $password, $password_re )
-        {
-            $invalid = false;
-            $message = '';
-
-            if ( empty( $password ) || empty( $password_re ) ) {
-                $message = esc_html__( 'Fill in the required password fields', 'masterstudy-child' );
-                $invalid = true;
-            }
-
-            if ( $password !== $password_re ) {
-                $message = esc_html__( 'Passwords do not match', 'masterstudy-lms-learning-management-system' );
-                $invalid = true;
-            }
-
-            /* if Password longer than 20 -for some tricky user try to enter long characters to block input.*/
-            if ( ! $invalid && strlen( $password ) > 20 ) {
-                $message = esc_html__( 'Password too long', 'masterstudy-lms-learning-management-system' );
-                $invalid = true;
-            }
-
-            return array(
-                'message' => $message,
-                'invalid' => $invalid
-            );
         }
 
         public function valid_phone( $phone )
@@ -152,116 +118,6 @@
             wp_send_json( $response );
         }
 
-        public function lost_password()
-        {
-            check_ajax_referer( $this->prefix . 'lost_password' );
-
-            $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
-            $status       = 'error';
-            $response     = array(
-                'message' => $message,
-                'status'  => $status,
-            );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
-
-            if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
-                $valid_number = $this->valid_phone( $data['phone'] );
-
-                if ( $valid_number ) {
-                    $user = get_user_by('login', sanitize_user( $valid_number ));
-
-                    if ( is_wp_error( $user ) || ! $user ) {
-                        $user_email = $this->get_user_email( $valid_number );
-                        $user       = get_user_by('email', $user_email);
-
-                        if ( is_wp_error( $user ) || ! $user ) {
-                            $message = esc_html__('User is not exists', 'masterstudy-child');
-                        }
-                    }
-
-                    if ( $user && is_a( $user, 'WP_User' ) && method_exists($user, 'exists') && $user->exists() ) {
-                        $message = esc_html__('Enter confirmation code', 'masterstudy-child');
-
-                        if ( $this->testing ) {
-                            $send = $this->send_testing( $valid_number );
-                            $message .= ' - ' . $send;
-                        }
-                        else {
-                            $send = $this->send( $valid_number );
-                        }
-
-                        $status = $send ? 'success' : $status;
-                    }
-
-                    $response     = array(
-                        'message' => $message,
-                        'status'  => $status,
-                    );
-                }
-                else {
-                    $response['message'] = esc_html__('Validation phone number error', 'masterstudy-child');
-                }
-            }
-
-            wp_send_json( $response );
-        }
-
-        public function reset_password()
-        {
-            check_ajax_referer( $this->prefix . 'lost_password' );
-
-            $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
-            $status       = 'error';
-            $response     = array(
-                'message' => $message,
-                'status'  => $status,
-            );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
-
-            if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
-                $valid_number = $this->valid_phone( $data['phone'] );
-
-                if ( $valid_number ) {
-
-                    $user = get_user_by('login', sanitize_user( $valid_number ));
-
-                    if ( is_wp_error( $user ) || ! $user ) {
-                        $user_email = $this->get_user_email( $valid_number );
-                        $user       = get_user_by('email', $user_email);
-
-                        if ( is_wp_error( $user ) || ! $user ) {
-                            wp_send_json( $response );
-                        }
-                    }
-
-                    $new_password    = ( isset( $data['password'] ) && ! empty( $data['password'] ) ) ? $data['password'] : '';
-                    $new_password_re = ( isset( $data['password_re'] ) && ! empty( $data['password_re'] ) ) ? $data['password_re'] : '';
-                    $pass_invalid    = $this->pass_invalid( $new_password, $new_password_re );
-
-                    if ( $pass_invalid['invalid'] ) {
-                        $response['message'] = $pass_invalid['message'];
-
-                        wp_send_json( $response );
-                    }
-
-                    reset_password( $user, $new_password );
-
-                    $response     = array(
-                        'message'   => esc_html__('Password changed successfully', 'masterstudy-child'),
-                        'status'    => 'success',
-                        'user_page' => STM_LMS_User::user_page_url()
-                    );
-                }
-                else {
-                    $response['message'] = esc_html__('Validation phone number error', 'masterstudy-child');
-                }
-            }
-
-            wp_send_json( $response );
-        }
-
         /**
          * @throws Exception
          */
@@ -324,13 +180,45 @@
 
                 if ($valid_number) {
                     $user_email   = $this->get_user_email( $valid_number );
+                    $pass_invalid = false;
 
                     if ( $register ) {
-                        $pass_invalid    = $this->pass_invalid( $user_password, $user_password_re );
+                        if ( $user_password !== $user_password_re ) {
+                            $response['message'] = esc_html__( 'Passwords do not match', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
 
-                        if ( $pass_invalid['invalid'] ) {
-                            $response['message'] = $pass_invalid['message'];
+                        /* If Password shorter than 8 characters*/
+                        if ( strlen( $user_password ) < 8 ) {
+                            $response['message'] = esc_html__( 'Password must have at least 8 characters', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
 
+                        /* if Password longer than 20 -for some tricky user try to enter long characters to block input.*/
+                        if ( strlen( $user_password ) > 20 ) {
+                            $response['message'] = esc_html__( 'Password too long', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains letter */
+                        if ( ! preg_match( '#[a-z]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one lowercase letter!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains number */
+                        if ( ! preg_match( '#[0-9]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one number!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains CAPS */
+                        if ( ! preg_match( '#[A-Z]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one capital letter!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        if ( $pass_invalid ) {
                             wp_send_json( $response );
                         }
 
