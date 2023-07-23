@@ -801,7 +801,7 @@
                 foreach ($settings as $index => $sections) {
                     if ( $index === 'stm_courses_settings' ) {
                         foreach ($sections as $section_name => $section) {
-                            if ( $section_name === 'section_accessibility' ) {
+                            if ( 'section_accessibility' === $section_name ) {
                                 $fields      = $section['fields'];
                                 $first_field = array_splice($fields, 0, 4);
 
@@ -841,6 +841,26 @@
                                 }
 
                                 $fields = array_merge( $new_fields, $fields );
+
+                                $settings[ $index ][ $section_name ]['fields'] = $fields;
+                            }
+                            else if ( 'section_files' === $section_name ) {
+                                $fields      = $section['fields'];
+                                $options     = array();
+
+                                foreach ($this->plans as $plan) {
+                                    $options[ self::plan_price_key( $plan['name'] ) ] = esc_attr( $plan['name'] );
+                                }
+
+                                $fields['course_files_pack']['fields']['course_files_plan'] = array(
+                                    'type'    => 'select',
+                                    'label'   => esc_html__( 'Select Plan', 'masterstudy-child' ),
+                                    'options' => $options,
+                                    'value'   => '',
+                                    'pro'     => true,
+                                    'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=course-settings-backend&utm_campaign=certificate-pro',
+                                    'classes' => array( 'short_field' ),
+                                );
 
                                 $settings[ $index ][ $section_name ]['fields'] = $fields;
                             }
