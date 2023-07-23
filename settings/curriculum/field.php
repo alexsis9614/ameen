@@ -41,14 +41,7 @@
 
                         <?php stm_lms_curriculum_v2_load_template('section_data'); ?>
 
-                        <?php
-                            if ( class_exists( 'STM_THEME_CHILD_Curriculum' ) ) {
-                                STM_THEME_CHILD_Curriculum::curriculum_load_template('section_items');
-                            }
-                            else {
-                                stm_lms_curriculum_v2_load_template( 'section_items' );
-                            }
-                        ?>
+                        <?php STM_THEME_CHILD_Curriculum::curriculum_load_template('section_items'); ?>
 
                         <?php stm_lms_curriculum_v2_load_template('add_items'); ?>
 

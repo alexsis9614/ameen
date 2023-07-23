@@ -4,11 +4,8 @@
      * @var $item_id
      */
 
-    $course_plans = '';
-    if( class_exists( 'STM_THEME_CHILD_Curriculum' ) ) {
-        $lms_curriculum    = new STM_THEME_CHILD_Curriculum;
-        $course_plans      = $lms_curriculum->course_plan_enable( $course_id );
-    }
+    $lms_curriculum    = new STM_THEME_CHILD_Curriculum;
+    $course_plans      = $lms_curriculum->course_plan_enable( $course_id );
 
     stm_lms_register_script( 'buy-button', array( 'jquery.cookie' ) );
     if ( ! empty( $course_plans ) ) {
@@ -65,12 +62,7 @@
                     $course         = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( $user_id, $course_id, array( 'current_lesson_id', 'progress_percent' ) ) );
                     $current_lesson = ( ! empty( $course['current_lesson_id'] ) ) ? $course['current_lesson_id'] : '0';
                     $progress       = ( ! empty( $course['progress_percent'] ) ) ? intval( $course['progress_percent'] ) : 0;
-                    if(  class_exists( 'STM_THEME_CHILD_Curriculum' ) ) {
-                        $lesson_url     = STM_THEME_CHILD_Curriculum::item_url( $course_id, $current_lesson );
-                    }
-                    else {
-                        $lesson_url     = STM_LMS_Course::item_url( $course_id, $current_lesson );
-                    }
+                    $lesson_url     = STM_THEME_CHILD_Curriculum::item_url( $course_id, $current_lesson );
                     $btn_label      = esc_html__( 'Start course', 'masterstudy-lms-learning-management-system-pro' );
 
                     if ( $progress > 0 ) {
