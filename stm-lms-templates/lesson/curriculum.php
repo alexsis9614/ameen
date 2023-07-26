@@ -45,7 +45,7 @@
                     <div class="stm-curriculum-section__info">
                         <span><?php echo wp_kses_post( $section_info['number'] ); ?></span>
                         <?php if ( ! empty( $section_info['title'] ) ) : ?>
-                            <h5><?php echo wp_kses_post( urldecode( $section_info['title'] ) ); ?></h5>
+                            <h5><?php echo wp_kses_post( html_entity_decode( $section_info['title'] ) ); ?></h5>
                         <?php endif; ?>
                     </div>
                 </div>

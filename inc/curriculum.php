@@ -959,7 +959,7 @@
 
             $category_ids = null; // Question categories
             $post_type    = sanitize_text_field( $_GET['post_type'] );
-            $title        = sanitize_text_field( urldecode( $_GET['title'] ) );
+            $title        = sanitize_text_field( html_entity_decode( $_GET['title'] ) );
 
             // comma separated category ids
             if ( ! empty( $_GET['category_ids'] ) ) {

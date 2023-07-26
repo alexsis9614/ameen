@@ -60,7 +60,7 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
                         <span>
 							<?php if ( ! empty( $prev_section['text'] ) ) : ?>
                                 <span class="stm_lms_section_text">
-									<?php echo esc_html( sanitize_text_field( urldecode( $prev_section['text'] ) ) ); ?>
+									<?php echo esc_html( sanitize_text_field( html_entity_decode( $prev_section['text'] ) ) ); ?>
 								</span>
                             <?php endif; ?>
 							<span>
@@ -97,7 +97,7 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
 						<span>
 							<?php if ( ! empty( $next_section['text'] ) ) : ?>
                                 <span class="stm_lms_section_text">
-									<?php echo esc_html( sanitize_text_field( urldecode( $next_section['text'] ) ) ); ?>
+									<?php echo esc_html( sanitize_text_field( html_entity_decode( $next_section['text'] ) ) ); ?>
 								</span>
                             <?php endif; ?>
 							<span><?php echo esc_html( sanitize_text_field( get_the_title( $next_lesson ) ) ); ?></span>
