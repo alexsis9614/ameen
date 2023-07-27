@@ -12,6 +12,11 @@
 	Text Domain: masterstudy-child
 */
 
+div#wpadminbar{
+    display: block;
+    position: fixed;
+}
+
 .stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--title h5{
     min-height: 52px;
 }
