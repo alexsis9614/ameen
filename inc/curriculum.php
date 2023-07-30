@@ -846,7 +846,9 @@
                             }
                             else if ( 'section_files' === $section_name ) {
                                 $fields      = $section['fields'];
-                                $options     = array();
+                                $options     = array(
+                                    '' => esc_html__('Select plan', 'masterstudy-child')
+                                );
 
                                 foreach ($this->plans as $plan) {
                                     $options[ self::plan_price_key( $plan['name'] ) ] = esc_attr( $plan['name'] );
@@ -861,6 +863,39 @@
                                     'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=course-settings-backend&utm_campaign=certificate-pro',
                                     'classes' => array( 'short_field' ),
                                 );
+
+                                $settings[ $index ][ $section_name ]['fields'] = $fields;
+                            }
+                            else if ( 'section_expiration' === $section_name ) {
+                                $fields      = $section['fields'];
+
+                                unset( $fields['end_time'] );
+
+                                $plans_count = count( $this->plans );
+
+                                foreach ($this->plans as $key => $plan) {
+                                    $_field_key = 'end_time_' . strtolower( $plan['name'] );
+
+                                    $fields[ $_field_key ] =  array(
+                                        'type'       => 'number',
+                                        'label'      => sprintf(
+                                            esc_html__( 'Course %s expiration (days)', 'masterstudy-child' ),
+                                            sprintf(
+                                                esc_html__('%s plan'),
+                                                strtolower( $plan['name'] )
+                                            )
+                                        ),
+                                        'value'      => '',
+                                        'dependency' => array(
+                                            'key'   => 'expiration_course',
+                                            'value' => 'not_empty',
+                                        ),
+                                    );
+
+                                    if ( $plans_count === ($key + 1) ) {
+                                        $fields[ $_field_key ]['group'] = 'ended';
+                                    }
+                                }
 
                                 $settings[ $index ][ $section_name ]['fields'] = $fields;
                             }
