@@ -12,12 +12,12 @@
 
             parent::__construct();
 
-            $this->plans = $this->get();
+            $this->plans = self::get();
 
         }
 
-        public function get()
+        public static function get()
         {
-            return STM_LMS_Options::get_option( $this->_plans_key, array() );
+            return STM_LMS_Options::get_option( self::$_plans_key, array() );
         }
     }

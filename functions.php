@@ -23,13 +23,10 @@
         require_once __DIR__ . '/inc/classes/STM_Plans.php';
         require_once __DIR__ . '/inc/classes/STM_Curriculum.php';
         require_once __DIR__ . '/inc/classes/STM_Course.php';
-//        require_once __DIR__ . '/inc/classes/STM_Student_Progress.php';
+        require_once __DIR__ . '/inc/classes/STM_Student_Progress.php';
 
-//        new LMS\child\classes\STM_Settings();
-//        new LMS\child\classes\STM_Plans();
-//        new LMS\child\classes\STM_Curriculum();
         new LMS\child\classes\STM_Course();
-//        new LMS\child\classes\STM_Student_Progress();
+        new LMS\child\classes\STM_Student_Progress();
     }
 
     if ( class_exists('STM_LMS_Cart') ) {

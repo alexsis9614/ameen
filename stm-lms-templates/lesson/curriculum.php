@@ -31,7 +31,7 @@
         $lesson_number   = 1;
         $sections        = STM_LMS_Lesson::create_sections( $curriculum );
         $item_index      = 0;
-        $curriculum      = new STM_THEME_CHILD_Curriculum;
+        $curriculum      = new LMS\child\classes\STM_Curriculum;
         $plans           = $curriculum->plans;
         $author_id       = intval( get_post_field( 'post_author', $post_id ) );
 

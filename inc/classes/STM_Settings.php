@@ -6,7 +6,7 @@
     class STM_Settings extends STM_LMS_WPCFTO_AJAX
     {
 
-        public $_plans_key = 'course_plans';
+        public static $_plans_key = 'course_plans';
 
         public function __construct()
         {
@@ -31,7 +31,7 @@
                             'label'  => esc_html__( 'Plans settings', 'masterstudy-child' ),
                             'icon'   => 'fas fa-sliders-h',
                             'fields' => array(
-                                $this->_plans_key => array(
+                                self::$_plans_key => array(
                                     'type'   => 'repeater',
                                     'label'  => esc_html__( 'List plans', 'masterstudy-child' ),
                                     'fields' => array(

@@ -18,6 +18,9 @@
             add_action('woocommerce_order_status_cancelled', array( $this, 'order_cancelled' ));
 
             add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'before_create_order' ), 200, 1 );
+
+//            remove_all_filters('stm_lms_add_to_cart_r', array( 'STM_LMS_API_Sessions', 'add' ) );
+//            add_filter('stm_lms_add_to_cart_r', array( $this, 'add_to_cart' ), 10, 2);
         }
 
         public function before_create_order( $order_id )
@@ -108,7 +111,7 @@
 
 //            $item_meta = STM_LMS_Helpers::parse_meta_field( $item_id );
             $quantity  = 1;
-            $price     = STM_THEME_CHILD_Curriculum::plan_price( $item_id, $plan );
+            $price     = LMS\child\classes\STM_Curriculum::plan_price( $item_id, $plan );
 
             $is_woocommerce = self::woocommerce_checkout_enabled();
 
@@ -170,7 +173,7 @@
             $product_id = STM_LMS_Woocommerce::has_product( $id );
 
             $title                  = get_the_title( $id );
-            $price                  = STM_THEME_CHILD_Curriculum::plan_price( $id, $plan );
+            $price                  = LMS\child\classes\STM_Curriculum::plan_price( $id, $plan );
             $sale_price             = '';
             $sale_price_dates_start = '';
             $sale_price_dates_end   = '';
@@ -256,5 +259,24 @@
             update_post_meta( $product_id, '_downloadable', 1 );
 
             return $product_id;
+        }
+
+        public function add( $response, $item_id )
+        {
+            if ( STM_LMS_API_Sessions::isFromAppToken() ) {
+                $response['cart_url'] = add_query_arg('stm_lms_app_buy', $response['cart_url'], get_home_url());
+                $response['lesson_id'] = null;
+
+                /*If we have zero price and user - just add it without next steps*/
+                $user_id = get_current_user_id();
+                if( ! STM_LMS_Course::get_course_price( $item_id ) && $user_id ) {
+                    STM_LMS_Course::add_student( $item_id );
+                    LMS\child\classes\STM_Course::add_user_course( $item_id, $user_id, 0, 0 );
+                    $response['lesson_id'] = (int) LMS\child\classes\STM_Curriculum::get_first_lesson( $item_id );
+                }
+
+            }
+
+            return $response;
         }
     }
