@@ -150,6 +150,9 @@
                         box-shadow: 0 0 0 0 rgba(#fff, .35);
                     }
                 }
+                &.loading{
+                    cursor: not-allowed;
+                }
                 &.border{
                     border: 3px solid #fff;
                     &:hover{

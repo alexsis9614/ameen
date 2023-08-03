@@ -68,7 +68,7 @@
             $courses = get_post_meta( $order_id, 'stm_lms_course_plans', true );
 
             foreach ( $courses as $course ) {
-                if ( get_post_type( $course['item_id'] ) === 'stm-courses' ) {
+                if ( get_post_type( $course['item_id'] ) === STM_LMS_Curriculum::$courses_slug ) {
                     update_user_meta($user_id, 'stm_lms_course_plan_' . $course['item_id'], strtolower( $course['plan'] ));
                 }
 

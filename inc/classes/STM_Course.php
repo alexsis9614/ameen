@@ -20,9 +20,9 @@
 
             $this->courses_slug = STM_LMS_Curriculum::$courses_slug;
 
-//            add_action( 'save_post_' . $this->courses_slug, array( $this, 'save' ) );
+            add_action( 'save_post_' . $this->courses_slug, array( $this, 'save' ) );
 
-            add_filter( 'stm_wpcfto_fields', array( $this, 'fields' ), 20, 1 );
+            add_filter( 'stm_wpcfto_fields', array( $this, 'fields' ) );
 
             add_action( 'add_user_course', array( $this, 'add_user' ), 20, 2 );
 
@@ -31,6 +31,9 @@
         public function add_user( $user_id, $course_id )
         {
             $end_time = self::get_end_time( $course_id );
+
+            error_log( '$end_time' );
+            error_log( $end_time );
 
             stm_lms_update_user_course_endtime( $course_id, $end_time );
         }
@@ -60,8 +63,6 @@
                     }
                 }
             }
-
-            error_log( print_r( $_POST, true ) );
         }
 
         public function fields( $settings )
@@ -74,6 +75,8 @@
                     {
                         foreach ( $sections as $section_name => $section )
                         {
+                            $fields = array();
+
                             if ( 'section_accessibility' === $section_name )
                             {
                                 $fields = $this->accessibility( $section );
@@ -173,7 +176,9 @@
         {
             $fields      = $section['fields'];
 
-            unset( $fields['end_time'] );
+//            unset( $fields['end_time'] );
+
+            unset( $fields['end_time']['group'] );
 
             $plans_count = count( $this->plans );
 
