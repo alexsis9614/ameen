@@ -22,7 +22,6 @@
 
     stm_lms_register_style('login');
 
-    $stm_otp_email_phone = STM_LMS_Options::get_option('stm_otp_email_phone', 'phone');
     $settings            = get_option( 'stm_lms_settings', array() );
     $user_account        = ! empty( $settings['user_url'] ) ? $settings['user_url'] : 0;
 ?>
@@ -74,16 +73,6 @@
                     </template>
                 </template>
                 <template v-else>
-                    <?php if ( 'email_or_phone' === $stm_otp_email_phone ) : ?>
-                        <div class="form-group">
-                            <label class="heading_font"><?php esc_html_e( 'E-mail', 'masterstudy-child' ); ?></label>
-                            <input class="form-control"
-                                   type="email"
-                                   name="email"
-                                   v-model="email"
-                                   placeholder="<?php esc_html_e( 'Enter your E-mail', 'masterstudy-child' ); ?>"/>
-                        </div>
-                    <?php endif; ?>
                     <div class="form-group">
                         <label class="heading_font"><?php esc_html_e( 'Phone', 'masterstudy-child' ); ?></label>
                         <masked-input

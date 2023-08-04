@@ -10,10 +10,6 @@
     require_once __DIR__ . '/inc/elementor.php';
     require_once __DIR__ . '/inc/testimonial.php';
 
-//    if ( ! function_exists('STM_LMS_Point_System_Settings') ) {
-//        require_once __DIR__ . '/inc/referral-program.php';
-//    }
-
     if ( is_plugin_active('telegram-bot/telegram-bot.php') ) {
         require_once __DIR__ . '/inc/telegram.php';
     }

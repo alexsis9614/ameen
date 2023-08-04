@@ -42,7 +42,7 @@
                 'create_account',
             );
 
-            add_filter('wpcfto_options_page_setup', [$this, 'options'], 20, 1);
+            add_filter('wpcfto_options_page_setup', array( $this, 'options' ), 20, 1);
 
             if ( $this->otp_enable ) {
                 foreach ( $this->actions as $method => $action ) {
@@ -62,11 +62,11 @@
         {
             foreach ( $this->routes as $route ) {
                 if ( empty( $route ) ) continue;
-                require_once $this->path_api . '/' . $route . '.php';
+                require_once sprintf("%s/%s.php", $this->path_api, $route);
             }
         }
 
-        public function pass_invalid( $password, $password_re )
+        public function pass_invalid( $password, $password_re ): array
         {
             $invalid = false;
             $message = '';
@@ -104,7 +104,7 @@
             return $valid_number;
         }
 
-        public function get_user_email( $text )
+        public function get_user_email( $text ): string
         {
             return $text . '@gmail.com';
         }
@@ -511,21 +511,6 @@
                                         'value' => 'not_empty'
                                     ),
                                 ),
-    //                                'stm_otp_email_phone' => array(
-    //                                    'type' => 'radio',
-    //                                    'label' => esc_html__('Authentication method', 'masterstudy-child'),
-    //                                    'options' => array(
-    //                                        'email_or_phone' => esc_html__('Email or Phone', 'masterstudy-child'),
-    //                                        'phone' => esc_html__('Phone', 'masterstudy-child'),
-    //                                    ),
-    //                                    'dependency' => array(
-    //                                        'key'   => 'stm_otp_enable',
-    //                                        'value' => 'not_empty'
-    //                                    ),
-    //                                    'value' => 'phone',
-    //                                    'pro'     => true,
-    //                                    'pro_url' => 'https://stylemixthemes.com/wordpress-lms-plugin/?utm_source=wpadmin-ms&utm_medium=ms-settings&utm_campaign=general-settings-get-pro',
-    //                                ),
                                 'stm_api_eskiz_email' => array(
                                     'group'       => 'started',
                                     'columns'     => '33',
