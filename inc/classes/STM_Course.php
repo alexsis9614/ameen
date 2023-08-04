@@ -1,14 +1,9 @@
 <?php
-    namespace LMS\child\classes;
+    namespace LMS\inc\classes;
 
     use STM_LMS_Curriculum;
     use STM_LMS_Options;
     use STM_LMS_Helpers;
-    use STM_LMS_Course;
-    use STM_LMS_User;
-    use STM_LMS_Cart;
-    use STM_LMS_Order;
-    use STM_LMS_Subscriptions;
 
     class STM_Course extends STM_Curriculum
     {

@@ -1,5 +1,5 @@
 <?php
-    namespace LMS\child\classes;
+    namespace LMS\inc\classes;
 
     use STM_LMS_WPCFTO_AJAX;
 

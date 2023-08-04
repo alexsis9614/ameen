@@ -1,5 +1,5 @@
 <?php
-    namespace LMS\child\classes;
+    namespace LMS\inc\classes;
 
     use STM_LMS_User_Manager_Interface;
     use STM_LMS_User_Manager_Course_User;

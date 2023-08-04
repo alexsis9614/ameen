@@ -24,14 +24,11 @@
         require_once __DIR__ . '/inc/classes/STM_Curriculum.php';
         require_once __DIR__ . '/inc/classes/STM_Course.php';
         require_once __DIR__ . '/inc/classes/STM_Student_Progress.php';
+        require_once __DIR__ . '/inc/classes/STM_Cart.php';
 
-        new LMS\child\classes\STM_Course();
-        new LMS\child\classes\STM_Student_Progress();
-    }
-
-    if ( class_exists('STM_LMS_Cart') ) {
-        require_once __DIR__ . '/inc/add-to-cart.php';
-        remove_action('template_redirect', 'pmpro_account_redirect');
+        new LMS\inc\classes\STM_Cart();
+        new LMS\inc\classes\STM_Course();
+        new LMS\inc\classes\STM_Student_Progress();
     }
 
     if ( class_exists( 'STM_LMS_BuddyPress' ) ) {

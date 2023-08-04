@@ -1,26 +1,47 @@
 <?php
-    new STM_LMS_Child_Cart;
+    namespace LMS\inc\classes;
 
-    class STM_LMS_Child_Cart extends STM_LMS_Cart
+    use STM_LMS_Cart;
+    use STM_LMS_Woocommerce;
+    use WC_Order;
+    use STM_LMS_Curriculum;
+    use STM_LMS_Options;
+
+    class STM_Cart extends STM_LMS_Cart
     {
+        public $prefix   = 'woocommerce';
+        public $statuses = array();
+        public static $plan;
+
         public function __construct()
         {
-            add_action('wp_ajax_stm_lms_child_add_to_cart', [$this, 'stm_lms_add_to_cart']);
+            $this->statuses = array(
+                'created'   => array(
+                    'completed' => array( $this, 'order_created' )
+                ),
+                'cancelled' => array(
+                    'pending'       => array( $this, 'order_cancelled' ),
+                    'failed'        => array( $this, 'order_cancelled' ),
+                    'on-hold'       => array( $this, 'order_cancelled' ),
+                    'processing'    => array( $this, 'order_cancelled' ),
+                    'refunded'      => array( $this, 'order_cancelled' ),
+                    'cancelled'     => array( $this, 'order_cancelled' ),
+                )
+            );
 
-            add_filter('woocommerce_cart_item_name', [$this, 'cart_item_name'], 10, 3);
+            remove_action('template_redirect', 'pmpro_account_redirect');
 
-            add_action('woocommerce_order_status_completed', [$this, 'order_created']);
-            add_action('woocommerce_order_status_pending', array( $this, 'order_cancelled' ));
-            add_action('woocommerce_order_status_failed', array( $this, 'order_cancelled' ));
-            add_action('woocommerce_order_status_on-hold', array( $this, 'order_cancelled' ));
-            add_action('woocommerce_order_status_processing', array( $this, 'order_cancelled' ));
-            add_action('woocommerce_order_status_refunded', array( $this, 'order_cancelled' ));
-            add_action('woocommerce_order_status_cancelled', array( $this, 'order_cancelled' ));
+            add_action( 'wp_ajax_stm_lms_child_add_to_cart', array( $this, 'add_to_cart' ) );
 
-            add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'before_create_order' ), 200, 1 );
+            add_filter( $this->prefix . '_cart_item_name', array( $this, 'cart_item_name' ), 10, 2 );
 
-//            remove_all_filters('stm_lms_add_to_cart_r', array( 'STM_LMS_API_Sessions', 'add' ) );
-//            add_filter('stm_lms_add_to_cart_r', array( $this, 'add_to_cart' ), 10, 2);
+            foreach ($this->statuses as $items) {
+                foreach ( $items as $status => $callback ) {
+                    add_action( $this->prefix . '_order_status' . $status, $callback );
+                }
+            }
+
+            add_action( $this->prefix . '_checkout_update_order_meta', array( $this, 'before_create_order' ), 200, 1 );
         }
 
         public function before_create_order( $order_id )
@@ -77,7 +98,7 @@
             }
         }
 
-        public function cart_item_name($name, $cart_item, $cart_item_key)
+        public function cart_item_name($name, $cart_item)
         {
             if ( isset( $cart_item['plan'] ) && ! empty( $cart_item['plan'] ) ) {
                 $name .= ' - <strong>' . ucfirst( $cart_item['plan'] ) . '</strong>';
@@ -98,9 +119,10 @@
             }
         }
 
-        public static function _stm_lms_add_to_cart( $item_id, $user_id, $plan ) {
+        public static function _add_to_cart( $item_id, $user_id ) {
 
-            $r = array();
+            $response   = array();
+            self::$plan = strtolower( $_GET['plan'] );
 
             $not_salebale = get_post_meta( $item_id, 'not_single_sale', true );
             if ( $not_salebale ) {
@@ -109,9 +131,8 @@
 
             self::_stm_lms_delete_from_cart( $item_id );
 
-//            $item_meta = STM_LMS_Helpers::parse_meta_field( $item_id );
             $quantity  = 1;
-            $price     = LMS\child\classes\STM_Curriculum::plan_price( $item_id, $plan );
+            $price     = STM_Curriculum::plan_price( $item_id, self::$plan );
 
             $is_woocommerce = self::woocommerce_checkout_enabled();
 
@@ -122,35 +143,17 @@
             }
 
             if ( ! $is_woocommerce ) {
-                $r['text']     = esc_html__( 'Go to Cart', 'masterstudy-lms-learning-management-system' );
-                $r['cart_url'] = esc_url( self::checkout_url() );
+                $response['text']     = esc_html__( 'Go to Cart', 'masterstudy-child' );
+                $response['cart_url'] = esc_url( self::checkout_url() );
             } else {
-                $r['added']    = $plan ? self::woo_add_to_cart( $item_id, $plan ) : STM_LMS_Woocommerce::add_to_cart( $item_id );
-                $r['text']     = esc_html__( 'Go to Cart', 'masterstudy-lms-learning-management-system' );
-                $r['cart_url'] = esc_url( wc_get_cart_url() );
+                $response['added']    = self::$plan ? self::woo_add_to_cart( $item_id, self::$plan ) : STM_LMS_Woocommerce::add_to_cart( $item_id );
+                $response['text']     = esc_html__( 'Go to Cart', 'masterstudy-child' );
+                $response['cart_url'] = esc_url( wc_get_cart_url() );
             }
 
-            $r['redirect'] = STM_LMS_Options::get_option( 'redirect_after_purchase', false );
+            $response['redirect'] = STM_LMS_Options::get_option( 'redirect_after_purchase', false );
 
-            return apply_filters( 'stm_lms_add_to_cart_r', $r, $item_id );
-        }
-
-        public function stm_lms_add_to_cart()
-        {
-            check_ajax_referer( 'stm_lms_add_to_cart', 'nonce' );
-
-            if ( ! is_user_logged_in() || empty( $_GET['item_id'] ) ) {
-                die;
-            }
-
-            $item_id = intval( $_GET['item_id'] );
-            $plan    = strtolower( $_GET['plan'] );
-            $user    = STM_LMS_User::get_current_user();
-            $user_id = $user['id'];
-
-            $r = self::_stm_lms_add_to_cart( $item_id, $user_id, $plan );
-
-            wp_send_json( $r );
+            return apply_filters( 'stm_lms_add_to_cart_r', $response, $item_id );
         }
 
         public static function woo_add_to_cart( $item_id, $plan ) {
@@ -173,7 +176,7 @@
             $product_id = STM_LMS_Woocommerce::has_product( $id );
 
             $title                  = get_the_title( $id );
-            $price                  = LMS\child\classes\STM_Curriculum::plan_price( $id, $plan );
+            $price                  = STM_Curriculum::plan_price( $id, $plan );
             $sale_price             = '';
             $sale_price_dates_start = '';
             $sale_price_dates_end   = '';
@@ -259,24 +262,5 @@
             update_post_meta( $product_id, '_downloadable', 1 );
 
             return $product_id;
-        }
-
-        public function add( $response, $item_id )
-        {
-            if ( STM_LMS_API_Sessions::isFromAppToken() ) {
-                $response['cart_url'] = add_query_arg('stm_lms_app_buy', $response['cart_url'], get_home_url());
-                $response['lesson_id'] = null;
-
-                /*If we have zero price and user - just add it without next steps*/
-                $user_id = get_current_user_id();
-                if( ! STM_LMS_Course::get_course_price( $item_id ) && $user_id ) {
-                    STM_LMS_Course::add_student( $item_id );
-                    LMS\child\classes\STM_Course::add_user_course( $item_id, $user_id, 0, 0 );
-                    $response['lesson_id'] = (int) LMS\child\classes\STM_Curriculum::get_first_lesson( $item_id );
-                }
-
-            }
-
-            return $response;
         }
     }
