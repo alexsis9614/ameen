@@ -55,6 +55,21 @@
             return delete_user_meta( $user_id, self::user_meta_key( $course_id ), self::key( $plan ) );
         }
 
+        public static function curriculum_meta_key( $course_id, $plan ): string
+        {
+            return 'course_plan_' . self::key( $plan ) . '_' . $course_id;
+        }
+
+        public static function get_curriculum_meta_key( $post_id, $course_id, $plan )
+        {
+            return get_post_meta( $post_id, self::curriculum_meta_key( $course_id, $plan ), true );
+        }
+
+        public static function update_curriculum_meta_key( $post_id, $course_id, $plan, $value )
+        {
+            return update_post_meta( $post_id, self::curriculum_meta_key( $course_id, $plan ), $value );
+        }
+
         public static function key( $plan ): string
         {
             return strtolower( $plan );

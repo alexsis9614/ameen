@@ -99,7 +99,7 @@
                 foreach ( $services as $index => &$service ) {
                     if ( ! empty( $user->ID ) ) {
                         $course_id = STM_LMS_Bookit_Service::get_course_id( $service['id'] );
-                        $plan = $user->__get('stm_lms_course_plan_' . $course_id);
+                        $plan = Lms\inc\classes\STM_Plans::get_user_meta_key( $user->ID, $course_id );
 
                         $progress = 0;
                         if ( is_user_logged_in() ) {

@@ -56,8 +56,8 @@
                         $user_id  = absint( $user['id'] );
 
                         if ( ! STM_LMS_Instructor::is_instructor( $user_id ) || $user_id !== $author_id ) {
-                            $stm_lms_course_plan = get_user_meta($user_id, 'stm_lms_course_plan_' . $post_id, true);
-                            $course_plan         = get_post_meta($curriculum_item, 'course_plan_' . strtolower( $stm_lms_course_plan ) . '_' . $post_id, true);
+                            $user_plan   = Lms\inc\classes\STM_Plans::get_user_meta_key( $user_id, $post_id );
+                            $course_plan = Lms\inc\classes\STM_Plans::get_curriculum_meta_key( $curriculum_item, $post_id, $user_plan );
 
                             if ( empty( $course_plan ) ) {
                                 continue;
@@ -104,7 +104,7 @@
                                 <i class="<?php echo esc_attr( $icon ); ?>"></i>
                             </div>
                             <div class="stm-curriculum-item__num">
-                                <?php echo intval( $lesson_number ); ?>
+                                <?php echo $lesson_number; ?>
                             </div>
                             <div class="stm-curriculum-item__title">
                                 <div class="heading_font">

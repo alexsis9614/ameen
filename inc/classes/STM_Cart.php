@@ -133,7 +133,7 @@
         public static function _add_to_cart( $item_id, $user_id ) {
 
             $response   = array();
-            self::$plan = strtolower( $_GET['plan'] );
+            self::$plan = STM_Plans::key( $_GET['plan'] );
 
             $not_salebale = get_post_meta( $item_id, 'not_single_sale', true );
             if ( $not_salebale ) {

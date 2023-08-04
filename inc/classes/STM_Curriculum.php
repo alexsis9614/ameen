@@ -559,8 +559,8 @@
                                 $user     = STM_LMS_User::get_current_user();
                                 $user_id  = $user['id'];
 
-                                $stm_lms_course_plan = self::get_user_meta_key( $user_id, $course_id );
-                                $course_plan         = get_post_meta( $curriculum_item, 'course_plan_' . self::key( $stm_lms_course_plan ) . '_' . $course_id, true );
+                                $user_plan   = self::get_user_meta_key( $user_id, $course_id );
+                                $course_plan = self::get_curriculum_meta_key( $curriculum_item, $course_id, $user_plan );
 
                                 if ( empty( $course_plan ) ) {
                                     continue;
@@ -672,7 +672,7 @@
 
             if ( ! empty( $this->plans ) ) {
                 foreach ( $this->plans as $plan ) {
-                    $result['plans'][ strtolower( $plan['name'] ) ] = false;
+                    $result['plans'][ self::key( $plan['name'] ) ] = false;
                 }
             }
 
@@ -751,8 +751,8 @@
 
                     if ( ! empty( $this->plans ) ) {
                         foreach ($this->plans as $plan) {
-                            $plan = strtolower( $plan['name'] );
-                            $response['plans'][ $plan ] = get_post_meta($post_id, 'course_plan_' . $plan . '_' . $course_id, true) ?: false;
+                            $plan = self::key( $plan['name'] );
+                            $response['plans'][ $plan ] = self::get_curriculum_meta_key( $post_id, $course_id, $plan ) ?: false;
                         }
                     }
 

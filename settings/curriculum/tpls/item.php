@@ -35,9 +35,9 @@
     ?>
         <div class="plans">
             <?php foreach ($plans as $plan) : ?>
-                <label class="plan <?php echo esc_attr( strtolower( $plan['name'] ) ); ?>">
+                <label class="plan <?php echo esc_attr( LMS\inc\classes\STM_Plans::key( $plan['name'] ) ); ?>">
                     <?php echo $plan['name']; ?>
-                    <input type="checkbox" v-model="item.plans['<?php echo esc_attr( strtolower( $plan['name'] ) ); ?>']">
+                    <input type="checkbox" v-model="item.plans['<?php echo esc_attr( LMS\inc\classes\STM_Plans::key( $plan['name'] ) ); ?>']">
                 </label>
             <?php endforeach; ?>
         </div>

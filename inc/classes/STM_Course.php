@@ -46,11 +46,11 @@
                     foreach ( $sections_curriculum_plans as $curriculum_plans ) {
                         if ( ! empty( $curriculum_plans ) ) {
                             foreach ( $curriculum_plans as $curriculum ) {
-                                $curriculum_id = $curriculum['id'];
+                                $post_id = $curriculum['id'];
                                 if ( ! empty( $curriculum['plans'] ) ) {
-                                    foreach ( $curriculum['plans'] as $index => $plan ) {
-                                        $plan = (bool)$plan;
-                                        update_post_meta( $curriculum_id, 'course_plan_' . $index . '_' . $course_id, $plan );
+                                    foreach ( $curriculum['plans'] as $plan => $value ) {
+                                        $value = (bool)$value;
+                                        self::update_curriculum_meta_key( $post_id, $course_id, $plan, $value );
                                     }
                                 }
                             }
@@ -178,7 +178,7 @@
             $plans_count = count( $this->plans );
 
             foreach ( $this->plans as $key => $plan ) {
-                $_field_key = 'end_time_' . strtolower( $plan['name'] );
+                $_field_key = 'end_time_' . STM_Plans::key( $plan['name'] );
 
                 $fields[ $_field_key ] =  array(
                     'type'       => 'number',
@@ -186,7 +186,7 @@
                         esc_html__( 'Course %s expiration (days)', 'masterstudy-child' ),
                         sprintf(
                             esc_html__('%s plan'),
-                            strtolower( $plan['name'] )
+                            STM_Plans::key( $plan['name'] )
                         )
                     ),
                     'value'      => '',
