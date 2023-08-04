@@ -502,7 +502,7 @@
 
         public function progress_updated($course_id, $user_id)
         {
-            $total_progress = LMS\child\classes\STM_Curriculum::get_total_progress( $user_id, $course_id );
+            $total_progress = LMS\inc\classes\STM_Curriculum::get_total_progress( $user_id, $course_id );
 
             if ( ! empty( $total_progress ) && $total_progress['course_completed']  ) {
                 $date_format  = get_option( 'date_format', 'Y F j' );

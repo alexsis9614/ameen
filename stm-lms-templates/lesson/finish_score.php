@@ -5,7 +5,7 @@
  * @var $item_id
  */
 
-$last_item_id = LMS\child\classes\STM_Curriculum::get_last_lesson($post_id, $item_id);
+$last_item_id = LMS\inc\classes\STM_Curriculum::get_last_lesson($post_id, $item_id);
 
 
 if (!empty($last_item_id) and $item_id == $last_item_id) {

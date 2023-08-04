@@ -7,7 +7,7 @@
 
 stm_lms_register_style('expiration/main');
 
-$course_end_time        = LMS\child\classes\STM_Course::get_time_expiration( $course_id );
+$course_end_time        = LMS\inc\classes\STM_Course::get_time_expiration( $course_id );
 $is_course_time_expired = STM_LMS_Course::is_course_time_expired( get_current_user_id(), $course_id );
 $course_info            = STM_LMS_Course::get_course_expiration_time( get_current_user_id(), $course_id );
 

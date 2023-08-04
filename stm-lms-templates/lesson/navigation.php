@@ -7,7 +7,7 @@
 $course_meta = STM_LMS_Helpers::parse_meta_field( $post_id );
 if ( ! empty( $course_meta['curriculum'] ) ) :
     $curriculum_full = explode( ',', $course_meta['curriculum'] );
-    $curriculum      = LMS\child\classes\STM_Curriculum::curriculum_filter( $post_id, STM_LMS_Helpers::only_array_numbers( $curriculum_full ) );
+    $curriculum      = LMS\inc\classes\STM_Curriculum::curriculum_filter( $post_id, STM_LMS_Helpers::only_array_numbers( $curriculum_full ) );
 
     $course_type = get_post_type( $item_id );
 

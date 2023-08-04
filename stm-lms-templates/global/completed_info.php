@@ -4,7 +4,7 @@
  * @var $course_id
  */
 
-$total_progress = LMS\child\classes\STM_Curriculum::get_total_progress( get_current_user_id(), $course_id );
+$total_progress = LMS\inc\classes\STM_Curriculum::get_total_progress( get_current_user_id(), $course_id );
 
 if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 	stm_lms_register_style( 'lesson/total_progress' );

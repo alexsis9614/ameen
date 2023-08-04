@@ -41,7 +41,7 @@
 
                         <?php stm_lms_curriculum_v2_load_template('section_data'); ?>
 
-                        <?php LMS\child\classes\STM_Curriculum::curriculum_load_template('section_items'); ?>
+                        <?php LMS\inc\classes\STM_Curriculum::curriculum_load_template('section_items'); ?>
 
                         <?php stm_lms_curriculum_v2_load_template('add_items'); ?>
 

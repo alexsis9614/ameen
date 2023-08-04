@@ -3,7 +3,7 @@
      * @var $course_id
      */
 
-    $curriculum = new LMS\child\classes\STM_Curriculum;
+    $curriculum = new LMS\inc\classes\STM_Curriculum;
     $plans      = $curriculum->plans;
     $secondary_color = STM_LMS_Options::get_option('secondary_color', '#f2b91e');
 ?>
@@ -21,7 +21,7 @@
                     <div class="row">
                         <?php
                             foreach ($plans as $key => $plan) :
-                                $price = LMS\child\classes\STM_Curriculum::plan_price( $course_id, $plan['name'] );
+                                $price = LMS\inc\classes\STM_Curriculum::plan_price( $course_id, $plan['name'] );
                         ?>
                             <div class="card <?php echo $key === 1 ? 'color' : ''; ?>">
                                 <div class="card-body">

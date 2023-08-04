@@ -11,7 +11,7 @@
                    handle=".item_move"
                    :options="{ group: 'member', dragoverBubble: true }">
 
-            <?php LMS\child\classes\STM_Curriculum::curriculum_load_template('item'); ?>
+            <?php LMS\inc\classes\STM_Curriculum::curriculum_load_template('item'); ?>
 
         </draggable>
 

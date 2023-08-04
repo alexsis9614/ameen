@@ -32,7 +32,7 @@ if ( ! empty( $courses ) ) : ?>
 							?>
 						</div>
 
-						<?php $course_end_time = LMS\child\classes\STM_Course::get_time_expiration( $course_id ); ?>
+						<?php $course_end_time = LMS\inc\classes\STM_Course::get_time_expiration( $course_id ); ?>
 
 						<div class="stm_lms_single_bundle__courses_course__data heading_font">
 
