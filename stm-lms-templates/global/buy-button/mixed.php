@@ -4,11 +4,11 @@
      * @var $item_id
      */
 
-    $lms_curriculum    = new LMS\inc\classes\STM_Curriculum;
-    $course_plans      = $lms_curriculum->course_plan_enable( $course_id );
+    $plans        = new LMS\inc\classes\STM_Plans;
+    $plans_enable = $plans->enable( $course_id );
 
     stm_lms_register_script( 'buy-button', array( 'jquery.cookie' ) );
-    if ( ! empty( $course_plans ) ) {
+    if ( ! empty( $plans_enable ) ) {
         wp_enqueue_script('buy-plans', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/buy-plans.js', [], STM_THEME_CHILD_VERSION);
         wp_enqueue_style('buy-plans', STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/buy-plans.css', [], STM_THEME_CHILD_VERSION);
     }
@@ -102,10 +102,10 @@
 
                 if ( is_user_logged_in() ) {
                     $attributes = array();
-                    if ( ! $not_salebale && empty( $course_plans ) ) {
+                    if ( ! $not_salebale && empty( $plans_enable ) ) {
                         $attributes[] = 'data-buy-course="' . intval( $course_id ) . '"';
                     }
-                    else if ( ! empty( $course_plans ) ) {
+                    else if ( ! empty( $plans_enable ) ) {
                         $attributes = array(
                             'data-target=".stm-lms-modal-plans"',
                             'data-lms-modal="plans"',
@@ -139,7 +139,7 @@
                 $mixed_classes   = array( 'stm_lms_mixed_button' );
                 $mixed_classes[] = ( $dropdown_enabled ) ? 'subscription_enabled' : 'subscription_disabled';
 
-                $show_buttons = apply_filters( 'stm_lms_pro_show_button', empty( $course_plans ), $course_id );
+                $show_buttons = apply_filters( 'stm_lms_pro_show_button', empty( $plans_enable ), $course_id );
                 if ( $show_buttons ) :
         ?>
                 <div class="<?php echo esc_attr( implode( ' ', $mixed_classes ) ); ?>">
@@ -156,7 +156,7 @@
 					</span>
 
                         <?php
-                            if ( empty( $course_plans ) ) :
+                            if ( empty( $plans_enable ) ) :
                                 if ( ! empty( $price ) || ! empty( $sale_price ) ) :
                         ?>
                             <div class="btn-prices btn-prices-price">

@@ -543,20 +543,6 @@
             return $item_id;
         }
 
-        public function course_plan_enable( $course_id )
-        {
-            if ( ! empty( $this->plans ) ) {
-                foreach ($this->plans as $plan) {
-                    $price = self::plan_price( $course_id, $plan['name'] );
-                    if ( ! empty( $price ) ) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public static function curriculum_filter( $course_id, $curriculum )
         {
             $curriculum_items = array();
@@ -606,21 +592,11 @@
             return STM_LMS_Course::item_url( $course_id, $current_lesson );
         }
 
-        public static function plan_price_key( $plan )
-        {
-            return 'price_' . strtolower( $plan );
-        }
-
-        public static function plan_price( $post_id, $plan )
-        {
-            return get_post_meta($post_id, self::plan_price_key( $plan ), true);
-        }
-
         public function stm_create_curriculum()
         {
             check_ajax_referer( 'stm_curriculum_create_item', 'nonce' );
 
-            /*Check if data passed*/
+            /* Check if data passed */
             if ( empty( sanitize_text_field( $_GET['post_type'] ) ) ) {
                 wp_send_json(
                     array(
@@ -630,7 +606,7 @@
                 );
             }
 
-            /*Check if data passed*/
+            /* Check if data passed */
             if ( empty( $_GET['title'] ) ) {
                 wp_send_json(
                     array(
@@ -824,8 +800,8 @@
             require STM_THEME_CHILD_DIRECTORY . "/settings/curriculum/tpls/{$tpl}.php";
         }
 
-        public static function total_progress() {
-
+        public static function total_progress()
+        {
             check_ajax_referer('stm_lms_total_progress', 'nonce');
 
             $user_id = get_current_user_id();
@@ -834,7 +810,8 @@
             wp_send_json( self::get_total_progress( $user_id, $post_id ) );
         }
 
-        public static function get_total_progress( $user_id, $course_id ) {
+        public static function get_total_progress( $user_id, $course_id )
+        {
             if ( empty( $user_id ) ) return null;
 
             $data = array(

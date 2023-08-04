@@ -21,7 +21,7 @@
                     <div class="row">
                         <?php
                             foreach ($plans as $key => $plan) :
-                                $price = LMS\inc\classes\STM_Curriculum::plan_price( $course_id, $plan['name'] );
+                                $price = LMS\inc\classes\STM_Plans::price( $course_id, $plan['name'] );
                         ?>
                             <div class="card <?php echo $key === 1 ? 'color' : ''; ?>">
                                 <div class="card-body">

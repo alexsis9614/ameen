@@ -110,7 +110,7 @@
 
             $count_plans = count( $this->plans );
             foreach ( $this->plans as $plan_index => $plan ) {
-                $new_fields[ self::plan_price_key( $plan['name'] ) ] = array(
+                $new_fields[ self::price_key( $plan['name'] ) ] = array(
                     'type'        => 'number',
                     'label'       => sprintf(
                     /* translators: %s: number */
@@ -131,11 +131,11 @@
                 );
 
                 if ( $plan_index === 0 ) {
-                    $new_fields[ self::plan_price_key( $plan['name'] ) ]['group'] = 'started';
+                    $new_fields[ self::price_key( $plan['name'] ) ]['group'] = 'started';
                 }
 
                 if ( $count_plans === ($plan_index + 1) ) {
-                    $new_fields[ self::plan_price_key( $plan['name'] ) ]['group'] = 'ended';
+                    $new_fields[ self::price_key( $plan['name'] ) ]['group'] = 'ended';
                 }
             }
 
@@ -151,7 +151,7 @@
 
             foreach ( $this->plans as $plan )
             {
-                $options[ self::plan_price_key( $plan['name'] ) ] = esc_attr( $plan['name'] );
+                $options[ self::price_key( $plan['name'] ) ] = esc_attr( $plan['name'] );
             }
 
             $fields['course_files_pack']['fields']['course_files_plan'] = array(

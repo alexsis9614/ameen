@@ -132,7 +132,7 @@
             self::_stm_lms_delete_from_cart( $item_id );
 
             $quantity  = 1;
-            $price     = STM_Curriculum::plan_price( $item_id, self::$plan );
+            $price     = STM_Plans::price( $item_id, self::$plan );
 
             $is_woocommerce = self::woocommerce_checkout_enabled();
 
@@ -176,7 +176,7 @@
             $product_id = STM_LMS_Woocommerce::has_product( $id );
 
             $title                  = get_the_title( $id );
-            $price                  = STM_Curriculum::plan_price( $id, $plan );
+            $price                  = STM_Curriculum::price( $id, $plan );
             $sale_price             = '';
             $sale_price_dates_start = '';
             $sale_price_dates_end   = '';
