@@ -559,8 +559,8 @@
                                 $user     = STM_LMS_User::get_current_user();
                                 $user_id  = $user['id'];
 
-                                $stm_lms_course_plan = get_user_meta($user_id, 'stm_lms_course_plan_' . $course_id, true);
-                                $course_plan         = get_post_meta($curriculum_item, 'course_plan_' . strtolower( $stm_lms_course_plan ) . '_' . $course_id, true);
+                                $stm_lms_course_plan = self::get_user_meta_key( $user_id, $course_id );
+                                $course_plan         = get_post_meta( $curriculum_item, 'course_plan_' . self::key( $stm_lms_course_plan ) . '_' . $course_id, true );
 
                                 if ( empty( $course_plan ) ) {
                                     continue;
@@ -864,7 +864,7 @@
 
 
             $booking_url = '';
-            $stm_lms_course_plan = get_user_meta( $user_id, 'stm_lms_course_plan_' . $course_id, true );
+            $stm_lms_course_plan = self::get_user_meta_key( $user_id, $course_id );
             if ( $stm_lms_course_plan === 'vip' ) {
                 $booking_url = STM_LMS_Bookit_Sync::menu_url();
             }

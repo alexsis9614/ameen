@@ -16,7 +16,7 @@
 </div>
 <div class="stm-curriculum">
     <h3 class="stm-curriculum__title">
-        <?php esc_html_e( 'Course sections', 'masterstudy-lms-learning-management-system' ); ?>
+        <?php esc_html_e( 'Course sections', 'masterstudy-child' ); ?>
         <?php if ( 'classic' === $lesson_style ) { ?>
             <div class="stm-lms-curriculum-trigger">
                 <i class="fa fa-list-ul"></i>
@@ -124,7 +124,7 @@
                                         $questions_array = explode( ',', $questions );
                                         if ( ! empty( $questions_array ) ) {
                                             /* translators: %s: number of questions */
-                                            echo sprintf( esc_html__( '%s questions', 'masterstudy-lms-learning-management-system' ), count( $questions_array ) );
+                                            echo sprintf( esc_html__( '%s questions', 'masterstudy-child' ), count( $questions_array ) );
                                         }
                                     }
                                 }
@@ -173,7 +173,7 @@
             ?>
             <div class="course-progress">
                 <h3 class="course-progress__title">
-                    <?php esc_html_e( 'Your progress', 'masterstudy-lms-learning-management-system' ); ?>
+                    <?php esc_html_e( 'Your progress', 'masterstudy-child' ); ?>
                 </h3>
                 <div class="course-progress__bar">
                     <div class="progress_line">

@@ -35,9 +35,34 @@
             return false;
         }
 
+        public static function user_meta_key( $course_id ): string
+        {
+            return 'stm_lms_course_plan_' . $course_id;
+        }
+
+        public static function update_user_meta_key( $user_id, $course_id, $plan )
+        {
+            return update_user_meta( $user_id, self::user_meta_key( $course_id ), $plan );
+        }
+
+        public static function get_user_meta_key( $user_id, $course_id )
+        {
+            return get_user_meta( $user_id, self::user_meta_key( $course_id ), true );
+        }
+
+        public static function delete_user_meta_key($user_id, $course_id, $plan)
+        {
+            return delete_user_meta( $user_id, self::user_meta_key( $course_id ), self::key( $plan ) );
+        }
+
+        public static function key( $plan ): string
+        {
+            return strtolower( $plan );
+        }
+
         public static function price_key( $plan ): string
         {
-            return 'price_' . strtolower( $plan );
+            return 'price_' . self::key( $plan );
         }
 
         public static function price( $post_id, $plan )

@@ -206,8 +206,8 @@
 
         public static function get_time_expiration( $course_id ) {
             if ( self::get() ) {
-                $stm_lms_course_plan = get_user_meta(get_current_user_id(), 'stm_lms_course_plan_' . $course_id, true);
-                $_field_key          = 'end_time_' . strtolower( $stm_lms_course_plan );
+                $stm_lms_course_plan = self::get_user_meta_key( get_current_user_id(), $course_id );
+                $_field_key          = 'end_time_' . self::key( $stm_lms_course_plan );
             }
             else {
                 $_field_key = 'end_time';

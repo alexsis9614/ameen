@@ -70,22 +70,22 @@
                                     </template>
                                     <template v-else-if="password">
                                         <div class="form-group">
-                                            <label class="heading_font"><?php esc_html_e( 'New password', 'masterstudy-lms-learning-management-system' ); ?></label>
+                                            <label class="heading_font"><?php esc_html_e( 'New password', 'masterstudy-child' ); ?></label>
                                             <input class="form-control"
                                                    type="password"
                                                    name="password"
                                                    v-model="enter_password"
                                                    autocomplete="new-password"
-                                                   placeholder="<?php esc_html_e( 'Enter password', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                                                   placeholder="<?php esc_html_e( 'Enter password', 'masterstudy-child' ); ?>"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="heading_font"><?php esc_html_e( 'Re-enter new password', 'masterstudy-lms-learning-management-system' ); ?></label>
+                                            <label class="heading_font"><?php esc_html_e( 'Re-enter new password', 'masterstudy-child' ); ?></label>
                                             <input class="form-control"
                                                    type="password"
                                                    name="password_re"
                                                    v-model="password_re"
                                                    autocomplete="new-password"
-                                                   placeholder="<?php esc_html_e( 'Confirm password', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                                                   placeholder="<?php esc_html_e( 'Confirm password', 'masterstudy-child' ); ?>"/>
                                         </div>
                                     </template>
                                     <template v-else>

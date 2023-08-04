@@ -60,7 +60,7 @@ if (!empty($profile_form)):
             <div class="file-wrap" v-if="field.type === 'file'">
                 <label class="file-browse-wrap">
                     <span class="file-browse">
-                    <?php esc_html_e('Browse...', 'masterstudy-lms-learning-management-system'); ?>
+                    <?php esc_html_e('Browse...', 'masterstudy-child'); ?>
                     </span>
                     <input v-if="!data.meta[field.id]" type="file" :ref="'file-' + index"
                            :accept="field.extensions ? field.extensions : '.jpeg,.jpg,.png,.mp4,.pdf'"
@@ -70,7 +70,7 @@ if (!empty($profile_form)):
                     <span class="filename"
                           v-else-if="!loading" v-html="field.placeholder"></span>
                     <span class="filename"
-                          v-else><?php esc_html_e('Loading...', 'masterstudy-lms-learning-management-system'); ?></span>
+                          v-else><?php esc_html_e('Loading...', 'masterstudy-child'); ?></span>
                 </label>
                 <i v-if="data.meta[field.id]" class="fas fa-times" @click="data.meta[field.id] = ''"></i>
                 <i v-else class="fas fa-paperclip"></i>

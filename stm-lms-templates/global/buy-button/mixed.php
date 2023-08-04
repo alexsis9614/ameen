@@ -54,7 +54,7 @@
             ?>
 
                 <a href="#" class="btn btn-default" data-target=".stm-lms-modal-login" data-lms-modal="login">
-                    <span><?php esc_html_e( 'Enroll course', 'masterstudy-lms-learning-management-system-pro' ); ?></span>
+                    <span><?php esc_html_e( 'Enroll course', 'masterstudy-child' ); ?></span>
                 </a>
             <?php
                 else :
@@ -63,10 +63,10 @@
                     $current_lesson = ( ! empty( $course['current_lesson_id'] ) ) ? $course['current_lesson_id'] : '0';
                     $progress       = ( ! empty( $course['progress_percent'] ) ) ? intval( $course['progress_percent'] ) : 0;
                     $lesson_url     = LMS\inc\classes\STM_Curriculum::item_url( $course_id, $current_lesson );
-                    $btn_label      = esc_html__( 'Start course', 'masterstudy-lms-learning-management-system-pro' );
+                    $btn_label      = esc_html__( 'Start course', 'masterstudy-child' );
 
                     if ( $progress > 0 ) {
-                        $btn_label = esc_html__( 'Continue', 'masterstudy-lms-learning-management-system-pro' );
+                        $btn_label = esc_html__( 'Continue', 'masterstudy-child' );
                     }
             ?>
                 <a href="<?php echo esc_url( $lesson_url ); ?>" class="btn btn-default start-course">
@@ -152,7 +152,7 @@
                     >
 
 					<span>
-						<?php esc_html_e( 'Get course', 'masterstudy-lms-learning-management-system-pro' ); ?>
+						<?php esc_html_e( 'Get course', 'masterstudy-child' ); ?>
 					</span>
 
                         <?php
@@ -183,7 +183,7 @@
                                 if ( ! $not_salebale ) :
                         ?>
                                 <a class="stm_lms_mixed_button__single" href="#" <?php echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) ); ?>>
-                                    <span><?php esc_html_e( 'One Time Payment', 'masterstudy-lms-learning-management-system-pro' ); ?></span>
+                                    <span><?php esc_html_e( 'One Time Payment', 'masterstudy-child' ); ?></span>
                                 </a>
                         <?php
                             endif;
@@ -237,16 +237,16 @@
                                             echo 'disabled="disabled"';}
                                         ?>
                                     >
-                                        <span><?php esc_html_e( 'Enroll with Membership', 'masterstudy-lms-learning-management-system-pro' ); ?></span>
+                                        <span><?php esc_html_e( 'Enroll with Membership', 'masterstudy-child' ); ?></span>
                                         <?php if ( $needs_approval ) : ?>
-                                            <small><?php esc_html_e( 'Your membership account is not approved!', 'masterstudy-lms-learning-management-system-pro' ); ?></small>
+                                            <small><?php esc_html_e( 'Your membership account is not approved!', 'masterstudy-child' ); ?></small>
                                         <?php endif; ?>
                                     </button>
 
                             <?php
                                 else :
                                     $buy_url   = STM_LMS_Subscriptions::level_url();
-                                    $buy_label = esc_html__( 'Enroll with Membership', 'masterstudy-lms-learning-management-system-pro' );
+                                    $buy_label = esc_html__( 'Enroll with Membership', 'masterstudy-child' );
 
                                     $plans = array(
                                         $buy_url => $buy_label,
@@ -267,7 +267,7 @@
                                             $buy_url   = add_query_arg( 'level', $plan_course->id, STM_LMS_Subscriptions::checkout_url() );
                                             $buy_label = sprintf(
                                             /* translators: %s: plan name */
-                                                esc_html__( 'Available in "%s" plan', 'masterstudy-lms-learning-management-system-pro' ),
+                                                esc_html__( 'Available in "%s" plan', 'masterstudy-child' ),
                                                 $plan_course->name
                                             );
 
@@ -296,7 +296,7 @@
                     else :
             ?>
                         <a href="#" class="btn btn-default" <?php echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) ); ?>>
-                            <span><?php esc_html_e( 'Get course', 'masterstudy-lms-learning-management-system-pro' ); ?></span>
+                            <span><?php esc_html_e( 'Get course', 'masterstudy-child' ); ?></span>
                         </a>
             <?php
                         do_action( 'stm_lms_pro_instead_buttons', $course_id );

@@ -17,8 +17,8 @@ if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 	<div class="stm_lms_course_completed_summary">
 
 		<div class="stm_lms_course_completed_summary__title">
-			<span><?php esc_html_e( 'You have completed the course:', 'masterstudy-lms-learning-management-system' ); ?></span>
-			<strong><?php printf( /* translators: %s will be replaced with a string. */ esc_html__( 'Score %s', 'masterstudy-lms-learning-management-system' ), esc_html( "{$total_progress['course']['progress_percent']}%" ) ); ?></strong>
+			<span><?php esc_html_e( 'You have completed the course:', 'masterstudy-child' ); ?></span>
+			<strong><?php printf( /* translators: %s will be replaced with a string. */ esc_html__( 'Score %s', 'masterstudy-child' ), esc_html( "{$total_progress['course']['progress_percent']}%" ) ); ?></strong>
 		</div>
 
 		<div class="stm_lms_finish_score">
@@ -31,7 +31,7 @@ if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 						<div class="stm_lms_finish_score__stat">
 							<div class="stm_lms_finish_score__stat_<?php echo esc_attr( $item_type ); ?>">
 								<i class="far fa-file-alt"></i>
-								<span><?php esc_html_e( 'Pages:', 'masterstudy-lms-learning-management-system' ); ?>
+								<span><?php esc_html_e( 'Pages:', 'masterstudy-child' ); ?>
 									<strong><?php echo esc_html( "{$item_data['completed']}/{$item_data['total']}" ); ?></strong></span>
 							</div>
 						</div>
@@ -41,7 +41,7 @@ if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 						<div class="stm_lms_finish_score__stat">
 							<div class="stm_lms_finish_score__stat_<?php echo esc_attr( $item_type ); ?>">
 								<i class="far fa-play-circle"></i>
-								<span><?php esc_html_e( 'Multimedia:', 'masterstudy-lms-learning-management-system' ); ?>
+								<span><?php esc_html_e( 'Multimedia:', 'masterstudy-child' ); ?>
 									<strong><?php echo esc_html( "{$item_data['completed']}/{$item_data['total']}" ); ?></strong></span>
 							</div>
 						</div>
@@ -51,7 +51,7 @@ if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 						<div class="stm_lms_finish_score__stat">
 							<div class="stm_lms_finish_score__stat_<?php echo esc_attr( $item_type ); ?>">
 								<i class="far fa-question-circle"></i>
-								<span><?php esc_html_e( 'Quizzes:', 'masterstudy-lms-learning-management-system' ); ?>
+								<span><?php esc_html_e( 'Quizzes:', 'masterstudy-child' ); ?>
 									<strong><?php echo esc_html( "{$item_data['completed']}/{$item_data['total']}" ); ?></strong></span>
 							</div>
 						</div>
@@ -61,7 +61,7 @@ if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 						<div class="stm_lms_finish_score__stat">
 							<div class="stm_lms_finish_score__stat_<?php echo esc_attr( $item_type ); ?>">
 								<i class="fa fa-spell-check"></i>
-								<span><?php esc_html_e( 'Assignments:', 'masterstudy-lms-learning-management-system' ); ?>
+								<span><?php esc_html_e( 'Assignments:', 'masterstudy-child' ); ?>
 									<strong><?php echo esc_html( "{$item_data['completed']}/{$item_data['total']}" ); ?></strong></span>
 							</div>
 						</div>
@@ -79,7 +79,7 @@ if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
 		   class="stm_lms_course_completed_summary__certificate stm_preview_certificate"
 		   data-course-id="<?php echo esc_attr( $course_id ); ?>">
 			<i class="fa fa-cloud-download-alt"></i>
-			<?php esc_html_e( 'Download your Certificate', 'masterstudy-lms-learning-management-system' ); ?>
+			<?php esc_html_e( 'Download your Certificate', 'masterstudy-child' ); ?>
 		</a>
 	<?php endif; ?>
 	<?php

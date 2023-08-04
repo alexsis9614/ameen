@@ -11,10 +11,10 @@
                 <?php else : ?>
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#stm-lms-login-modal" data-toggle="tab"><?php esc_html_e( 'Login', 'masterstudy-lms-learning-management-system' ); ?></a>
+                            <a href="#stm-lms-login-modal" data-toggle="tab"><?php esc_html_e( 'Login', 'masterstudy-child' ); ?></a>
                         </li>
                         <li role="presentation" class="">
-                            <a href="#stm-lms-register" data-toggle="tab"><?php esc_html_e( 'Register', 'masterstudy-lms-learning-management-system' ); ?></a>
+                            <a href="#stm-lms-register" data-toggle="tab"><?php esc_html_e( 'Register', 'masterstudy-child' ); ?></a>
                         </li>
                     </ul>
                     <?php STM_LMS_Templates::show_lms_template( 'account/v1/login', array( 'form_position' => '-modal' ) ); ?>

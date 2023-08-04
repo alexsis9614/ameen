@@ -12,6 +12,7 @@
         public $prefix   = 'woocommerce';
         public $statuses = array();
         public static $plan;
+        public static $order_key_plans = 'stm_lms_course_plans';
 
         public function __construct()
         {
@@ -44,6 +45,16 @@
             add_action( $this->prefix . '_checkout_update_order_meta', array( $this, 'before_create_order' ), 200, 1 );
         }
 
+        public static function get_plans( $order_id )
+        {
+            return get_post_meta( $order_id, self::$order_key_plans, true );
+        }
+
+        public static function update_plans( $order_id, $plans )
+        {
+            return update_post_meta( $order_id, self::$order_key_plans, $plans );
+        }
+
         public function before_create_order( $order_id )
         {
             $cart  = WC()->cart->get_cart();
@@ -66,17 +77,17 @@
                 );
             }
 
-            update_post_meta( $order_id, 'stm_lms_course_plans', $plans );
+            self::update_plans( $order_id, $plans );
         }
 
         public function order_cancelled( $order_id )
         {
             $order   = new WC_Order( $order_id );
             $user_id = $order->get_user_id();
-            $courses = get_post_meta( $order_id, 'stm_lms_course_plans', true );
+            $courses = self::get_plans( $order_id );
 
             foreach ( $courses as $course ) {
-                delete_user_meta($user_id, 'stm_lms_course_plan_' . $course['item_id'], strtolower( $course['plan'] ));
+                STM_Plans::delete_user_meta_key( $user_id, $course['item_id'], $course['plan'] );
 
                 do_action( 'stm_lms_woocommerce_order_cancelled', $course, $user_id );
             }
@@ -86,11 +97,11 @@
         {
             $order   = new WC_Order( $order_id );
             $user_id = $order->get_user_id();
-            $courses = get_post_meta( $order_id, 'stm_lms_course_plans', true );
+            $courses = self::get_plans( $order_id );
 
             foreach ( $courses as $course ) {
                 if ( get_post_type( $course['item_id'] ) === STM_LMS_Curriculum::$courses_slug ) {
-                    update_user_meta($user_id, 'stm_lms_course_plan_' . $course['item_id'], strtolower( $course['plan'] ));
+                    STM_Plans::update_user_meta_key( $user_id, $course['item_id'], $course['plan'] );
                 }
 
                 do_action( 'stm_lms_woocommerce_order_approved', $course, $user_id );

@@ -24,7 +24,7 @@
         <div class="stm_lms_curriculum_v2_wrapper" v-bind:class="{'loaded' : loaded, 'dragging' : onDrag}">
 
             <div v-if="loading">
-                <?php esc_html_e('Loading curriculum...', 'masterstudy-lms-learning-management-system'); ?>
+                <?php esc_html_e('Loading curriculum...', 'masterstudy-child'); ?>
             </div>
 
             <div class="stm_lms_curriculum_v2" v-else>

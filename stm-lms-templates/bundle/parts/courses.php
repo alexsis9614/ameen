@@ -10,7 +10,7 @@ if ( ! empty( $courses ) ) : ?>
 
 	<div class="stm_lms_single_bundle__courses_wrapper">
 
-		<h3><?php esc_html_e( 'Courses in this bundle:', 'masterstudy-lms-learning-management-system-pro' ); ?></h3>
+		<h3><?php esc_html_e( 'Courses in this bundle:', 'masterstudy-child' ); ?></h3>
 
 		<div class="stm_lms_single_bundle__courses">
 

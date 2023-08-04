@@ -55,33 +55,33 @@
                 </template>
                 <template v-else-if="password">
                     <div class="form-group">
-                        <label class="heading_font"><?php esc_html_e( 'Password', 'masterstudy-lms-learning-management-system' ); ?></label>
+                        <label class="heading_font"><?php esc_html_e( 'Password', 'masterstudy-child' ); ?></label>
                         <input class="form-control"
                                type="password"
                                name="password"
                                v-model="enter_password"
-                               placeholder="<?php esc_html_e( 'Enter password', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                               placeholder="<?php esc_html_e( 'Enter password', 'masterstudy-child' ); ?>"/>
                     </div>
                     <template v-if="register">
                         <div class="form-group">
-                            <label class="heading_font"><?php esc_html_e( 'Password again', 'masterstudy-lms-learning-management-system' ); ?></label>
+                            <label class="heading_font"><?php esc_html_e( 'Password again', 'masterstudy-child' ); ?></label>
                             <input class="form-control"
                                    type="password"
                                    name="password_re"
                                    v-model="password_re"
-                                   placeholder="<?php esc_html_e( 'Confirm password', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                                   placeholder="<?php esc_html_e( 'Confirm password', 'masterstudy-child' ); ?>"/>
                         </div>
                     </template>
                 </template>
                 <template v-else>
                     <?php if ( 'email_or_phone' === $stm_otp_email_phone ) : ?>
                         <div class="form-group">
-                            <label class="heading_font"><?php esc_html_e( 'E-mail', 'masterstudy-lms-learning-management-system' ); ?></label>
+                            <label class="heading_font"><?php esc_html_e( 'E-mail', 'masterstudy-child' ); ?></label>
                             <input class="form-control"
                                    type="email"
                                    name="email"
                                    v-model="email"
-                                   placeholder="<?php esc_html_e( 'Enter your E-mail', 'masterstudy-lms-learning-management-system' ); ?>"/>
+                                   placeholder="<?php esc_html_e( 'Enter your E-mail', 'masterstudy-child' ); ?>"/>
                         </div>
                     <?php endif; ?>
                     <div class="form-group">

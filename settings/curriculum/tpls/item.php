@@ -46,14 +46,14 @@
     <div class="actions">
 
         <div class="item_delete"
-             @click="deleteItem(item_key, '<?php esc_attr_e('Do you really want to delete this item from section?', 'masterstudy-lms-learning-management-system') ?>')">
+             @click="deleteItem(item_key, '<?php esc_attr_e('Do you really want to delete this item from section?', 'masterstudy-child') ?>')">
             <i class="fa fa-trash"></i>
         </div>
 
         <div class="item_edit">
             <a class="item_edit_link" :href="item.edit_link" target="_blank">
                 <i class="fa fa-pen"></i>
-                <?php esc_html_e('Edit', 'masterstudy-lms-learning-management-system'); ?>
+                <?php esc_html_e('Edit', 'masterstudy-child'); ?>
             </a>
         </div>
 

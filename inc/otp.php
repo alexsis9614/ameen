@@ -55,7 +55,7 @@
                 }
             }
 
-            add_action('rest_api_init', [$this, 'api_init']);
+            add_action('rest_api_init', array( $this, 'api_init' ) );
         }
 
         public function api_init()
@@ -77,13 +77,13 @@
             }
 
             if ( $password !== $password_re ) {
-                $message = esc_html__( 'Passwords do not match', 'masterstudy-lms-learning-management-system' );
+                $message = esc_html__( 'Passwords do not match', 'masterstudy-child' );
                 $invalid = true;
             }
 
             /* if Password longer than 20 -for some tricky user try to enter long characters to block input.*/
             if ( ! $invalid && strlen( $password ) > 20 ) {
-                $message = esc_html__( 'Password too long', 'masterstudy-lms-learning-management-system' );
+                $message = esc_html__( 'Password too long', 'masterstudy-child' );
                 $invalid = true;
             }
 

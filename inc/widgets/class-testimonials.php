@@ -126,14 +126,14 @@
             $this->start_controls_section(
                 'stars_styles',
                 array(
-                    'label' => __( 'Stars', 'masterstudy-lms-learning-management-system' ),
+                    'label' => __( 'Stars', 'masterstudy-child' ),
                     'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
                 )
             );
             $this->add_control(
                 'stars_color',
                 array(
-                    'label'     => esc_html__( 'Color', 'masterstudy-lms-learning-management-system' ),
+                    'label'     => esc_html__( 'Color', 'masterstudy-child' ),
                     'type'      => \Elementor\Controls_Manager::COLOR,
                     'selectors' => array(
                         '{{WRAPPER}} .fa-star' => 'color: {{VALUE}}',
@@ -145,14 +145,14 @@
             $this->start_controls_section(
                 'pagination_styles',
                 array(
-                    'label' => __( 'Pagination', 'masterstudy-lms-learning-management-system' ),
+                    'label' => __( 'Pagination', 'masterstudy-child' ),
                     'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
                 )
             );
             $this->add_control(
                 'pagination_color',
                 array(
-                    'label'     => esc_html__( 'Color', 'masterstudy-lms-learning-management-system' ),
+                    'label'     => esc_html__( 'Color', 'masterstudy-child' ),
                     'type'      => \Elementor\Controls_Manager::COLOR,
                     'selectors' => array(
                         '{{WRAPPER}} .testimonials_main_wrapper .owl-carousel .owl-dots .owl-dot.active' => 'background-color: {{VALUE}}',

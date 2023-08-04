@@ -16,7 +16,7 @@ wp_add_inline_script('stm-lms-edit_account',
     <?php if (!empty($my_avatar)): ?>
         <i class="lnricons-cross delete_avatar"></i>
     <?php endif; ?>
-    <i class="lnricons-pencil" data-text="<?php esc_attr_e('Change photo', 'masterstudy-lms-learning-management-system'); ?>"></i>
+    <i class="lnricons-pencil" data-text="<?php esc_attr_e('Change photo', 'masterstudy-child'); ?>"></i>
     <?php if (!empty($current_user['avatar'])): ?>
         <div class="stm-lms-user_avatar">
             <?php echo wp_kses_post($current_user['avatar']); ?>

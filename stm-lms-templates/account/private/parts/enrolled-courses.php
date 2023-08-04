@@ -10,7 +10,7 @@ stm_lms_register_style( 'expiration/main' );
 
 <div class="stm_lms_user_info_top">
 
-    <h3><?php esc_html_e( 'Enrolled Courses', 'masterstudy-lms-learning-management-system' ); ?></h3>
+    <h3><?php esc_html_e( 'Enrolled Courses', 'masterstudy-child' ); ?></h3>
 
     <div class="stm_lms_user_info_top__sort">
         <?php
@@ -23,10 +23,10 @@ stm_lms_register_style( 'expiration/main' );
         <?php endif; ?>
 
         <select class="no-search">
-            <option value="date_low"><?php esc_html_e( 'Enrolled date (last one)', 'masterstudy-lms-learning-management-system' ); ?></option>
-            <option value="date_high"><?php esc_html_e( 'Enrolled date (first one)', 'masterstudy-lms-learning-management-system' ); ?></option>
-            <option value="progress_low"><?php esc_html_e( 'Progress (increasing)', 'masterstudy-lms-learning-management-system' ); ?></option>
-            <option value="progress_high"><?php esc_html_e( 'Progress (decreasing)', 'masterstudy-lms-learning-management-system' ); ?></option>
+            <option value="date_low"><?php esc_html_e( 'Enrolled date (last one)', 'masterstudy-child' ); ?></option>
+            <option value="date_high"><?php esc_html_e( 'Enrolled date (first one)', 'masterstudy-child' ); ?></option>
+            <option value="progress_low"><?php esc_html_e( 'Progress (increasing)', 'masterstudy-child' ); ?></option>
+            <option value="progress_high"><?php esc_html_e( 'Progress (decreasing)', 'masterstudy-child' ); ?></option>
         </select>
 
     </div>
@@ -92,14 +92,14 @@ stm_lms_register_style( 'expiration/main' );
                         <div class="stm_lms_instructor_courses__single--enroll">
                             <a v-if="course.expiration.length && course.is_expired || course.membership_expired || course.membership_inactive" class="btn btn-default"
                                :href="course.url" target="_blank">
-                                <span><?php esc_html_e( 'Preview Course', 'masterstudy-lms-learning-management-system' ); ?></span>
+                                <span><?php esc_html_e( 'Preview Course', 'masterstudy-child' ); ?></span>
                             </a>
                             <a v-bind:href="course.current_lesson_id" class="btn btn-default"
                                v-bind:class="{'continue' : course.progress !== '0'}"
                                v-else>
-                                <span v-if="course.progress === '0'"><?php esc_html_e( 'Start Course', 'masterstudy-lms-learning-management-system' ); ?></span>
-                                <span v-else-if="course.progress === '100'"><?php esc_html_e( 'Completed', 'masterstudy-lms-learning-management-system' ); ?></span>
-                                <span v-else><?php esc_html_e( 'Continue', 'masterstudy-lms-learning-management-system' ); ?></span>
+                                <span v-if="course.progress === '0'"><?php esc_html_e( 'Start Course', 'masterstudy-child' ); ?></span>
+                                <span v-else-if="course.progress === '100'"><?php esc_html_e( 'Completed', 'masterstudy-child' ); ?></span>
+                                <span v-else><?php esc_html_e( 'Continue', 'masterstudy-child' ); ?></span>
                             </a>
                         </div>
 
@@ -114,14 +114,14 @@ stm_lms_register_style( 'expiration/main' );
 
         </div>
 
-        <h4 v-if="!courses.length && !loading"><?php esc_html_e( 'No courses.', 'masterstudy-lms-learning-management-system' ); ?></h4>
-        <h4 v-if="loading"><?php esc_html_e( 'Loading courses.', 'masterstudy-lms-learning-management-system' ); ?></h4>
+        <h4 v-if="!courses.length && !loading"><?php esc_html_e( 'No courses.', 'masterstudy-child' ); ?></h4>
+        <h4 v-if="loading"><?php esc_html_e( 'Loading courses.', 'masterstudy-child' ); ?></h4>
 
     </div>
 
     <div class="text-center load-my-courses">
         <a @click="getCourses()" v-if="!total" class="btn btn-default" v-bind:class="{'loading' : loading}">
-            <span><?php esc_html_e( 'Show more', 'masterstudy-lms-learning-management-system' ); ?></span>
+            <span><?php esc_html_e( 'Show more', 'masterstudy-child' ); ?></span>
         </a>
     </div>
 

@@ -20,9 +20,9 @@ if ( ! empty( $terms_all ) ) {
 <?php if ( ! empty( $terms ) ) : ?>
 	<div class="stm_lms_user_float_menu__tabs heading_font">
 		<a href="#" class="active" data-show=".stm_lms_user_float_menu__login">
-			<?php esc_html_e( 'Login', 'masterstudy-lms-learning-management-system' ); ?>
+			<?php esc_html_e( 'Login', 'masterstudy-child' ); ?>
 		</a>
-		<a href="#" data-show=".stm_lms_user_float_menu__categories"><?php esc_html_e( 'Categories', 'masterstudy-lms-learning-management-system' ); ?></a>
+		<a href="#" data-show=".stm_lms_user_float_menu__categories"><?php esc_html_e( 'Categories', 'masterstudy-child' ); ?></a>
 	</div>
 <?php endif; ?>
 
@@ -32,14 +32,14 @@ if ( ! empty( $terms_all ) ) {
 
 		<div class="stm_lms_user_float_menu__empty heading_font">
 			<span>
-				<?php esc_html_e( 'Hey, Please Login', 'masterstudy-lms-learning-management-system' ); ?>
+				<?php esc_html_e( 'Hey, Please Login', 'masterstudy-child' ); ?>
 			</span>
 			<i class="fa fa-user"></i>
 		</div>
 
 		<div class="stm_lms_user_float_menu__login_head">
-			<h4><?php esc_html_e( 'Sign in', 'masterstudy-lms-learning-management-system' ); ?></h4>
-			<a href="<?php echo esc_url( STM_LMS_User::login_page_url() ); ?>"><?php esc_html_e( 'Registration', 'masterstudy-lms-learning-management-system' ); ?></a>
+			<h4><?php esc_html_e( 'Sign in', 'masterstudy-child' ); ?></h4>
+			<a href="<?php echo esc_url( STM_LMS_User::login_page_url() ); ?>"><?php esc_html_e( 'Registration', 'masterstudy-child' ); ?></a>
 		</div>
 
 		<?php STM_LMS_Templates::show_lms_template( 'account/v1/sign-in' ); ?>

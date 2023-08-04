@@ -14,7 +14,7 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
     if ( 'stm-quizzes' === $course_type ) {
         if ( STM_LMS_Quiz::quiz_passed( $item_id ) ) {
             $completed       = 'completed';
-            $completed_label = esc_html__( 'Passed', 'masterstudy-lms-learning-management-system' );
+            $completed_label = esc_html__( 'Passed', 'masterstudy-child' );
         } else {
             $completed_label = '';
             $completed       = '';
@@ -22,9 +22,9 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
     } else {
         $completed = ( STM_LMS_Lesson::is_lesson_completed( '', $post_id, $item_id ) ) ? 'completed' : 'uncompleted';
         if ( 'completed' === $completed ) {
-            $completed_label = esc_html__( 'Completed', 'masterstudy-lms-learning-management-system' );
+            $completed_label = esc_html__( 'Completed', 'masterstudy-child' );
         } else {
-            $completed_label = esc_html__( 'Complete', 'masterstudy-lms-learning-management-system' );
+            $completed_label = esc_html__( 'Complete', 'masterstudy-child' );
         }
     }
     if ( in_array( $item_id, $curriculum ) ) {
@@ -40,7 +40,7 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
     $lesson_style    = STM_LMS_Options::get_option( 'lesson_style', 'default' );
     ?>
 
-    <div class="stm-lms-lesson_navigation heading_font <?php esc_attr_e( 'Completed', 'masterstudy-lms-learning-management-system' ); ?>" data-completed="<?php esc_html_e( 'Completed', 'masterstudy-lms-learning-management-system' ); ?>">
+    <div class="stm-lms-lesson_navigation heading_font <?php esc_attr_e( 'Completed', 'masterstudy-child' ); ?>" data-completed="<?php esc_html_e( 'Completed', 'masterstudy-child' ); ?>">
 
         <div class="stm-lms-lesson_navigation_side stm-lms-lesson_navigation_prev">
             <?php
@@ -51,7 +51,7 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
                     <a href="<?php echo esc_url( STM_LMS_Lesson::get_lesson_url( $post_id, $prev_lesson ) ); ?>">
                         <i class="lnr lnr-arrow-left"></i>
                         <span>
-						<?php esc_html_e( 'Prev lesson', 'masterstudy-lms-learning-management-system' ); ?>
+						<?php esc_html_e( 'Prev lesson', 'masterstudy-child' ); ?>
 						</span>
                     </a>
                 <?php else : ?>
@@ -88,7 +88,7 @@ if ( ! empty( $course_meta['curriculum'] ) ) :
                     ?>
                     <a href="<?php echo esc_url( STM_LMS_Lesson::get_lesson_url( $post_id, $next_lesson ) ); ?>">
 						<span>
-							<?php esc_html_e( 'Next lesson', 'masterstudy-lms-learning-management-system' ); ?>
+							<?php esc_html_e( 'Next lesson', 'masterstudy-child' ); ?>
 						</span>
                         <i class="lnr lnr-arrow-right"></i>
                     </a>

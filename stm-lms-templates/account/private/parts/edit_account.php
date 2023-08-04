@@ -44,7 +44,7 @@ wp_add_inline_script('stm-lms-edit_account',
 					<button @click="saveUserInfo()"
 							v-bind:class="{'loading' : loading}"
 							class="btn btn-default btn-save-account">
-						<span><?php esc_html_e('Save changes', 'masterstudy-lms-learning-management-system'); ?></span>
+						<span><?php esc_html_e('Save changes', 'masterstudy-child'); ?></span>
 					</button>
 
 				</div>

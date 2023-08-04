@@ -46,7 +46,7 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 
 		<div id="stm_lms_finish_score">
 			<h4 v-if="loading" class="loading">
-				<?php esc_html_e( 'Loading your statistics', 'masterstudy-lms-learning-management-system' ); ?>
+				<?php esc_html_e( 'Loading your statistics', 'masterstudy-child' ); ?>
 			</h4>
 
 			<div class="stm_lms_finish_score" v-else>
@@ -74,14 +74,14 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						</div>
 					<?php endif; ?>
 					<div class="stm_lms_finish_score__score <?php echo esc_attr( ( $disable_smile ) ? 'no_face' : '' ); ?>">
-						<span><?php esc_html_e( 'Your score', 'masterstudy-lms-learning-management-system' ); ?></span>
+						<span><?php esc_html_e( 'Your score', 'masterstudy-child' ); ?></span>
 						<h3 v-html="stats.course.progress_percent + '%'"></h3>
 					</div>
 				</div>
 
 				<div class="stm_lms_finish_score__notice">
-					<span v-if="!stats.course_completed"><?php esc_html_e( 'You have NOT completed the course', 'masterstudy-lms-learning-management-system' ); ?></span>
-					<span v-else><?php esc_html_e( 'You have successfully completed the course', 'masterstudy-lms-learning-management-system' ); ?></span>
+					<span v-if="!stats.course_completed"><?php esc_html_e( 'You have NOT completed the course', 'masterstudy-child' ); ?></span>
+					<span v-else><?php esc_html_e( 'You have successfully completed the course', 'masterstudy-child' ); ?></span>
 				</div>
 
 				<h2 class="stm_lms_finish_score__title" v-html="stats.title"></h2>
@@ -93,7 +93,7 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						<div :class="'stm_lms_finish_score__stat_' + type" v-if="type==='lesson'">
 							<i class="far fa-file-alt"></i>
 							<span>
-								<?php esc_html_e( 'Pages:', 'masterstudy-lms-learning-management-system' ); ?>
+								<?php esc_html_e( 'Pages:', 'masterstudy-child' ); ?>
 								<strong>{{stat.completed}}/{{stat.total}}</strong>
 							</span>
 						</div>
@@ -101,7 +101,7 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						<div :class="'stm_lms_finish_score__stat_' + type" v-if="type==='multimedia'">
 							<i class="far fa-play-circle"></i>
 							<span>
-								<?php esc_html_e( 'Media:', 'masterstudy-lms-learning-management-system' ); ?>
+								<?php esc_html_e( 'Media:', 'masterstudy-child' ); ?>
 								<strong>{{stat.completed}}/{{stat.total}}</strong>
 							</span>
 						</div>
@@ -109,7 +109,7 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						<div :class="'stm_lms_finish_score__stat_' + type" v-if="type==='quiz'">
 							<i class="far fa-question-circle"></i>
 							<span>
-								<?php esc_html_e( 'Quizzes:', 'masterstudy-lms-learning-management-system' ); ?>
+								<?php esc_html_e( 'Quizzes:', 'masterstudy-child' ); ?>
 								<strong>{{stat.completed}}/{{stat.total}}</strong>
 							</span>
 						</div>
@@ -117,7 +117,7 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						<div :class="'stm_lms_finish_score__stat_' + type" v-if="type==='assignment'">
 							<i class="fas fa-spell-check"></i>
 							<span>
-								<?php esc_html_e( 'Assignments:', 'masterstudy-lms-learning-management-system' ); ?>
+								<?php esc_html_e( 'Assignments:', 'masterstudy-child' ); ?>
 								<strong>{{stat.completed}}/{{stat.total}}</strong>
 							</span>
 						</div>
@@ -132,12 +132,12 @@ $custom_success_image_id = STM_LMS_Options::get_option( 'finish_popup_image_succ
 						<?php if ( class_exists( 'STM_LMS_Certificate_Builder' ) ) : ?>
 							<a v-if="stats.course_completed" href="#" class="btn btn-default stm_preview_certificate"
 								data-course-id="<?php echo esc_attr( $post_id ); ?>">
-								<?php esc_html_e( 'Certificate', 'masterstudy-lms-learning-management-system' ); ?>
+								<?php esc_html_e( 'Certificate', 'masterstudy-child' ); ?>
 							</a>
 						<?php endif; ?>
 
 						<a :href="stats.url" class="btn btn-default btn-green">
-							<?php esc_html_e( 'View course', 'masterstudy-lms-learning-management-system' ); ?>
+							<?php esc_html_e( 'View course', 'masterstudy-child' ); ?>
 						</a>
                         <?php if ( defined('BOOKIT_VERSION') ) : ?>
                             <template v-if="stats.booking_url">
