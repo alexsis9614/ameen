@@ -2,11 +2,14 @@
     namespace LMS\inc\classes;
 
     use STM_LMS_WPCFTO_AJAX;
+    use WPCFTO_Settings;
 
     class STM_Settings extends STM_LMS_WPCFTO_AJAX
     {
 
         public static $_plans_key = 'course_plans';
+
+        public $_settings_name = 'stm_lms_settings';
 
         public function __construct()
         {
@@ -69,6 +72,26 @@
                                         ),
                                     ),
                                 )
+                            )
+                        );
+
+                        $pages = WPCFTO_Settings::stm_get_post_type_array( 'stm-courses' );
+
+                        $setup[ 'fields' ][ 'stm_course_bundle' ] = array(
+                            'name'   => esc_html__( 'Archive bundle', 'masterstudy-child' ),
+                            'label'  => esc_html__( 'Bundle settings', 'masterstudy-child' ),
+                            'icon'   => 'fas fa-sliders-h',
+                            'fields' => array(
+                                'stm_bundle_free_course' => array(
+                                    'type'    => 'select',
+                                    'label'   => esc_html__( 'Bundle Free Course', 'masterstudy-child' ),
+                                    'options' => $pages,
+                                ),
+                                'stm_bundle_course' => array(
+                                    'type'    => 'select',
+                                    'label'   => esc_html__( 'Bundle Course', 'masterstudy-child' ),
+                                    'options' => $pages,
+                                ),
                             )
                         );
                     }

@@ -13,8 +13,6 @@
 
     class STM_Curriculum extends STM_Plans
     {
-        public $_settings_name = 'stm_lms_settings';
-
         public static $curriculums = array(
             'lesson'     => 'stm-lessons',
             'assignment' => 'stm-assignments',
