@@ -19,17 +19,7 @@
             add_action( 'save_post_' . $this->courses_slug, array( $this, 'save' ) );
 
             add_filter( 'stm_wpcfto_fields', array( $this, 'fields' ) );
-
-//            add_action( 'add_user_course', array( $this, 'add_user' ), 20, 2 );
-
         }
-
-//        public function add_user( $user_id, $course_id )
-//        {
-//            $end_time = self::get_end_time( $course_id );
-//
-//            stm_lms_update_user_course_endtime( $course_id, $end_time );
-//        }
 
         public function save( $course_id )
         {
@@ -58,7 +48,7 @@
             }
         }
 
-        public function fields( $settings )
+        public function fields( $settings ): array
         {
             if ( ! empty( $settings ) && ! empty( $this->plans ) )
             {
@@ -140,7 +130,7 @@
             return array_merge( $new_fields, $fields );
         }
 
-        public function files( $section )
+        public function files( $section ): array
         {
             $fields      = $section['fields'];
             $options     = array(

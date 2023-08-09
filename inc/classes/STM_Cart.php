@@ -8,8 +8,6 @@
     use STM_LMS_Curriculum;
     use STM_LMS_Options;
     use STM_LMS_User;
-    use STM_LMS_Order;
-    use STM_LMS_Course;
 
     class STM_Cart extends STM_LMS_Cart
     {
@@ -42,13 +40,25 @@
 
             foreach ($this->statuses as $items) {
                 foreach ( $items as $status => $callback ) {
-                    add_action( $this->prefix . '_order_status_' . $status, $callback, 30 );
+                    add_action( $this->prefix . '_order_status_' . $status, $callback, 5 );
                 }
             }
 
             add_action( $this->prefix . '_checkout_update_order_meta', array( $this, 'before_create_order' ), 200, 1 );
 
-            add_action( 'stm_lms_order_accepted', array( $this, 'order_accepted' ), 20, 2 );
+            add_action( 'stm_lms_woocommerce_order_approved', array( $this, 'order_approved' ), 30, 2 );
+        }
+
+        public function order_approved( $course, $user_id )
+        {
+            if ( get_post_type( $course['item_id'] ) === STM_LMS_Curriculum::$courses_slug ) {
+                $user_course = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( $user_id, $course['item_id'] ) );
+                $end_time    = STM_Course::get_end_time( $course['item_id'], $user_id );
+
+                if ( ! empty( $user_course ) && ! empty( $end_time ) ) {
+                    stm_lms_update_user_course_endtime( $user_course['user_course_id'], $end_time );
+                }
+            }
         }
 
         public static function get_plans( $order_id )
@@ -99,30 +109,6 @@
             }
         }
 
-        public function order_accepted( $user_id, $cart_items )
-        {
-            $accept_order = apply_filters( 'stm_lms_accept_order', true );
-            error_log( print_r( $accept_order, true ) );
-
-            if ( $accept_order ) {
-
-                error_log( print_r( $cart_items, true ) );
-
-                foreach ( $cart_items as $cart_item ) {
-
-                    $user_course = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( $user_id, $cart_item['item_id'] ) );
-                    $end_time    = STM_Course::get_end_time( $cart_item['item_id'], $user_id );
-
-                    error_log( print_r( $user_course, true ) );
-                    error_log( print_r( $end_time, true ) );
-
-                    if ( ! empty( $user_course ) && ! empty( $end_time ) ) {
-                        stm_lms_update_user_course_endtime( $user_course['user_course_id'], $end_time );
-                    }
-                }
-            }
-        }
-
         public function order_created( $order_id )
         {
             $order   = new WC_Order( $order_id );
@@ -134,8 +120,8 @@
                     STM_Plans::update_user_meta_key( $user_id, $course['item_id'], $course['plan'] );
                 }
 
-                do_action( 'stm_lms_woocommerce_order_approved', $course, $user_id );
-//                do_action( 'stm_lms_woocommerce_send_message_approved', $course, $user_id, $order_id );
+//                do_action( 'stm_lms_woocommerce_order_approved', $course, $user_id );
+                do_action( 'stm_lms_woocommerce_send_message_approved', $course, $user_id, $order_id );
             }
         }
 
