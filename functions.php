@@ -21,6 +21,7 @@
         require_once __DIR__ . '/inc/classes/STM_Course.php';
         require_once __DIR__ . '/inc/classes/STM_Student_Progress.php';
         require_once __DIR__ . '/inc/classes/STM_Cart.php';
+        require_once __DIR__ . '/inc/classes/STM_Limit_Device.php';
 
         new LMS\inc\classes\STM_Cart();
         new LMS\inc\classes\STM_Course();

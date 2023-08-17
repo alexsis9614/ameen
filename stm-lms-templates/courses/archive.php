@@ -10,6 +10,9 @@
             'class'          => 'archive_grid',
         )
     );
+
+    $free_course   = STM_LMS_Options::get_option('stm_bundle_free_course');
+    $bundle_course = STM_LMS_Options::get_option('stm_bundle_course');
 ?>
 
 <div class="stm_lms_courses_wrapper">
@@ -86,6 +89,21 @@
                             array( 'args' => $featured_args )
                         );
                     }
+                }
+
+                if ( $free_course || $bundle_course ) {
+                    $bundles_args = array(
+                        'post__in'       => array( $free_course, $bundle_course ),
+                        'orderby'        => 'post__in',
+                        'bundle_courses' => true,
+                    );
+
+                    $bundles_args = wp_parse_args( $bundles_args, $args );
+
+                    STM_LMS_Templates::show_lms_template(
+                        'courses/grid',
+                        array( 'args' => $bundles_args )
+                    );
                 }
 
                 STM_LMS_Templates::show_lms_template(

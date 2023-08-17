@@ -139,7 +139,7 @@
 
             foreach ( $this->plans as $plan )
             {
-                $options[ self::price_key( $plan['name'] ) ] = esc_attr( $plan['name'] );
+                $options[ self::key( $plan['name'] ) ] = esc_attr( $plan['name'] );
             }
 
             $fields['course_files_pack']['fields']['course_files_plan'] = array(
