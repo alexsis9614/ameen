@@ -23,6 +23,7 @@ $(window).on('load', () => {
                     email: '',
                     code: '',
                     enter_password: '',
+                    enter_name: '',
                     password_re: '',
                     verify: false,
                     register: false,
@@ -120,6 +121,7 @@ $(window).on('load', () => {
                         'phone': vm.phone,
                         'register': vm.register,
                         'password': vm.enter_password,
+                        'name': vm.enter_name,
                         'password_re': vm.password_re
                     };
 

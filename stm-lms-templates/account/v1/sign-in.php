@@ -53,6 +53,17 @@
                     </div>
                 </template>
                 <template v-else-if="password">
+                    <template v-if="register">
+                        <div class="form-group">
+                            <label class="heading_font"><?php esc_html_e( 'Name', 'masterstudy-child' ); ?></label>
+                            <input class="form-control"
+                                   type="text"
+                                   name="login"
+                                   autocomplete="login"
+                                   v-model="enter_name"
+                                   placeholder="<?php esc_html_e( 'Enter name', 'masterstudy-child' ); ?>"/>
+                        </div>
+                    </template>
                     <div class="form-group">
                         <label class="heading_font"><?php esc_html_e( 'Password', 'masterstudy-child' ); ?></label>
                         <input class="form-control"

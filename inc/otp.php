@@ -374,6 +374,7 @@
                     $user_email   = $this->get_user_email( $valid_number );
 
                     if ( $register ) {
+                        $user_name       = $data['name'];
                         $pass_invalid    = $this->pass_invalid( $user_password, $user_password_re );
 
                         if ( $pass_invalid['invalid'] ) {
@@ -383,7 +384,16 @@
                         }
 
                         /* Now we have valid data */
-                        $user = wp_create_user( sanitize_user( $valid_number ), $user_password, $user_email );
+//                        $user = wp_create_user( sanitize_user( $user_name ), $user_password, $user_email );
+                        $user = wp_insert_user(
+                            array(
+                                'user_login'           => sanitize_user( $valid_number ),
+                                'display_name'         => $user_name,
+                                'user_nicename'        => $user_name,
+                                'user_pass'            => $user_password,
+                                'user_email'           => $user_email,
+                            )
+                        );
                     }
                     else {
                         $user = wp_signon( array(
