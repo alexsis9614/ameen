@@ -83,7 +83,7 @@
             $vars['id']         = get_the_ID();
             $vars['price']      = get_post_meta( $vars['id'], 'price', true );
             $vars['sale_price'] = STM_LMS_Course::get_sale_price( $vars['id'] );
-            $vars['bundle_courses'] = $args['bundle_courses'];
+            $vars['bundle_courses'] = $args['bundle_courses'] ?? 0;
 
             $id         = $vars['id'];
             $price      = $vars['price'];
