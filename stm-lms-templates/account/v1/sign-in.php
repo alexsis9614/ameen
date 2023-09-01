@@ -30,17 +30,30 @@
          v-bind:class="{'is_vue_loaded' : vue_loaded}">
 
         <div class="stm-lms-login__top">
-            <h3><?php esc_html_e('Enter phone number', 'masterstudy-child'); ?></h3>
-            <?php if ( is_page( $user_account ) ) : ?>
-                <p><?php esc_html_e('We\'ll send a confirmation code by sms', 'masterstudy-child'); ?></p>
-            <?php endif; ?>
+            <template v-if="limit || sent_limit">
+                <h3><?php esc_html_e('Application for limit update', 'masterstudy-child'); ?></h3>
+            </template>
+            <template v-else>
+                <h3><?php esc_html_e('Enter phone number', 'masterstudy-child'); ?></h3>
+                <?php if ( is_page( $user_account ) ) : ?>
+                    <p><?php esc_html_e('We\'ll send a confirmation code by sms', 'masterstudy-child'); ?></p>
+                <?php endif; ?>
+            </template>
 
             <?php do_action('stm_lms_login_end'); ?>
         </div>
 
         <div class="stm_lms_login_wrapper">
 
-            <form method="POST" @submit.prevent="formSubmit">
+            <template v-if="limit || sent_limit">
+                <transition name="slide-fade">
+                    <h4 class="stm_lms_request_limit_title">
+                        {{ message }}
+                    </h4>
+                </transition>
+            </template>
+
+            <form method="POST" @submit.prevent="formSubmit" v-if="!sent_limit">
                 <template v-if="verify">
                     <div class="form-group">
                         <label class="heading_font"><?php esc_html_e( 'Verification code', 'masterstudy-child' ); ?></label>
@@ -83,6 +96,8 @@
                         </div>
                     </template>
                 </template>
+                <template v-else-if="limit"></template>
+                <template v-else-if="sent_limit"></template>
                 <template v-else>
                     <div class="form-group">
                         <label class="heading_font"><?php esc_html_e( 'Phone', 'masterstudy-child' ); ?></label>
@@ -96,7 +111,7 @@
                     </div>
                 </template>
 
-                <div class="stm_lms_login_wrapper__actions">
+                <div class="stm_lms_login_wrapper__actions" :class="{'stm_lms_sending_limit_request': limit}" v-if="!sent_limit">
 
                     <button
                        type="submit"
@@ -105,6 +120,7 @@
                        v-bind:disabled="loading">
                         <span v-if="verify"><?php esc_html_e('Submit', 'masterstudy-child'); ?></span>
                         <span v-else-if="password"><?php esc_html_e('Submit', 'masterstudy-child'); ?></span>
+                        <span v-else-if="limit"><?php esc_html_e('Submit request', 'masterstudy-child'); ?></span>
                         <span v-else><?php esc_html_e('Get code', 'masterstudy-child'); ?></span>
                     </button>
 
@@ -123,9 +139,11 @@
 
         </div>
 
-        <transition name="slide-fade">
-            <div class="stm-lms-message" v-bind:class="status" v-if="message" v-html="message"></div>
-        </transition>
+        <template v-if="! limit && ! sent_limit">
+            <transition name="slide-fade">
+                <div class="stm-lms-message" v-bind:class="status" v-if="message" v-html="message"></div>
+            </transition>
+        </template>
 
     </div>
 

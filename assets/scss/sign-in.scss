@@ -57,11 +57,26 @@
 .stm-lms-lost-password,
 .stm-lms-sign-in{
     .stm-lms-message{
-        &.password{
+        &.password, &.sent_request_limit{
             background-color: #66BB6A;
             color: #fff;
         }
     }
+}
+
+.stm_lms_login_wrapper__actions{
+    &.stm_lms_sending_limit_request{
+        margin: 30px 0 0;
+        .btn{
+            margin: 0 auto;
+        }
+    }
+}
+
+.stm_lms_request_limit_title{
+    color: #fff;
+    text-align: center;
+    margin: 0;
 }
 
 #stm-lms-sign-in, #stm-lms-lost-password{

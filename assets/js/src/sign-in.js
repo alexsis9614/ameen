@@ -28,6 +28,8 @@ $(window).on('load', () => {
                     verify: false,
                     register: false,
                     password: false,
+                    limit: false,
+                    sent_limit: false,
                     resend: false,
                     message: '',
                     status: '',
@@ -65,6 +67,7 @@ $(window).on('load', () => {
                     let data = {
                         'email': vm.email,
                         'phone': vm.phone,
+                        'limit': vm.limit
                     };
 
                     vm.$http.post(url, data).then(
@@ -78,6 +81,13 @@ $(window).on('load', () => {
                             }
                             else if ( vm.status === 'password' ) {
                                 vm.password = true;
+                            }
+                            else if ( vm.status === 'limit' ) {
+                                vm.limit = true;
+                            }
+                            else if ( vm.status === 'sent_request_limit' ) {
+                                vm.limit = false;
+                                vm.sent_limit = true;
                             }
 
                             vm.resend = false;

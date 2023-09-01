@@ -1,4 +1,6 @@
 <?php
+    use LMS\inc\classes\STM_Limit_Device;
+
     new STM_THEME_CHILD_OTP();
 
     class STM_THEME_CHILD_OTP extends STM_LMS_Eskiz_Uz
@@ -156,9 +158,25 @@
                     }
 
                     if ( $user && method_exists($user, 'exists') && $user->exists() ) {
+                        $limit   = $data['limit'] ?? false;
+                        $device  = new STM_Limit_Device( $user );
+
+                        if ( $limit ) {
+                            $device->request();
+
+                            $status  = 'sent_request_limit';
+                            $message = esc_html__('Successfully submitted, we will contact you shortly', 'masterstudy-child');
+                        }
+                        else if ( ! $device->add() ) {
+                            $status  = 'limit';
+                            $message = esc_html__('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
+                        }
+                        else {
+                            $status  = 'password';
+                            $message = esc_html__('Enter a password for your account', 'masterstudy-child');
+                        }
+
                         $send    = true;
-                        $status  = 'password';
-                        $message = esc_html__('Enter a password for your account', 'masterstudy-child');
                     }
 
                     if ( $send ) {
