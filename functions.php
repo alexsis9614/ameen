@@ -27,7 +27,7 @@
         new LMS\inc\classes\STM_Course();
         new LMS\inc\classes\STM_Student_Progress();
 
-        add_action('after_setup_theme', function () {
+        add_action('after_switch_theme', function () {
             $limit_device = new LMS\inc\classes\STM_Limit_Device( 0 );
 
             $limit_device->db_table_create();
@@ -49,3 +49,15 @@
     if ( class_exists( 'Woocommerce' ) ) {
         require_once __DIR__ . '/inc/woocommerce.php';
     }
+
+    add_filter( 'elementor/widget/render_content', function ( $widget_content, $widget ) {
+        if ( 'accordion' === $widget->get_name() ) {
+            $widget_content = preg_replace(
+                '/<a class="elementor-accordion-title" href="">(.*?)<\/a>/',
+                '<span class="elementor-accordion-title">$1</span>',
+                $widget_content
+            );
+        }
+
+        return $widget_content;
+    }, 10, 2 );
