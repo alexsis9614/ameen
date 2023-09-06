@@ -47,15 +47,3 @@
     if ( class_exists( 'Woocommerce' ) ) {
         require_once __DIR__ . '/inc/woocommerce.php';
     }
-
-    add_filter( 'elementor/widget/render_content', function ( $widget_content, $widget ) {
-        if ( 'accordion' === $widget->get_name() ) {
-            $widget_content = preg_replace(
-                '/<a class="elementor-accordion-title" href="">(.*?)<\/a>/',
-                '<span class="elementor-accordion-title">$1</span>',
-                $widget_content
-            );
-        }
-
-        return $widget_content;
-    }, 10, 2 );

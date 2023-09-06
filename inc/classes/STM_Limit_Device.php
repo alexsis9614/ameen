@@ -16,6 +16,8 @@
             add_action( 'after_switch_theme', array( $this, 'db_table_create' ) );
 
             add_action( 'admin_menu', array( $this, 'add_submenu' ) );
+
+            add_action( 'admin_init', array( $this, 'init' ) );
         }
 
         public function get_table_name(): string
@@ -45,6 +47,23 @@
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
             dbDelta( $sql );
+        }
+
+        public function init()
+        {
+            if (
+                isset( $_REQUEST['page'] ) && 'lms-history-devices' === $_REQUEST['page'] &&
+                isset( $_REQUEST['action'] ) && 'clear-limit' === $_REQUEST['action'] &&
+                isset( $_REQUEST['user'] ) && ! empty( $_REQUEST['user'] )
+            ) {
+                check_admin_referer( 'bulk-users' );
+
+                $this->user = new \WP_User( $_REQUEST['user'] );
+
+                $this->delete();
+
+                wp_redirect( admin_url('users.php?page=lms-history-devices') );
+            }
         }
 
         public function add_submenu()
@@ -90,8 +109,6 @@
         public function check(): bool
         {
             $exhausted = false;
-
-            error_log( $this->get_limits() );
 
             if ( in_array('subscriber', $this->user->roles) && $this->get_limits() >= 3 ) {
                 $exhausted = true;
@@ -158,9 +175,38 @@
             return false;
         }
 
+        public function delete(): bool
+        {
+            global $wpdb;
+
+            return $wpdb->delete( $this->get_table_name(),
+                array(
+                    'user_id'   => $this->user->ID,
+                )
+            );
+        }
+
         public function request(): bool
         {
-            return true;
+//            $admin_email = get_option('admin_email');
+            $admin_email = '6763410@gmail.com';
+            $subject     = __('Request to update device limit', 'masterstudy-child');
+            $message     = "
+                %s <br />
+                Name: %s <br />
+                Phone: %s <br />
+            ";
+            $message     = sprintf( $message,
+                __('The user is requesting an update of the login limit from another device', 'masterstudy-child'),
+                $this->user->display_name,
+                $this->user->__get('billing_phone')
+            );
+            $headers     = array(
+                'From: ' . get_bloginfo('name') . ' <info@ameen.uz>',
+                'content-type: text/html'
+            );
+
+            return wp_mail( $admin_email, $subject, $message, $headers );
         }
 
         public function get_current_date(): string

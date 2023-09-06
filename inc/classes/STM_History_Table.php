@@ -87,8 +87,6 @@
                 'total_items' => $wp_user_search->get_total(),
                 'per_page'    => $users_per_page,
             ) );
-
-            error_log( print_r( $args, true ) );
         }
 
         /**
@@ -115,7 +113,8 @@
             $user_object->filter = 'display';
             $email      = $user_object->user_email;
             $phone 		= $user_object->__get('billing_phone');
-            $admin_url 	= get_edit_user_link( $user_object->ID );
+            $stm_device = new STM_Limit_Device( $user_object->ID );
+            $device 	= $stm_device->get_limits();
 
             if ( $this->is_site_users )
                 $url = "site-users.php?id={$this->site_id}&amp;";
@@ -132,17 +131,14 @@
                 $actions = array();
 
                 if ( current_user_can( 'edit_user',  $user_object->ID ) ) {
-                    $actions['edit'] = '<a href="' . $edit_link . '">' . __( 'Edit', 'stm-volunteer-management' ) . '</a>';
+                    $edit = "<strong> $user_object->display_name <strong>";
                 }
                 else {
                     $edit = "<strong>$user_object->user_login</strong><br />";
                 }
 
-                if ( !is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) ) {
-                    $actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete', 'stm-volunteer-management' ) . "</a>";
-                }
-                if ( is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'remove_user', $user_object->ID ) ) {
-                    $actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url."action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove', 'stm-volunteer-management' ) . "</a>";
+                if ( ! is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) ) {
+                    $actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?page=lms-history-devices&action=clear-limit&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Clear limit', 'stm-volunteer-management' ) . "</a>";
                 }
 
                 /**
@@ -182,20 +178,15 @@
                 $attributes = "$class$style";
 
                 switch ( $column_name ) {
-                    case 'cb':
-                        $r .= "<td $attributes>
-                                $checkbox
-                            </td>
-                        ";
-                        break;
+//                    case 'cb':
+//                        $r .= "<td $attributes>
+//                                $checkbox
+//                            </td>
+//                        ";
+//                        break;
                     case 'name':
                         $r .= "<td $attributes>
-                                    $avatar 
-                                    <a href='" . $admin_url . "'>
-                                        <strong>
-                                            $user_object->display_name
-                                        <strong>
-                                    </a>
+                                    $avatar
                                     $edit
                                </td>";
                         break;
@@ -204,6 +195,9 @@
                         break;
                     case 'phone':
                         $r .= "<td $attributes>$phone</td>";
+                        break;
+                    case 'device':
+                        $r .= "<td $attributes>$device</td>";
                         break;
                     default:
                         $r .= "<td $attributes>";
@@ -237,7 +231,6 @@
         public function get_columns(): array
         {
             return array(
-                'cb'      => '',
                 'name'    => __( 'Name', 'masterstudy-child' ),
                 'email'   => __( 'E-mail', 'masterstudy-child' ),
                 'phone'   => __( 'Phone Number', 'masterstudy-child' ),
@@ -311,10 +304,6 @@
          */
         public function no_items()
         {
-            global $role;
-
-            var_dump($role);
-
             $user_counts = count_users();
 
             if( !isset( $user_counts['avail_roles'][ $this->role ] ) || $user_counts['avail_roles'][ $this->role ] == 0 ){
