@@ -11,6 +11,13 @@
             $this->user = new \WP_User( $user_id );
         }
 
+        public function using_hooks()
+        {
+            add_action( 'after_switch_theme', array( $this, 'db_table_create' ) );
+
+            add_action( 'admin_menu', array( $this, 'add_submenu' ) );
+        }
+
         public function get_table_name(): string
         {
             global $wpdb;
@@ -38,6 +45,23 @@
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
             dbDelta( $sql );
+        }
+
+        public function add_submenu()
+        {
+            add_submenu_page(
+                'users.php',
+                __('History Devices Login', 'masterstudy-child'),
+                __('History Devices', 'masterstudy-child'),
+                'list_users',
+                'lms-history-devices',
+                array( $this, 'page_list_history_device' )
+            );
+        }
+
+        public function page_list_history_device()
+        {
+            \STM_LMS_Templates::show_lms_template('admin/list-history');
         }
 
         public function get_limits( $check_user_hash = false ): int

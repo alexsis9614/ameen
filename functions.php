@@ -27,11 +27,9 @@
         new LMS\inc\classes\STM_Course();
         new LMS\inc\classes\STM_Student_Progress();
 
-        add_action('after_switch_theme', function () {
-            $limit_device = new LMS\inc\classes\STM_Limit_Device( 0 );
+        $limit_device = new LMS\inc\classes\STM_Limit_Device( 0 );
 
-            $limit_device->db_table_create();
-        });
+        $limit_device->using_hooks();
     }
 
     if ( class_exists( 'STM_LMS_BuddyPress' ) ) {
