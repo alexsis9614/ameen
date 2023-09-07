@@ -188,8 +188,7 @@
 
         public function request(): bool
         {
-//            $admin_email = get_option('admin_email');
-            $admin_email = '6763410@gmail.com';
+            $admin_email = get_option('admin_email');
             $subject     = __('Request to update device limit', 'masterstudy-child');
             $message     = "
                 %s <br />
