@@ -59,11 +59,19 @@ stm_lms_register_style( 'expiration/main' );
                     <div class="stm_lms_instructor_courses__single--inner">
 
                         <div class="stm_lms_instructor_courses__single--terms" v-if="course.terms">
-                            <div class="stm_lms_instructor_courses__single--term"
-                                 v-for="(term, key) in course.terms"
-                                 v-html="term" v-if="key === 0">
+                            <div class="stm_lms_instructor_courses__single--term" v-for="(term, key) in course.terms">
+                                <a :href="'<?php echo esc_url( STM_LMS_Course::courses_page_url() ); ?>' + '?terms[]=' + term.term_id + '&category[]=' + term.term_id" v-if="key === 0">
+                                    {{ term.name }}
+                                </a>
                             </div>
                         </div>
+
+<!--                        <div class="stm_lms_instructor_courses__single--terms" v-if="course.terms">-->
+<!--                            <div class="stm_lms_instructor_courses__single--term"-->
+<!--                                 v-for="(term, key) in course.terms"-->
+<!--                                 v-html="term" v-if="key === 0">-->
+<!--                            </div>-->
+<!--                        </div>-->
 
                         <div class="stm_lms_instructor_courses__single--title">
                             <a v-bind:href="course.link">

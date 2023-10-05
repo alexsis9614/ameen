@@ -34,6 +34,7 @@
         $curriculum      = new LMS\inc\classes\STM_Curriculum;
         $plans           = $curriculum->plans;
         $author_id       = intval( get_post_field( 'post_author', $post_id ) );
+        $_plans_object   = new Lms\inc\classes\STM_Plans;
 
         foreach ( $sections as $index => $section_info ) {
             $curriculum    = ( ! empty( $section_info['items'] ) ) ? $section_info['items'] : array();
@@ -45,7 +46,7 @@
                     <div class="stm-curriculum-section__info">
                         <span><?php echo wp_kses_post( $section_info['number'] ); ?></span>
                         <?php if ( ! empty( $section_info['title'] ) ) : ?>
-                            <h5><?php echo wp_kses_post( html_entity_decode( $section_info['title'] ) ); ?></h5>
+                            <h5><?php echo wp_kses_post( urldecode( $section_info['title'] ) ); ?></h5>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
                         $user     = STM_LMS_User::get_current_user();
                         $user_id  = absint( $user['id'] );
 
-                        if ( ! STM_LMS_Instructor::is_instructor( $user_id ) || $user_id !== $author_id ) {
+                        if ( ( ! STM_LMS_Instructor::is_instructor( $user_id ) || $user_id !== $author_id ) && $_plans_object->enable( $post_id ) ) {
                             $user_plan   = Lms\inc\classes\STM_Plans::get_user_meta_key( $user_id, $post_id );
                             $course_plan = Lms\inc\classes\STM_Plans::get_curriculum_meta_key( $curriculum_item, $post_id, $user_plan );
 
