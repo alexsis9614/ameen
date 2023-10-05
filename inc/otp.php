@@ -42,6 +42,8 @@
                 'login-otp',
                 'login-verify',
                 'create_account',
+                'lost_password',
+                'reset_password',
             );
 
             add_filter('wpcfto_options_page_setup', array( $this, 'options' ), 20, 1);
@@ -158,27 +160,27 @@
                     }
 
                     if ( $user && method_exists($user, 'exists') && $user->exists() ) {
-                        $limit   = $data['limit'] ?? false;
-                        $device  = new STM_Limit_Device( $user );
-
-                        if ( $limit ) {
-                            $send = $device->request();
-
-                            if ( $send ) {
-                                $status  = 'sent_request_limit';
-                                $message = esc_html__('Successfully submitted, we will contact you shortly', 'masterstudy-child');
-                            }
-                        }
-                        else if ( ! $device->add() ) {
-                            $send    = true;
-                            $status  = 'limit';
-                            $message = esc_html__('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
-                        }
-                        else {
+//                        $limit   = $data['limit'] ?? false;
+//                        $device  = new STM_Limit_Device( $user );
+//
+//                        if ( $limit ) {
+//                            $send = $device->request();
+//
+//                            if ( $send ) {
+//                                $status  = 'sent_request_limit';
+//                                $message = esc_html__('Successfully submitted, we will contact you shortly', 'masterstudy-child');
+//                            }
+//                        }
+//                        else if ( ! $device->add() ) {
+//                            $send    = true;
+//                            $status  = 'limit';
+//                            $message = esc_html__('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
+//                        }
+//                        else {
                             $send    = true;
                             $status  = 'password';
                             $message = esc_html__('Enter a password for your account', 'masterstudy-child');
-                        }
+//                        }
                     }
 
                     if ( $send ) {
@@ -201,9 +203,13 @@
             }
         }
 
-        public function lost_password()
+        public function lost_password( $data = array() )
         {
-            check_ajax_referer( $this->prefix . 'lost_password' );
+            $doing_ajax = wp_doing_ajax();
+
+            if ( $doing_ajax ) {
+                check_ajax_referer($this->prefix . 'lost_password');
+            }
 
             $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
             $status       = 'error';
@@ -211,8 +217,11 @@
                 'message' => $message,
                 'status'  => $status,
             );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
+
+            if ( $doing_ajax ) {
+                $request_body = file_get_contents( 'php://input' );
+                $data         = json_decode( $request_body, true );
+            }
 
             if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
                 $valid_number = $this->valid_phone( $data['phone'] );
@@ -253,12 +262,21 @@
                 }
             }
 
-            wp_send_json( $response );
+            if ( $doing_ajax ) {
+                wp_send_json( $response );
+            }
+            else {
+                return $response;
+            }
         }
 
-        public function reset_password()
+        public function reset_password( $data = array() )
         {
-            check_ajax_referer( $this->prefix . 'lost_password' );
+            $doing_ajax = wp_doing_ajax();
+
+            if ( $doing_ajax ) {
+                check_ajax_referer($this->prefix . 'lost_password');
+            }
 
             $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
             $status       = 'error';
@@ -266,8 +284,11 @@
                 'message' => $message,
                 'status'  => $status,
             );
-            $request_body = file_get_contents( 'php://input' );
-            $data         = json_decode( $request_body, true );
+
+            if ( $doing_ajax ) {
+                $request_body = file_get_contents( 'php://input' );
+                $data         = json_decode( $request_body, true );
+            }
 
             if ( isset( $data['phone'] ) && ! empty( $data['phone'] ) ) {
                 $valid_number = $this->valid_phone( $data['phone'] );
@@ -300,15 +321,23 @@
                     $response     = array(
                         'message'   => esc_html__('Password changed successfully', 'masterstudy-child'),
                         'status'    => 'success',
-                        'user_page' => STM_LMS_User::user_page_url()
                     );
+
+                    if ( $doing_ajax ) {
+                        $response['user_page'] = STM_LMS_User::user_page_url();
+                    }
                 }
                 else {
                     $response['message'] = esc_html__('Validation phone number error', 'masterstudy-child');
                 }
             }
 
-            wp_send_json( $response );
+            if ( $doing_ajax ) {
+                wp_send_json( $response );
+            }
+            else {
+                return $response;
+            }
         }
 
         /**
