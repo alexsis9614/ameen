@@ -15,8 +15,8 @@
     add_filter( 'elementor/widget/render_content', function ( $widget_content, $widget ) {
         if ( 'accordion' === $widget->get_name() ) {
             $widget_content = preg_replace(
-                '/<a class="elementor-accordion-title" href="">(.*?)<\/a>/',
-                '<span class="elementor-accordion-title">$1</span>',
+                '/<a class="elementor-accordion-title" (.*?)>(.*?)<\/a>/',
+                '<span class="elementor-accordion-title" $1>$2</span>',
                 $widget_content
             );
         }
