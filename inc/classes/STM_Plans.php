@@ -24,7 +24,7 @@
         public function enable( $course_id ): bool
         {
             if ( ! empty( $this->plans ) ) {
-                foreach ($this->plans as $plan) {
+                foreach ( $this->plans as $plan ) {
                     $price = self::price( $course_id, $plan['name'] );
                     if ( ! empty( $price ) ) {
                         return true;
@@ -55,19 +55,19 @@
             return delete_user_meta( $user_id, self::user_meta_key( $course_id ), self::key( $plan ) );
         }
 
-        public static function curriculum_meta_key( $course_id, $plan ): string
+        public static function curriculum_meta_key( $plan ): string
         {
-            return 'course_plan_' . self::key( $plan ) . '_' . $course_id;
+            return 'course_plan_' . self::key( $plan );
         }
 
-        public static function get_curriculum_meta_key( $post_id, $course_id, $plan )
+        public static function get_curriculum_meta_key( $post_id, $plan )
         {
-            return get_post_meta( $post_id, self::curriculum_meta_key( $course_id, $plan ), true );
+            return get_post_meta( $post_id, self::curriculum_meta_key( $plan ), true );
         }
 
-        public static function update_curriculum_meta_key( $post_id, $course_id, $plan, $value )
+        public static function update_curriculum_meta_key( $post_id, $plan, $value )
         {
-            return update_post_meta( $post_id, self::curriculum_meta_key( $course_id, $plan ), $value );
+            return update_post_meta( $post_id, self::curriculum_meta_key( $plan ), $value );
         }
 
         public static function key( $plan ): string

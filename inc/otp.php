@@ -60,6 +60,8 @@
             }
 
             add_action('rest_api_init', array( $this, 'api_init' ) );
+
+            add_action( 'stm_lms_current_user_data', array( $this, 'current_user_data' ), 20, 1 );
         }
 
         public function api_init()
@@ -68,6 +70,24 @@
                 if ( empty( $route ) ) continue;
                 require_once sprintf("%s/%s.php", $this->path_api, $route);
             }
+        }
+
+        public function current_user_data( $user_data )
+        {
+            if ( ! is_array( $user_data ) ) {
+                $user_data = array();
+            }
+
+            if ( ! empty( $user_data ) ) {
+                $billing_phone  = get_user_meta( $user_data['id'], 'billing_phone', true );
+                $shipping_phone = get_user_meta( $user_data['id'], 'shipping_phone', true );
+
+                $phone = $billing_phone ?: $shipping_phone;
+
+                $user_data['phone'] = $this->valid_phone( $phone );
+            }
+
+            return $user_data;
         }
 
         public function pass_invalid( $password, $password_re ): array
@@ -418,6 +438,7 @@
                 $user_password    = $data['password'];
                 $user_password_re = $data['password_re'];
                 $register         = $data['register'];
+                $position         = $data['position'] ?? 'form';
 
                 if ($valid_number) {
                     $user_email   = $this->get_user_email( $valid_number );
@@ -474,7 +495,10 @@
                         }
 
                         if ( ! is_wp_error( $user ) && $user && $user->exists() ) {
-                            if ( STM_LMS_Instructor::is_instructor( $user->ID ) ) {
+                            if ( 'modal' === $position ) {
+                                $user_page = $_SERVER['HTTP_REFERER'];
+                            }
+                            else if ( STM_LMS_Instructor::is_instructor( $user->ID ) ) {
                                 $user_page = STM_LMS_User::user_page_url($user->ID, true);
                             }
                             else {
@@ -494,7 +518,10 @@
                         else {
                             $message   = esc_html__('Successfully logged in. Redirecting...', 'masterstudy-child');
 
-                            if ( STM_LMS_Instructor::is_instructor( $user->ID ) ) {
+                            if ( 'modal' === $position ) {
+                                $user_page = $_SERVER['HTTP_REFERER'];
+                            }
+                            else if ( STM_LMS_Instructor::is_instructor( $user->ID ) ) {
                                 $user_page = STM_LMS_User::user_page_url($user->ID, true);
                             }
                             else {

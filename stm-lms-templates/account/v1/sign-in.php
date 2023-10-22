@@ -1,4 +1,10 @@
 <?php
+    /**
+     * @var $form_position
+    */
+
+    $form_position = $form_position ?? 'form';
+
     wp_enqueue_style(
         'stm-lms-sign-in',
         STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/sign-in.css',
@@ -15,9 +21,10 @@
 
     $otp = new STM_THEME_CHILD_OTP();
 
-    wp_localize_script('stm-lms-sign-in', 'stm_lms_sign_in', array(
-        'actions' => $otp->actions,
-        'nonce'   => $otp->nonce,
+    wp_localize_script('stm-lms-sign-in', 'stm_lms_sign_in_' . $form_position, array(
+        'actions'             => $otp->actions,
+        'nonce'               => $otp->nonce,
+        'position'            => $form_position,
         'lost_password_nonce' => $otp->lost_password_nonce,
     ));
 
@@ -27,7 +34,7 @@
     $user_account        = ! empty( $settings['user_url'] ) ? $settings['user_url'] : 0;
 ?>
 
-    <div id="stm-lms-sign-in<?php if (isset($form_position)) esc_attr_e($form_position); ?>" class="stm-lms-sign-in active vue_is_disabled"
+    <div id="stm-lms-sign-in" class="stm-lms-sign-in active vue_is_disabled"
          v-bind:class="{'is_vue_loaded' : vue_loaded}">
 
         <div class="stm-lms-login__top">

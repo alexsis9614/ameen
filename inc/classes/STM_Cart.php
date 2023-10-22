@@ -5,9 +5,9 @@
     use STM_LMS_Helpers;
     use STM_LMS_Woocommerce;
     use WC_Order;
-    use STM_LMS_Curriculum;
     use STM_LMS_Options;
     use STM_LMS_User;
+    use STM_LMS_Course_Bundle;
 
     class STM_Cart extends STM_LMS_Cart
     {
@@ -51,7 +51,7 @@
 
         public function order_approved( $course, $user_id )
         {
-            if ( get_post_type( $course['item_id'] ) === STM_LMS_Curriculum::$courses_slug ) {
+            if ( get_post_type( $course['item_id'] ) === STM_Settings::$courses_slug ) {
                 $user_course = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( $user_id, $course['item_id'] ) );
                 $end_time    = STM_Course::get_end_time( $course['item_id'], $user_id );
 
@@ -116,7 +116,7 @@
             $courses = self::get_plans( $order_id );
 
             foreach ( $courses as $course ) {
-                if ( get_post_type( $course['item_id'] ) === STM_LMS_Curriculum::$courses_slug ) {
+                if ( get_post_type( $course['item_id'] ) === STM_Settings::$courses_slug ) {
                     STM_Plans::update_user_meta_key( $user_id, $course['item_id'], $course['plan'] );
                 }
 
@@ -162,7 +162,10 @@
             wp_send_json( $r );
         }
 
-        public static function _add_to_cart( $item_id, $user_id ) {
+        /**
+         * @throws \Exception
+         */
+        public static function _add_to_cart($item_id, $user_id ) {
 
             $response   = array();
             self::$plan = STM_Plans::key( $_GET['plan'] );
@@ -199,7 +202,10 @@
             return apply_filters( 'stm_lms_add_to_cart_r', $response, $item_id );
         }
 
-        public static function woo_add_to_cart( $item_id, $plan ) {
+        /**
+         * @throws \Exception
+         */
+        public static function woo_add_to_cart($item_id, $plan ) {
             $product_id = self::woo_create_product( $item_id, $plan );
 
             // Load cart functions which are loaded only on the front-end.

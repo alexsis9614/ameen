@@ -11,6 +11,8 @@
 
         public $_settings_name = 'stm_lms_settings';
 
+        public static $courses_slug = 'stm-courses';
+
         public function __construct()
         {
             parent::__construct();

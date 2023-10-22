@@ -19,11 +19,11 @@
 
     $level    = get_post_meta( $id, 'level', true );
     $duration = get_post_meta( $id, 'duration_info', true );
-    $lectures = STM_LMS_Course::curriculum_info( get_post_meta( $id, 'curriculum', true ) );
+    $lectures = STM_LMS_Course::curriculum_info( $id );
 ?>
 
 
-<div class="stm_lms_courses__single stm_lms_courses__single_animation <?php echo implode( ' ', $classes ); ?>">
+<div class="stm_lms_courses__single stm_lms_courses__single_animation <?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
 	<div class="stm_lms_courses__single__inner">
 
@@ -32,7 +32,8 @@
 			<?php
                 $image_args = array(
                     'id'       => $id,
-                    'img_size' => '370x200',
+                    'img_size' => $image_size ?? '370x200',
+                    'img_container_height' => $img_container_height ?? '',
                 );
 
                 if ( $bundle_courses && absint( $bundle_course ) === absint( $id ) ) {
@@ -71,16 +72,16 @@
 
 			<div class="stm_lms_courses__single--info_meta <?php echo ( $bundle_courses && absint( $bundle_course ) === absint( $id ) ) ? 'stm_lms_courses__single--info_meta__bottom' : '' ?>">
 				<?php
-					do_action(
-						'stm_lms_archive_card_price',
-						compact(
-							'price',
-							'sale_price',
-							$id
-						)
-					);
-					?>
-				<a href="<?php the_permalink(); ?>" class="button"><?php echo esc_html__( 'Preview', 'masterstudy-lms-learning-management-system' ); ?></a>
+                    do_action(
+                        'stm_lms_archive_card_price',
+                        compact(
+                            'price',
+                            'sale_price',
+                            'id'
+                        )
+                    );
+				?>
+				<a href="<?php the_permalink(); ?>"  class="button"><?php echo esc_html__( 'Preview', 'masterstudy-lms-learning-management-system' ); ?></a>
 			</div>
 
 		</div>

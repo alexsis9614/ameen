@@ -33,13 +33,25 @@ $(window).on('load', () => {
                     resend: false,
                     message: '',
                     status: '',
+					position: '',
                     object: {}
                 };
             },
             mounted: function () {
-                if (typeof stm_lms_sign_in !== 'undefined') {
-                    this.object = stm_lms_sign_in;
+				let object = {};
+
+                if ( typeof stm_lms_sign_in_form !== 'undefined' ) {
+					object = stm_lms_sign_in_form;
                 }
+				else if ( typeof stm_lms_sign_in_modal !== 'undefined' ) {
+					object = stm_lms_sign_in_modal;
+				}
+
+				this.object = object;
+
+				if ( this.object.position !== undefined ) {
+					this.position = this.object.position;
+				}
             },
             methods: {
                 formSubmit: function () {
@@ -132,6 +144,7 @@ $(window).on('load', () => {
                         'register': vm.register,
                         'password': vm.enter_password,
                         'name': vm.enter_name,
+						'position': vm.object.position,
                         'password_re': vm.password_re
                     };
 

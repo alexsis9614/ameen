@@ -7,7 +7,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <?php if ( $otp->otp_enable ) : ?>
-                    <?php STM_LMS_Templates::show_lms_template( 'account/v1/sign-in' ); ?>
+                    <?php STM_LMS_Templates::show_lms_template( 'account/v1/sign-in', array( 'form_position' => 'modal' ) ); ?>
                 <?php else : ?>
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">

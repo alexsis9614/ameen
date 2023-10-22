@@ -1,18 +1,18 @@
 <?php
+    /**
+     * @var $course_id
+     */
 
-/**
- * @var $course_id
- */
+    $total_progress = LMS\inc\classes\STM_Curriculum::get_total_progress( get_current_user_id(), $course_id );
 
-$total_progress = LMS\inc\classes\STM_Curriculum::get_total_progress( get_current_user_id(), $course_id );
+    if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
+        stm_lms_register_style( 'lesson/total_progress' );
 
-if ( ! empty( $total_progress ) && $total_progress['course_completed'] ) :
-	stm_lms_register_style( 'lesson/total_progress' );
-	if ( class_exists( 'STM_LMS_Certificate_Builder' ) ) {
-		wp_register_script( 'jspdf', STM_LMS_URL . '/assets/vendors/jspdf.umd.js', array(), stm_lms_custom_styles_v() );
-		wp_enqueue_script( 'stm_generate_certificate', STM_LMS_URL . '/assets/js/certificate_builder/generate_certificate.js', array( 'jspdf', 'stm_certificate_fonts' ), stm_lms_custom_styles_v() );
-	}
-	?>
+        if ( class_exists( 'STM_LMS_Certificate_Builder' ) ) {
+            wp_register_script( 'jspdf', STM_LMS_URL . '/assets/vendors/jspdf.umd.js', array(), stm_lms_custom_styles_v() );
+            wp_enqueue_script( 'stm_generate_certificate', STM_LMS_URL . '/assets/js/certificate_builder/generate_certificate.js', array( 'jspdf', 'stm_certificate_fonts' ), stm_lms_custom_styles_v() );
+        }
+?>
 
 	<div class="stm_lms_course_completed_summary">
 

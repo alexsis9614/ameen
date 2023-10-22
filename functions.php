@@ -1,5 +1,5 @@
 <?php
-    define('STM_THEME_CHILD_VERSION', '1.0.1');
+    define('STM_THEME_CHILD_VERSION', '1.0.9');
     define('STM_THEME_CHILD_DIRECTORY', get_stylesheet_directory());
     define('STM_THEME_CHILD_DIRECTORY_URI', get_stylesheet_directory_uri());
 
@@ -9,12 +9,13 @@
     require_once __DIR__ . '/inc/otp.php';
     require_once __DIR__ . '/inc/elementor.php';
     require_once __DIR__ . '/inc/testimonial.php';
+    require_once __DIR__ . '/inc/fix-crop-images-svg.php';
 
     if ( is_plugin_active('telegram-bot/telegram-bot.php') ) {
         require_once __DIR__ . '/inc/telegram.php';
     }
 
-    if ( class_exists( 'STM_LMS_Curriculum' ) && class_exists( 'STM_LMS_Course' ) ) {
+    if ( class_exists( 'MasterStudy\Lms\Repositories\CurriculumMaterialRepository' ) && class_exists( 'STM_LMS_Course' ) ) {
         require_once __DIR__ . '/inc/classes/STM_Settings.php';
         require_once __DIR__ . '/inc/classes/STM_Plans.php';
         require_once __DIR__ . '/inc/classes/STM_Curriculum.php';
@@ -25,6 +26,13 @@
 
         new LMS\inc\classes\STM_Cart();
         new LMS\inc\classes\STM_Course();
+
+        if ( class_exists( 'STM_LMS_Quiz' ) ) {
+            require_once __DIR__ . '/inc/classes/STM_Quiz.php';
+
+            new LMS\inc\classes\STM_Quiz();
+        }
+
         new LMS\inc\classes\STM_Student_Progress();
 
         $limit_device = new LMS\inc\classes\STM_Limit_Device( 0 );

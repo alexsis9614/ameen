@@ -1,29 +1,76 @@
 <?php
     namespace LMS\inc\classes;
 
-    use STM_LMS_Curriculum;
-    use STM_LMS_Options;
+    use MasterStudy\Lms\Repositories\CurriculumMaterialRepository;
     use STM_LMS_Helpers;
+    use STM_LMS_Lesson;
     use STM_LMS_User;
 
     class STM_Course extends STM_Curriculum
     {
-        public $courses_slug;
-
         public function __construct()
         {
             parent::__construct();
 
-            $this->courses_slug = STM_LMS_Curriculum::$courses_slug;
+            add_action( 'save_post_' . self::$courses_slug, array( $this, 'save' ) );
 
-            add_action( 'save_post_' . $this->courses_slug, array( $this, 'save' ) );
+            add_filter( 'masterstudy_lms_course_custom_fields', array( $this, 'course_field' ) );
 
-            add_filter( 'stm_wpcfto_fields', array( $this, 'fields' ) );
+            remove_action('stm_lms_before_item_template_start', 'STM_LMS_Course::check_course_item');
+            add_action( 'stm_lms_before_item_template_start', array( $this, 'check_course_item' ), 10, 2 );
+        }
+
+        public function check_course_item( $course_id, $item_id )
+        {
+            $materials = ( new CurriculumMaterialRepository() )->get_course_materials( apply_filters( 'wpml_object_id', $course_id, self::$courses_slug ) );
+
+            $materials = self::curriculum_filter( $course_id, $materials );
+
+            $is_scorm  = ( '0' == $item_id ); // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+
+            if ( empty( $materials ) && ! $is_scorm ) {
+                STM_LMS_User::js_redirect( get_permalink( $course_id ) );
+            }
+
+            if ( ! in_array( intval( $item_id ), $materials, true ) && ! $is_scorm ) {
+                STM_LMS_User::js_redirect( STM_LMS_Lesson::get_lesson_url( $course_id, ( self::get_first_lesson( $course_id ) ) ) );
+            }
+        }
+
+        public function course_field( $fields )
+        {
+            $count_plans = count( $this->plans );
+
+            if ( $count_plans > 0 ) {
+
+                $count_fields      = count( $fields );
+                $pricing_fields    = array();
+                $expiration_fields = array();
+
+                foreach ( $this->plans as $plan_index => $plan ) {
+
+                    $pricing_fields[ $count_fields ] = $this->pricing( $plan );
+
+                    $expiration_fields[ $count_fields ] = $this->expiration( $plan );
+
+                    if ( $count_plans === ( $plan_index + 1 ) ) {
+                        $pricing_fields[ $count_fields ][ 'custom_html' ]    = '<hr /> <div><b>' . __( 'Access - time limit for plans', 'masterstudy-child' ) . '</b></div>';
+                        $expiration_fields[ $count_fields ][ 'custom_html' ] = '<hr />';
+                    }
+
+                    $count_fields++;
+
+                }
+
+                $fields = array_merge( $fields, $pricing_fields, $expiration_fields );
+            }
+
+            return $fields;
         }
 
         public function save( $course_id )
         {
-            if ( get_post_type( $course_id ) !== $this->courses_slug ) return;
+            if ( get_post_type( $course_id ) !== self::$courses_slug ) return;
 
             $_field_name = 'curriculum_plans';
 
@@ -48,86 +95,20 @@
             }
         }
 
-        public function fields( $settings ): array
+        public function pricing( $plan ): array
         {
-            if ( ! empty( $settings ) && ! empty( $this->plans ) )
-            {
-                foreach ( $settings as $index => $sections )
-                {
-                    if ( $index === 'stm_courses_settings' )
-                    {
-                        foreach ( $sections as $section_name => $section )
-                        {
-                            $fields = array();
+            $currency = STM_LMS_Helpers::get_currency();
 
-                            if ( 'section_accessibility' === $section_name )
-                            {
-                                $fields = $this->accessibility( $section );
-                            }
-                            else if ( 'section_files' === $section_name )
-                            {
-                                $fields = $this->files( $section );
-                            }
-                            else if ( 'section_expiration' === $section_name )
-                            {
-                                $fields = $this->expiration( $section );
-                            }
-
-                            if ( ! empty( $fields ) ) {
-                                $settings[ $index ][ $section_name ]['fields'] = $fields;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return $settings;
-        }
-
-        public function accessibility( $section )
-        {
-            $fields      = $section['fields'];
-            $first_field = array_splice($fields, 0, 4);
-
-            $decimals_num = STM_LMS_Options::get_option( 'decimals_num', 2 );
-            $zeros        = str_repeat( '0', intval( $decimals_num ) - 1 );
-            $step         = "0.{$zeros}1";
-            $currency     = STM_LMS_Helpers::get_currency();
-
-            $new_fields = $first_field;
-
-            $count_plans = count( $this->plans );
-            foreach ( $this->plans as $plan_index => $plan ) {
-                $new_fields[ self::price_key( $plan['name'] ) ] = array(
-                    'type'        => 'number',
-                    'label'       => sprintf(
-                    /* translators: %s: number */
-                        esc_html__( 'Price %s (%s)', 'masterstudy-child' ),
-                        $plan['name'], $currency
-                    ),
-                    'placeholder' => sprintf(
-                        esc_html__( 'Leave empty if course is free', 'masterstudy-child' ),
-                        $currency
-                    ),
-                    'sanitize'    => 'wpcfto_save_number',
-                    'step'        => $step,
-                    'columns'     => 50,
-                    'dependency'  => array(
-                        'key'   => 'not_single_sale',
-                        'value' => 'empty'
-                    )
-                );
-
-                if ( $plan_index === 0 ) {
-                    $new_fields[ self::price_key( $plan['name'] ) ]['group'] = 'started';
-                }
-
-                if ( $count_plans === ($plan_index + 1) ) {
-                    $new_fields[ self::price_key( $plan['name'] ) ]['group'] = 'ended';
-                }
-            }
-
-            return array_merge( $new_fields, $fields );
+            return array(
+                'type'        => 'number',
+                'name'        => self::price_key( $plan['name'] ),
+                'label'       => sprintf(
+                /* translators: %s: number */
+                    esc_html__( 'Price %s ( %s )', 'masterstudy-child' ),
+                    $plan['name'], trim( $currency )
+                ),
+                'required'    => false,
+            );
         }
 
         public function files( $section ): array
@@ -155,44 +136,27 @@
             return $fields;
         }
 
-        public function expiration( $section )
+        public function expiration( $plan ): array
         {
-            $fields      = $section['fields'];
+            $_field_key = 'end_time_' . STM_Plans::key( $plan['name'] );
 
-//            unset( $fields['end_time'] );
-
-            unset( $fields['end_time']['group'] );
-
-            $plans_count = count( $this->plans );
-
-            foreach ( $this->plans as $key => $plan ) {
-                $_field_key = 'end_time_' . STM_Plans::key( $plan['name'] );
-
-                $fields[ $_field_key ] =  array(
-                    'type'       => 'number',
-                    'label'      => sprintf(
-                        esc_html__( 'Course %s expiration (days)', 'masterstudy-child' ),
-                        sprintf(
-                            esc_html__('%s plan'),
-                            STM_Plans::key( $plan['name'] )
-                        )
-                    ),
-                    'value'      => '',
-                    'dependency' => array(
-                        'key'   => 'expiration_course',
-                        'value' => 'not_empty',
-                    ),
-                );
-
-                if ( $plans_count === ($key + 1) ) {
-                    $fields[ $_field_key ]['group'] = 'ended';
-                }
-            }
-
-            return $fields;
+            return array(
+                'type'       => 'number',
+                'name'       => $_field_key,
+                'label'      => sprintf(
+                    esc_html__( 'Course %s expiration (days)', 'masterstudy-child' ),
+                    sprintf(
+                        esc_html__('%s plan'),
+                        STM_Plans::key( $plan['name'] )
+                    )
+                ),
+                'required'   => false,
+            );
         }
 
         public static function get_time_expiration( $course_id, $user_id = 0 ) {
+            $expiration = get_post_meta( $course_id, 'expiration_course', true );
+
             if ( self::get() ) {
                 if ( ! $user_id ) {
                     $user_id = get_current_user_id();
@@ -205,7 +169,17 @@
                 $_field_key = 'end_time';
             }
 
-            return get_post_meta( $course_id, $_field_key, true );
+            return $expiration ? get_post_meta( $course_id, $_field_key, true ) : false;
+        }
+
+        public static function get_course_duration_time( $course_id ) {
+            $expiration_days = self::get_time_expiration( $course_id );
+
+            if ( empty( $expiration_days ) ) {
+                return 0;
+            }
+
+            return intval( $expiration_days ) * DAY_IN_SECONDS;
         }
 
         public static function get_end_time( $course_id, $user_id = 0 ) {
