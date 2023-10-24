@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Master Study Child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-23 11:40+0000\n"
+"POT-Creation-Date: 2023-08-04 12:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,8 +16,15 @@ msgstr ""
 "X-Loco-Version: 2.6.4; wp-6.2.2\n"
 "X-Domain: masterstudy-child"
 
+#. %1$s Course Title, %2$s User Login
+#: inc/classes/STM_Curriculum.php:417
+#, php-format
+msgid ""
+"%1$s completed the %2$s on the course %3$s with a Passing grade of %4$s%%"
+msgstr ""
+
 #. %s: number of questions
-#: stm-lms-templates/lesson/curriculum.php:123
+#: stm-lms-templates/lesson/curriculum.php:127
 #, php-format
 msgid "%s questions"
 msgstr ""
@@ -26,29 +33,21 @@ msgstr ""
 msgid "Accept to send notifications"
 msgstr ""
 
-#: inc/classes/STM_Course.php:57
-msgid "Access - time limit for plans"
-msgstr ""
-
-#: inc/otp.php:144 inc/otp.php:234 inc/otp.php:301 inc/otp.php:375
-#: inc/otp.php:422 inc/sms/eskiz-uz.php:63
+#: inc/otp.php:120 inc/otp.php:188 inc/otp.php:243 inc/otp.php:306
+#: inc/otp.php:353 inc/sms/eskiz-uz.php:63
 msgid "An error occurred, please try again later"
-msgstr ""
-
-#: stm-lms-templates/account/v1/sign-in.php:42
-msgid "Application for limit update"
 msgstr ""
 
 #: inc/telegram.php:102
 msgid "Approve"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:83
-msgid "Archive bundle"
+#: inc/classes/STM_Curriculum.php:132
+msgid "Assignment status change."
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:65
-#: stm-lms-templates/lesson/finish_score_popup.php:119
+#: stm-lms-templates/global/completed_info.php:64
+#: stm-lms-templates/lesson/finish_score_popup.php:120
 msgid "Assignments:"
 msgstr ""
 
@@ -58,7 +57,7 @@ msgstr ""
 msgid "Available in \"%s\" plan"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:61
+#: inc/classes/STM_Settings.php:56
 msgid "Basic"
 msgstr ""
 
@@ -70,7 +69,7 @@ msgstr ""
 msgid "Booking an exam"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:144
+#: stm-lms-templates/lesson/finish_score_popup.php:145
 msgid "Booking zoom"
 msgstr ""
 
@@ -86,22 +85,6 @@ msgstr ""
 msgid "Browse..."
 msgstr ""
 
-#: inc/classes/STM_Settings.php:94
-msgid "Bundle Course"
-msgstr ""
-
-#: inc/classes/STM_Settings.php:89
-msgid "Bundle Free Course"
-msgstr ""
-
-#: inc/classes/STM_Settings.php:84
-msgid "Bundle settings"
-msgstr ""
-
-#: stm-lms-templates/courses/grid.php:67
-msgid "Bundles Courses"
-msgstr ""
-
 #: inc/telegram.php:103
 msgid "Cancel"
 msgstr ""
@@ -110,7 +93,7 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:134
+#: stm-lms-templates/lesson/finish_score_popup.php:135
 msgid "Certificate"
 msgstr ""
 
@@ -118,8 +101,8 @@ msgstr ""
 msgid "Change photo"
 msgstr ""
 
-#: stm-lms-templates/admin/list-history.php:3
-msgid "Cheatin&#8217; uh?"
+#: inc/classes/STM_Curriculum.php:429
+msgid "Close"
 msgstr ""
 
 #: inc/widgets/class-testimonials.php:136
@@ -131,10 +114,10 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
-#: stm-lms-templates/lesson/navigation.php:26
-#: stm-lms-templates/lesson/navigation.php:37
-#: stm-lms-templates/lesson/navigation.php:37
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:109
+#: stm-lms-templates/lesson/navigation.php:25
+#: stm-lms-templates/lesson/navigation.php:43
+#: stm-lms-templates/lesson/navigation.php:43
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:101
 msgid "Completed"
 msgstr ""
 
@@ -149,20 +132,17 @@ msgid "Completed time: %s"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:88
-#: stm-lms-templates/account/v1/sign-in.php:103
+#: stm-lms-templates/account/v1/sign-in.php:72
 msgid "Confirm password"
 msgstr ""
 
 #: stm-lms-templates/global/buy-button/mixed.php:69
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:110
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:102
 msgid "Continue"
 msgstr ""
 
-#: inc/classes/STM_History_Table.php:237
-msgid "Count Device"
-msgstr ""
-
 #: inc/telegram.php:326 inc/telegram.php:403 inc/telegram.php:438
+#, php-format
 msgid "Count orders: %d"
 msgstr ""
 
@@ -171,7 +151,7 @@ msgstr ""
 msgid "Coupon codes: %s"
 msgstr ""
 
-#: inc/classes/STM_Course.php:147
+#: inc/classes/STM_Course.php:186
 #, php-format
 msgid "Course %s expiration (days)"
 msgstr ""
@@ -187,7 +167,7 @@ msgstr ""
 msgid "Course price: %s"
 msgstr ""
 
-#: stm-lms-templates/lesson/curriculum.php:28
+#: stm-lms-templates/lesson/curriculum.php:19
 msgid "Course sections"
 msgstr ""
 
@@ -201,6 +181,7 @@ msgid "Created date: %s"
 msgstr ""
 
 #: inc/telegram.php:126
+#, php-format
 msgid "Created new order #%d"
 msgstr ""
 
@@ -219,29 +200,41 @@ msgstr ""
 msgid "Day: %s"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:50
+#: inc/classes/STM_Settings.php:45
 msgid "Description"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:120
-#: stm-lms-templates/account/v1/sign-in.php:139
+#: stm-lms-templates/account/v1/sign-in.php:115
 msgid "Didn't get the code? Wrong number?"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:83
+#: settings/curriculum/tpls/item.php:49
+msgid "Do you really want to delete this item from section?"
+msgstr ""
+
+#: stm-lms-templates/global/completed_info.php:82
 msgid "Download your Certificate"
 msgstr ""
 
-#: inc/classes/STM_History_Table.php:235
+#: stm-lms-templates/account/v1/sign-in.php:79
 msgid "E-mail"
 msgstr ""
 
-#: inc/otp.php:605
+#: settings/curriculum/tpls/item.php:56
+msgid "Edit"
+msgstr ""
+
+#: inc/otp.php:534 inc/referral-program.php:46
 msgid "Email"
 msgstr ""
 
-#: inc/otp.php:586
+#: inc/otp.php:500
 msgid "Enable OTP auth"
+msgstr ""
+
+#: inc/referral-program.php:27
+msgid "Enable referral program"
 msgstr ""
 
 #: stm-lms-templates/global/buy-button/mixed.php:57
@@ -265,38 +258,34 @@ msgstr ""
 msgid "Enrolled date (last one)"
 msgstr ""
 
-#: inc/routes/create_account.php:36
-msgid "Enter a name for your account"
-msgstr ""
-
-#: inc/otp.php:202
+#: inc/otp.php:161
 msgid "Enter a password for your account"
 msgstr ""
 
-#: inc/otp.php:168 inc/otp.php:262
+#: inc/otp.php:144 inc/otp.php:213
 msgid "Enter confirmation code"
 msgstr ""
 
-#: stm-lms-templates/account/v1/sign-in.php:85
-msgid "Enter name"
-msgstr ""
-
 #: woocommerce/myaccount/form-lost-password.php:79
-#: stm-lms-templates/account/v1/sign-in.php:94
+#: stm-lms-templates/account/v1/sign-in.php:63
 msgid "Enter password"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:99
-#: stm-lms-templates/account/v1/sign-in.php:117
+#: stm-lms-templates/account/v1/sign-in.php:94
 msgid "Enter phone"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:50
-#: stm-lms-templates/account/v1/sign-in.php:45
+#: stm-lms-templates/account/v1/sign-in.php:34
 msgid "Enter phone number"
 msgstr ""
 
-#: inc/otp.php:603
+#: stm-lms-templates/account/v1/sign-in.php:84
+msgid "Enter your E-mail"
+msgstr ""
+
+#: inc/otp.php:532 inc/referral-program.php:44
 msgid "Eskiz.uz API credentials"
 msgstr ""
 
@@ -304,7 +293,7 @@ msgstr ""
 msgid "Exam name"
 msgstr ""
 
-#: inc/otp.php:99
+#: inc/otp.php:75
 msgid "Fill in the required password fields"
 msgstr ""
 
@@ -318,7 +307,7 @@ msgid "General Settings"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:113
-#: stm-lms-templates/account/v1/sign-in.php:132
+#: stm-lms-templates/account/v1/sign-in.php:108
 msgid "Get code"
 msgstr ""
 
@@ -327,11 +316,11 @@ msgstr ""
 msgid "Get course"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:26 stm-lms-templates/modals/plans.php:51
+#: inc/classes/STM_Settings.php:21 stm-lms-templates/modals/plans.php:51
 msgid "Get plan"
 msgstr ""
 
-#: inc/classes/STM_Cart.php:192 inc/classes/STM_Cart.php:196
+#: inc/classes/STM_Cart.php:157 inc/classes/STM_Cart.php:161
 msgid "Go to Cart"
 msgstr ""
 
@@ -339,28 +328,28 @@ msgstr ""
 msgid "Hey, Please Login"
 msgstr ""
 
-#: inc/classes/STM_Limit_Device.php:74
-msgid "History Devices"
-msgstr ""
-
-#: inc/classes/STM_Limit_Device.php:73
-msgid "History Devices Login"
-msgstr ""
-
 #. URI of the theme
 #. Author URI of the theme
 msgid "http://stylemix.net"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:41
+#: inc/classes/STM_Course.php:121
+msgid "Leave empty if course is free"
+msgstr ""
+
+#: inc/classes/STM_Settings.php:36
 msgid "List plans"
 msgstr ""
 
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:126
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:118
 msgid "Loading courses."
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:48
+#: settings/curriculum/field.php:27
+msgid "Loading curriculum..."
+msgstr ""
+
+#: stm-lms-templates/lesson/finish_score_popup.php:49
 msgid "Loading your statistics"
 msgstr ""
 
@@ -381,20 +370,20 @@ msgstr ""
 msgid "MasterStudy Child Theme"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:103
+#: stm-lms-templates/lesson/finish_score_popup.php:104
 msgid "Media:"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:45
+#: stm-lms-templates/global/completed_info.php:44
 msgid "Multimedia:"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:45 inc/classes/STM_History_Table.php:234
-#: stm-lms-templates/account/v1/sign-in.php:79
+#: inc/classes/STM_Settings.php:40
 msgid "Name"
 msgstr ""
 
 #: inc/telegram.php:489
+#, php-format
 msgid "New appointment booking #%d"
 msgstr ""
 
@@ -402,16 +391,11 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: stm-lms-templates/lesson/navigation.php:87
+#: stm-lms-templates/lesson/navigation.php:91
 msgid "Next lesson"
 msgstr ""
 
-#: inc/classes/STM_History_Table.php:311
-#, php-format
-msgid "No %s yet. Once they sign up they'll appear here."
-msgstr ""
-
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:125
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:117
 msgid "No courses."
 msgstr ""
 
@@ -431,25 +415,20 @@ msgstr ""
 msgid "One Time Payment"
 msgstr ""
 
-#: inc/classes/STM_History_Table.php:317
-#, php-format
-msgid "Oops. Your search didn't return any %s. Please try again."
-msgstr ""
-
-#: inc/otp.php:580
+#: inc/otp.php:494 inc/referral-program.php:21
 msgid "OTP"
 msgstr ""
 
-#: inc/otp.php:581
+#: inc/otp.php:495 inc/referral-program.php:22
 msgid "OTP Settings"
 msgstr ""
 
-#: inc/otp.php:592
+#: inc/otp.php:506 inc/referral-program.php:33
 msgid "OTP Testing"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:35
-#: stm-lms-templates/lesson/finish_score_popup.php:95
+#: stm-lms-templates/global/completed_info.php:34
+#: stm-lms-templates/lesson/finish_score_popup.php:96
 msgid "Pages:"
 msgstr ""
 
@@ -457,27 +436,28 @@ msgstr ""
 msgid "Pagination"
 msgstr ""
 
-#: stm-lms-templates/lesson/navigation.php:18
+#: stm-lms-templates/lesson/navigation.php:17
 msgid "Passed"
 msgstr ""
 
-#: inc/otp.php:615 stm-lms-templates/account/v1/sign-in.php:89
+#: inc/otp.php:544 inc/referral-program.php:56
+#: stm-lms-templates/account/v1/sign-in.php:58
 msgid "Password"
 msgstr ""
 
-#: stm-lms-templates/account/v1/sign-in.php:98
+#: stm-lms-templates/account/v1/sign-in.php:67
 msgid "Password again"
 msgstr ""
 
-#: inc/otp.php:342
+#: inc/otp.php:281
 msgid "Password changed successfully"
 msgstr ""
 
-#: inc/otp.php:110
+#: inc/otp.php:86
 msgid "Password too long"
 msgstr ""
 
-#: inc/otp.php:104
+#: inc/otp.php:80
 msgid "Passwords do not match"
 msgstr ""
 
@@ -486,12 +466,8 @@ msgid "Pending"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:93
-#: stm-lms-templates/account/v1/sign-in.php:111
+#: stm-lms-templates/account/v1/sign-in.php:88
 msgid "Phone"
-msgstr ""
-
-#: inc/classes/STM_History_Table.php:236
-msgid "Phone Number"
 msgstr ""
 
 #: inc/telegram.php:463
@@ -499,16 +475,11 @@ msgstr ""
 msgid "Phone number: %s"
 msgstr ""
 
-#: inc/classes/STM_Curriculum.php:71
-#, php-format
-msgid "Plan - %s"
-msgstr ""
-
-#: inc/classes/STM_Settings.php:35
+#: inc/classes/STM_Settings.php:30
 msgid "Plans"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:36
+#: inc/classes/STM_Settings.php:31
 msgid "Plans settings"
 msgstr ""
 
@@ -517,18 +488,22 @@ msgstr ""
 msgid "Popular course on sale: %s"
 msgstr ""
 
-#: stm-lms-templates/lesson/navigation.php:49
+#: inc/classes/STM_Curriculum.php:604
+msgid "Post Type is required"
+msgstr ""
+
+#: stm-lms-templates/lesson/navigation.php:54
 msgid "Prev lesson"
 msgstr ""
 
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:103
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:95
 msgid "Preview Course"
 msgstr ""
 
 #. %s: number
-#: inc/classes/STM_Course.php:107
+#: inc/classes/STM_Course.php:117
 #, php-format
-msgid "Price %s ( %s )"
+msgid "Price %s (%s)"
 msgstr ""
 
 #: inc/bookit/main.php:235
@@ -543,8 +518,8 @@ msgstr ""
 msgid "Progress (increasing)"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:55
-#: stm-lms-templates/lesson/finish_score_popup.php:111
+#: stm-lms-templates/global/completed_info.php:54
+#: stm-lms-templates/lesson/finish_score_popup.php:112
 msgid "Quizzes:"
 msgstr ""
 
@@ -557,6 +532,7 @@ msgid "Register"
 msgstr ""
 
 #: inc/telegram.php:462
+#, php-format
 msgid "Register new user #%d"
 msgstr ""
 
@@ -564,12 +540,8 @@ msgstr ""
 msgid "Registration"
 msgstr ""
 
-#: inc/classes/STM_Limit_Device.php:192
-msgid "Request to update device limit"
-msgstr ""
-
 #: woocommerce/myaccount/form-lost-password.php:122
-#: stm-lms-templates/account/v1/sign-in.php:141
+#: stm-lms-templates/account/v1/sign-in.php:117
 msgid "Resend code"
 msgstr ""
 
@@ -588,21 +560,16 @@ msgid "Save changes"
 msgstr ""
 
 #. %s will be replaced with a string.
-#: stm-lms-templates/global/completed_info.php:22
+#: stm-lms-templates/global/completed_info.php:21
 #, php-format
 msgid "Score %s"
 msgstr ""
 
-#: stm-lms-templates/lesson/curriculum.php:44
-#, php-format
-msgid "Section %s"
-msgstr ""
-
-#: inc/classes/STM_Course.php:128
+#: inc/classes/STM_Course.php:159
 msgid "Select Plan"
 msgstr ""
 
-#: inc/classes/STM_Course.php:118
+#: inc/classes/STM_Course.php:149
 msgid "Select plan"
 msgstr ""
 
@@ -620,7 +587,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:132
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:124
 msgid "Show more"
 msgstr ""
 
@@ -628,7 +595,7 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:66
+#: inc/classes/STM_Settings.php:61
 msgid "Standard"
 msgstr ""
 
@@ -636,7 +603,7 @@ msgstr ""
 msgid "Stars"
 msgstr ""
 
-#: stm-lms-templates/account/private/parts/enrolled-courses.php:108
+#: stm-lms-templates/account/private/parts/enrolled-courses.php:100
 msgid "Start Course"
 msgstr ""
 
@@ -654,6 +621,7 @@ msgid "Student name: %s"
 msgstr ""
 
 #: inc/telegram.php:514
+#, php-format
 msgid "Student the course completed #%d"
 msgstr ""
 
@@ -667,24 +635,20 @@ msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:111
 #: woocommerce/myaccount/form-lost-password.php:112
-#: stm-lms-templates/account/v1/sign-in.php:129
-#: stm-lms-templates/account/v1/sign-in.php:130
+#: stm-lms-templates/account/v1/sign-in.php:106
+#: stm-lms-templates/account/v1/sign-in.php:107
 msgid "Submit"
 msgstr ""
 
-#: stm-lms-templates/account/v1/sign-in.php:131
-msgid "Submit request"
-msgstr ""
-
-#: inc/otp.php:399
+#: inc/otp.php:330
 msgid "Successfully code validation. Think of a password for your account"
 msgstr ""
 
-#: inc/otp.php:482 inc/otp.php:519
+#: inc/otp.php:402 inc/otp.php:436
 msgid "Successfully logged in. Redirecting..."
 msgstr ""
 
-#: inc/otp.php:513
+#: inc/otp.php:430
 msgid "Successfully register in. Redirecting..."
 msgstr ""
 
@@ -692,16 +656,16 @@ msgstr ""
 msgid "Testimonial Video"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:55
+#: inc/classes/STM_Settings.php:50
 msgid "Text button"
 msgstr ""
 
-#: inc/otp.php:393
+#: inc/otp.php:324
 msgid "The check code is not correct"
 msgstr ""
 
-#: inc/classes/STM_Limit_Device.php:199
-msgid "The user is requesting an update of the login limit from another device"
+#: inc/classes/STM_Curriculum.php:614
+msgid "Title is required"
 msgstr ""
 
 #: woocommerce/checkout/form-billing.php:102
@@ -721,10 +685,11 @@ msgid "Total earned: %s"
 msgstr ""
 
 #: inc/telegram.php:328 inc/telegram.php:405 inc/telegram.php:440
+#, php-format
 msgid "User count registered: %d"
 msgstr ""
 
-#: inc/otp.php:257
+#: inc/otp.php:208
 msgid "User is not exists"
 msgstr ""
 
@@ -732,16 +697,17 @@ msgstr ""
 msgid "Users Settings"
 msgstr ""
 
-#: inc/otp.php:214 inc/otp.php:281 inc/otp.php:351
+#: inc/otp.php:172 inc/otp.php:232 inc/otp.php:287
 msgid "Validation phone number error"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:62
-#: stm-lms-templates/account/v1/sign-in.php:67
+#: stm-lms-templates/account/v1/sign-in.php:47
 msgid "Verification code"
 msgstr ""
 
 #: inc/sms/eskiz-uz.php:209
+#, php-format
 msgid ""
 "Verification code: %d \n"
 "Dont tell it to anyone."
@@ -755,39 +721,47 @@ msgstr ""
 msgid "Video url"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:139
+#: stm-lms-templates/lesson/finish_score_popup.php:140
 msgid "View course"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:71
+#: inc/classes/STM_Settings.php:66
 msgid "VIP"
 msgstr ""
 
 #: woocommerce/myaccount/form-lost-password.php:51
-#: stm-lms-templates/account/v1/sign-in.php:47
+#: stm-lms-templates/account/v1/sign-in.php:36
 msgid "We'll send a confirmation code by sms"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:21
+#: inc/classes/STM_Curriculum.php:634
+msgid "Wrong post type"
+msgstr ""
+
+#: stm-lms-templates/global/completed_info.php:20
 msgid "You have completed the course:"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:82
+#: stm-lms-templates/lesson/finish_score_popup.php:83
 msgid "You have NOT completed the course"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:83
+#: stm-lms-templates/lesson/finish_score_popup.php:84
 msgid "You have successfully completed the course"
+msgstr ""
+
+#: inc/classes/STM_Curriculum.php:128
+msgid "Your assignment has been checked"
 msgstr ""
 
 #: stm-lms-templates/global/buy-button/mixed.php:242
 msgid "Your membership account is not approved!"
 msgstr ""
 
-#: stm-lms-templates/lesson/curriculum.php:172
+#: stm-lms-templates/lesson/curriculum.php:176
 msgid "Your progress"
 msgstr ""
 
-#: stm-lms-templates/lesson/finish_score_popup.php:76
+#: stm-lms-templates/lesson/finish_score_popup.php:77
 msgid "Your score"
 msgstr ""
