@@ -10,6 +10,7 @@
     require_once __DIR__ . '/inc/elementor.php';
     require_once __DIR__ . '/inc/testimonial.php';
     require_once __DIR__ . '/inc/fix-crop-images-svg.php';
+    require_once __DIR__ . '/inc/scripts_and_styles.php';
 
     if ( is_plugin_active('telegram-bot/telegram-bot.php') ) {
         require_once __DIR__ . '/inc/telegram.php';
@@ -23,9 +24,11 @@
         require_once __DIR__ . '/inc/classes/STM_Student_Progress.php';
         require_once __DIR__ . '/inc/classes/STM_Cart.php';
         require_once __DIR__ . '/inc/classes/STM_Limit_Device.php';
+        require_once __DIR__ . '/inc/classes/STM_Breadcrumb.php';
 
         new LMS\inc\classes\STM_Cart();
         new LMS\inc\classes\STM_Course();
+        new LMS\inc\classes\STM_Breadcrumb();
 
         if ( class_exists( 'STM_LMS_Quiz' ) ) {
             require_once __DIR__ . '/inc/classes/STM_Quiz.php';

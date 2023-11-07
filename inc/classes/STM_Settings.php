@@ -18,6 +18,38 @@
             parent::__construct();
 
             add_filter( 'wpcfto_options_page_setup', array( $this, 'options' ), 20, 1 );
+
+            add_filter( 'redux/stm_option/field/typography/custom_fonts', array( $this, 'custom_fonts' ) );
+
+            add_filter( 'stm_lms_current_user_data', array( $this, 'current_user_data' ) );
+        }
+
+        public function current_user_data( $user_data )
+        {
+            $current_user = wp_get_current_user();
+            $stm_lms_user_avatar = get_user_meta( $current_user->ID, 'stm_lms_user_avatar', true );
+
+            if ( empty( $stm_lms_user_avatar ) ) {
+                $avatar_size         = 215;
+                $avatar_url          = STM_THEME_CHILD_DIRECTORY_URI . '/assets/images/avatar.svg';
+                $user_data['avatar'] = "
+                    <img src='" . $avatar_url . "' class='avatar photo' width='{$avatar_size}' />
+                ";
+                $user_data['avatar_url'] = $avatar_url;
+            }
+
+            return $user_data;
+        }
+
+        public function custom_fonts( $fonts )
+        {
+            if ( is_array( $fonts ) ) {
+                $fonts['Custom Fonts'] = array(
+                    "Inter" => 'inter'
+                );
+            }
+
+            return $fonts;
         }
 
         public function options( $setups )

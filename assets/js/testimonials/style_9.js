@@ -62,6 +62,20 @@
                 onVimeoIframeAPIReady(sectionVideo, videoId);
             }
         });
+
+		$('[data-toggle="tab"]').click(function () {
+			let $this = $(this),
+				href  = $this.attr('href'),
+				tab   = $( '.tab-content .tab-pane' ),
+				tab_current = $( '.tab-content .tab-pane' + href );
+
+			if ( tab.length > 0 ) {
+				$this.parents('.nav-tabs').find('> li').removeClass('active');
+				$this.parent().addClass('active');
+				tab.removeClass('active');
+				tab_current.addClass('active');
+			}
+		});
     });
 
     function onYouTubeIframeAPIReady( element, id ) {

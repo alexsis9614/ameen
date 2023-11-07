@@ -1,0 +1,230 @@
+.header_2_top_bar__inner {
+    display: none;
+}
+.header_top_bar .stm_lang{
+    font-weight: 500;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+.header_top_bar .stm_lang img{
+    width: 32px;
+    height: 24px;
+    margin: 0 7px 0 0;
+}
+.header_top_bar__inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header_top_bar .top_bar_info{
+    margin: 8px 0;
+}
+.header_top_bar .header_login_url a{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.header_2 .header_top{
+    padding: 16px 0;
+}
+
+.transparent_header_off .header_default{
+    padding: 0;
+    border-bottom: 1px solid #ECECEC;
+}
+
+.header_2 .stm_lms_categories{
+    background: #F2F2F2;
+    padding: 14px 25px;
+    width: 138px;
+    height: 48px;
+    border-radius: 8px;
+    font-size: 0;
+    display: flex;
+    align-items: center;
+    margin: 0 16px 0 0;
+}
+
+.header_2 .stm_lms_categories--title{
+    color: #1A1A18;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    padding: 0 0 0 10px;
+}
+
+.header_2 .stmlms-hamburger{
+    font-size: 17px;
+}
+
+.header_2 .header_top,
+.header_2 .center-unit{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header_2 .center-unit{
+    position: relative;
+}
+
+.header_2 .stm_lms_courses_search{
+    position: relative;
+}
+
+.header_2 .search-courses-input--icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    line-height: 1;
+    width: 45px;
+    height: 45px;
+
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+
+.header_2 .stm_courses_search{
+    margin-right: 50px;
+}
+
+.header_2 #search-courses-input{
+    width: 460px;
+    height: 48px;
+    border: 2px solid #323D66;
+    background: none;
+    border-radius: 8px;
+    font: 400 16px/1.2 'Inter', sans-serif;
+    color: #97999D;
+    padding: 0 0 0 45px;
+}
+
+.header_2 .stm_lms_courses_search__button{
+    position: absolute;
+    top: 0;
+    right: 2px;
+    padding: 11px 5px;
+    max-width: 105px;
+    min-width: auto;
+    width: 100%;
+    text-align: center;
+    border-radius: 7px;
+    margin: 4px 2px 0 0;
+    font: 400 15px/1.2 'Inter', sans-serif;
+    letter-spacing: .4px;
+    background-color: #323D66;
+    text-transform: none;
+}
+
+.center-unit .header_main_menu_wrapper .header-menu > li > a{
+    font-size: 16px;
+    font-weight: 600;
+    position: relative;
+    color: #1A1A18;
+}
+
+.center-unit .header_main_menu_wrapper .header-menu > li > a:after{
+    content: '';
+    position: absolute;
+}
+
+.header_main_menu_wrapper .header-menu>li{
+    padding: 0 17px;
+}
+
+.header_2 #stm_lms_courses_search .autocomplete ul{
+    width: 100%;
+    background: #fff;
+}
+
+.autocomplete ul li a{
+    color: #1A1A18;
+}
+
+.header_2 #stm_lms_courses_search .autocomplete-list li{
+    margin: 0;
+}
+
+.header_2 #stm_lms_courses_search .autocomplete-list li a{
+    padding: 8px 5px 5px 10px;
+}
+
+.autocomplete ul{
+    background: #fff;
+    padding: 0;
+}
+
+.autocomplete ul:before{
+    border-bottom-color: #323d66;
+}
+
+.stm_searchbox .autocomplete ul li.focus-list a,
+body.theme-masterstudy .header_2 .stm_lms_courses_search .autocomplete ul li.focus-list a,
+.autocomplete ul li a:hover,
+.autocomplete ul li.focus-list a {
+    background: #323d66;
+    color: #fff !important;
+}
+
+.autocomplete ul li a{
+    background: #fff;
+}
+
+.header_2 .right-unit .btn{
+    text-transform: none;
+    font-weight: 500;
+}
+
+.header_2 .stm_lms_categories_dropdown{
+    margin-top: 10px;
+}
+
+.masterstudy-theme #wrapper .stm_lms_categories_dropdown__parents .sbc_h:hover{
+    background: #323d66;
+    color: #fff;
+}
+
+.header_top_bar .stm_lms_bi_link{
+    font-size: 14px;
+}
+
+.header_top_bar .stm_lms_bi_link[data-lms-modal="become_instructor"]{
+    margin: 0 105px 0 0;
+}
+
+.header_top_bar .stm_lms_bi_link svg{
+    margin: 0 10px 0 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.header_top_bar .stm_lms_bi_link span{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.header_top_bar .stm_lms_bi_link:hover span{
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.stm_header_links a.loading:before{
+    border-color: #fff;
+}
+
+.header_2 .magic_line:after{
+    border: none;
+}
+
+.header_2 .center-unit .header_main_menu_wrapper .header-menu > li.current_page_item > a{
+    color: #323D66;
+}
+
+.header_2 .center-unit .header_main_menu_wrapper .header-menu > li.current-menu-item > .magic_line{
+    height: 4px;
+    background-color: #323D66;
+    border-radius: 8px;
+    bottom: -12px;
+}

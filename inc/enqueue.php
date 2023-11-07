@@ -5,6 +5,37 @@
         }
     });
 
+    add_action( 'template_include', function ( $template ) {
+        global $wp_query;
+
+        if ( $wp_query->query_vars['lms_template'] === 'stm-lms-user-settings' ) {
+            wp_dequeue_script( 'stm-lms-edit_account' );
+            wp_deregister_script( 'stm-lms-edit_account' );
+
+            wp_enqueue_script(
+                'stm-lms-edit_account',
+                STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/edit_account.js',
+                array('vue.js', 'vue-resource.js'),
+                STM_THEME_CHILD_VERSION,
+                true
+            );
+            $data = wp_json_encode( STM_LMS_User::get_current_user() );
+            wp_add_inline_script('stm-lms-edit_account',
+                "var stm_lms_edit_account_info = {$data}");
+        }
+
+        if ( is_singular( 'stm-courses' ) ) {
+            wp_enqueue_style(
+                'stm-lms-child-course',
+                STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/course.css',
+                array(),
+                STM_THEME_CHILD_VERSION
+            );
+        }
+
+        return $template;
+    }, 100);
+
     function stm_theme_frontend_stylesheets() {
 
         wp_enqueue_script( 'owl.carousel' );

@@ -12,6 +12,8 @@
 	Text Domain: masterstudy-child
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 div#wpadminbar{
     display: block;
     position: fixed;
@@ -20,6 +22,54 @@ div#wpadminbar{
 body.home #wrapper #main > .container{
     max-width: 100%;
     padding: 0;
+}
+
+.btn.btn-default:after,
+.button:after,
+.textwidget .btn:after{
+    background-color: rgba(0,0,0,.2);
+}
+
+.stm-lms-wrapper{
+    padding-top: 0;
+}
+
+.stm_lms_breadcrumbs__header_2{
+    padding-top: 35px;
+}
+
+.stm_breadcrumbs_unit,
+.woocommerce-breadcrumb{
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 35px;
+}
+
+.stm_breadcrumbs_unit .navxtBreads{
+    display: flex;
+    align-items: center;
+}
+
+.stm_breadcrumbs_unit .navxtBreads>span,
+.stm_breadcrumbs_unit .navxtBreads>span a{
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: none;
+    color: #97999D;
+}
+
+.stm_breadcrumbs_unit .navxtBreads>span{
+    padding: 0 8px;
+}
+
+.stm_breadcrumbs_unit .navxtBreads>span:first-child{
+    padding-left: 0;
+}
+
+.stm_breadcrumbs_unit .navxtBreads>span .current-item{
+    color: #00264D;
+    font-weight: 700;
 }
 
 .stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--title h5{
@@ -44,6 +94,40 @@ body.home #wrapper #main > .container{
     background-color: var(--e-global-color-a01067b);
     border-color: var(--e-global-color-a01067b);
 }
+
+body.logged-in.admin-bar{
+    margin-top: 32px;
+}
+
+.container,
+.header_2 .container{
+    max-width: 1200px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+/*.col-md-12{*/
+/*    margin-top: -1px;*/
+/*    max-width: 1140px;*/
+/*    padding: 0px 7px 0px 7px;*/
+/*}*/
+/*.container{*/
+/*    max-width: 1140px;*/
+/*}*/
+/*.header_2 .container{*/
+/*    max-width: 1140px;*/
+/*}*/
+/*.pull-left {*/
+/*    color: white;*/
+/*}*/
+/*.transparent_header_off .header_default{*/
+/*    padding-top: 8px;*/
+/*    padding-bottom: 8px;*/
+/*}*/
+/*.main__content-title {*/
+/*    font-size: 36px;*/
+/*    line-height: 52px;*/
+/*    font-weight: 700;*/
+/*}*/
 
 @media screen and (max-width: 480px) {
     .stm_lms_user_info_top .stm_lms_user_info_top__sort{
@@ -350,6 +434,7 @@ div.stm_lms_courses__single--list.stm_lms_courses__single.style_2 div.stm_lms_co
         margin-bottom: 0;
     }
 }
+
 @media (max-width: 650px) {
     .stm_lms_courses__single--list.stm_lms_courses__single.style_3 div.stm_lms_courses__single__inner {
         flex-direction: column;

@@ -1,0 +1,87 @@
+.stm_lms_course__top{
+    margin: 0 0 24px;
+    text-align: center;
+}
+
+.stm_lms_course__top .stm_lms_course__title{
+    margin: 0;
+    font-size: 36px;
+    text-align: left;
+}
+
+.stm_lms_course__top .nav-tabs-wrapper{
+    padding: 35px 0 0;
+    min-width: 400px;
+    display: inline-block;
+    text-align: center;
+}
+
+.stm_lms_course__top .nav.nav-tabs{
+    margin: 0;
+    border-bottom: 3px solid #F0F0F0;
+    padding: 0 0 8px;
+}
+
+.stm_lms_course__top .nav.nav-tabs > li a,
+.stm_lms_course__top .nav.nav-tabs > li.active a{
+    background: none !important;
+    border: none !important;
+    padding: 0 10px;
+    font-size: 20px;
+}
+
+.stm_lms_course__top .nav.nav-tabs > li a{
+    color: #97999D;
+}
+
+.stm-lms-wrapper .stm_lms_course__image{
+    border: 1px solid #ECECEC;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.stm_lms_course__top .nav.nav-tabs > li.active a:after{
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 0;
+    right: 0;
+    background: #323D66;
+    height: 5px;
+    border-radius: 4px 4px 0 0;
+}
+
+.stm-lms-wrapper .stm_lms_course__published{
+    margin: 0 0 15px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #182F43;
+    text-transform: uppercase;
+}
+
+.stm_lms_course__top .nav.nav-tabs > li.active a{
+    color: #323D66 !important;
+}
+
+.stm-lms-wrapper .stm_lms_course__content p{
+    font-size: 16px;
+    color: #182F43;
+}
+
+.single_product_after_title .meta-unit .meta_values{
+    margin: 8px 0 0;
+}
+
+.single_product_after_title .meta-unit.teacher .value{
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: none;
+    color: #182F43;
+}
+
+.single_product_after_title .meta-unit .label{
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: #182F43;
+}

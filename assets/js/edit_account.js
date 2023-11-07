@@ -23,34 +23,29 @@
         // tell jQuery not to set contentType
         success: function success(data) {
           $parent.removeClass('loading-avatar');
-
-          if (data.file) {
+           if (data.file) {
             var $avatar_img = $parent.find('img');
             $avatar_img.remove();
             $parent.find('.stm-lms-user_avatar').append(data.file);
             console.log();
-            /*Set float menu image*/
 
+            /*Set float menu image*/
             float_menu_image();
           }
         }
       });
     });
-
     function float_menu_image() {
       var $float_menu = $('.stm_lms_user_float_menu__user');
-
       if ($float_menu.length) {
         $float_menu.find('img').attr('src', $('.stm-lms-user_avatar').find('img').attr('src'));
       }
     }
-
     $('.stm-lms-user-avatar-edit input').on('change', function () {
       var $this = $(this);
       var files = $this[0].files;
       var $parent = $this.closest('.stm-lms-user-avatar-edit');
       $parent.addClass('loading-avatar');
-
       if (files.length) {
         var file = files[0];
         var formData = new FormData();
@@ -67,7 +62,6 @@
           // tell jQuery not to set contentType
           success: function success(data) {
             $parent.removeClass('loading-avatar');
-
             if (data.file) {
               $parent.find('img').attr('src', data.file);
               float_menu_image();
@@ -81,19 +75,21 @@
       var $default_container = $('[data-container-open=".stm_lms_private_information"]');
       var $container = $('[data-container-open="' + $(this).attr('data-container') + '"]');
       var container_visible = $container.is(':visible');
-      /*Close all*/
 
+      /*Close all*/
       $('[data-container]').removeClass('active');
       $('[data-container-open]').slideUp();
-      /*Open Current*/
 
+      /*Open Current*/
       if (!container_visible) {
         $(this).addClass('active');
         $container.slideDown();
       } else {
         $default_container.slideDown();
       }
-    }); // $('.stm-lms-user_edit_profile_btn').on('click', function(e){
+    });
+
+    // $('.stm-lms-user_edit_profile_btn').on('click', function(e){
     //     e.preventDefault();
     //     console.log($(this).is(':visible'));
     //     $(this).toggleClass('active');
@@ -163,31 +159,24 @@
         },
         isChecked: function isChecked(choice, index, id) {
           var _this = this;
-
           var value = typeof _this.data.meta[id] !== 'undefined' ? _this.data.meta[id] : '';
-
           if (value) {
             value = value.split(',');
             var choiceIndex = value.indexOf(choice);
-
             if (choiceIndex > -1) {
               return true;
             }
           }
-
           return false;
         },
         checkboxChange: function checkboxChange(event, index, choice) {
           var _this = this;
-
           var checked = event.target.checked;
-
           if (typeof _this.additionalFields[index] !== 'undefined') {
             var id = _this.additionalFields[index].id;
             var value = typeof _this.data.meta[id] !== 'undefined' ? _this.data.meta[id] : '';
             value = value.split(',');
             var choiceIndex = value.indexOf(choice);
-
             if (!checked) {
               if (choiceIndex > -1) {
                 value.splice(choiceIndex, 1);
@@ -197,12 +186,10 @@
                 value.push(choice);
               }
             }
-
             var filtered = value.filter(function (el) {
               return el != '';
             });
             value = filtered.join(',');
-
             _this.$set(_this.data.meta, id, value);
           }
         },
@@ -220,12 +207,11 @@
             vm.loading = false;
             vm.message = response.body['message'];
             vm.status = response.body['status'];
-
             if (response.body['relogin']) {
               window.location.href = response.body['relogin'];
-            } // update Data
+            }
 
-
+            // update Data
             var data_fields = {
               'bio': '',
               'facebook': 'href',
@@ -235,7 +221,6 @@
               'first_name': '',
               'instagram': 'href'
             };
-
             for (var k in data_fields) {
               if (data_fields.hasOwnProperty(k)) {
                 if (data_fields[k]) {
@@ -249,12 +234,10 @@
         },
         loadImage: function loadImage(index) {
           var vm = this;
-
           if (typeof vm.additionalFields[index] !== 'undefined' && vm.$refs['file-' + index][0].files[0]) {
             var fileToUpload = vm.$refs['file-' + index][0].files[0];
             var extensions = typeof vm.additionalFields[index].extensions !== 'undefined' ? vm.additionalFields[index].extensions : '';
             vm.loading = true;
-
             if (fileToUpload) {
               var formData = new FormData();
               formData.append('file', fileToUpload);
