@@ -8,7 +8,7 @@
     add_action( 'template_include', function ( $template ) {
         global $wp_query;
 
-        if ( $wp_query->query_vars['lms_template'] === 'stm-lms-user-settings' ) {
+        if ( isset( $wp_query->query_vars['lms_template'] ) && $wp_query->query_vars['lms_template'] === 'stm-lms-user-settings' ) {
             wp_dequeue_script( 'stm-lms-edit_account' );
             wp_deregister_script( 'stm-lms-edit_account' );
 

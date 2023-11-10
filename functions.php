@@ -1,5 +1,5 @@
 <?php
-    define('STM_THEME_CHILD_VERSION', '1.0.9');
+    define('STM_THEME_CHILD_VERSION', '1.1.0');
     define('STM_THEME_CHILD_DIRECTORY', get_stylesheet_directory());
     define('STM_THEME_CHILD_DIRECTORY_URI', get_stylesheet_directory_uri());
 

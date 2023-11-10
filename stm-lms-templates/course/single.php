@@ -30,7 +30,7 @@
 ?>
 
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-8">
         <div class="stm_lms_course__top">
             <h1 class="stm_lms_course__title"><?php the_title(); ?></h1>
 
@@ -75,7 +75,7 @@
 		?>
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<?php STM_LMS_Templates::show_lms_template( 'course/sidebar' ); ?>
 	</div>
 </div>

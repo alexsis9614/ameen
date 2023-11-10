@@ -85,3 +85,142 @@
     font-size: 14px;
     color: #182F43;
 }
+
+.stm-lms__sidebar--info{
+    border: 1px solid #97999D;
+    border-radius: 6px;
+    padding: 24px 0 25px 0;
+}
+
+.stm-lms-course__lessons--list{
+    height: 270px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 24px;
+}
+
+.stm-lms-course__lessons{
+    padding-bottom: 8px;
+}
+
+/* width */
+.stm-lms-course__lessons--list::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+.stm-lms-course__lessons--list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+.stm-lms-course__lessons--list::-webkit-scrollbar-thumb {
+    background: #E6E8EC;
+    border-radius: 48px 0 0 48px;
+}
+
+/* Handle on hover */
+.stm-lms-course__lessons--list::-webkit-scrollbar-thumb:hover {
+    background: #E6E8EC;
+}
+
+.stm-lms-course__curriculum--title{
+    color: #182F43;
+    font-size: 22px;
+    line-height: 35px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    padding: 0 24px;
+}
+
+.stm-lms-course__lessons--item{
+    padding: 13px 10px 13px 18px;
+    border-radius: 6px;
+    background: #E6E8EC;
+    margin: 0 0 8px;
+    display: flex;
+}
+
+.stm-curriculum-item__icon{
+    margin: 4px 14px 0 0;
+}
+
+.stm-curriculum-item__name{
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+}
+
+.stm-lms__sidebar--actions{
+    border-top: 1px solid #E6E8EC;
+    padding: 24px 24px 0 24px;
+}
+
+.stm-lms__sidebar--old-price{
+    color: #707070;
+    font-size: 14px;
+    letter-spacing: .2px;
+}
+
+.stm-lms__sidebar--price{
+    margin: 8px 0 0;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: .2px;
+}
+
+.stm-lms__sidebar--percent{
+    padding: 4px;
+    background: #FF3253;
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    font-weight: 400;
+    border-radius: 4px;
+    vertical-align: top;
+    margin-left: 10px;
+}
+
+.stm-lms__sidebar--actions .stm-lms-buy-buttons{
+    margin: 24px 0 16px;
+}
+
+.stm-lms__sidebar--actions .stm-lms-buy-buttons .btn{
+    padding: 16px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: none;
+    background: #323D66 !important;
+    letter-spacing: 0.4px;
+}
+
+.stm-lms__sidebar--actions .stm-lms-wishlist{
+    border: 1px solid #707070;
+    border-radius: 8px;
+    padding: 14px 10px;
+    text-align: center;
+    margin: 0;
+}
+
+.stm-lms__sidebar--actions .stm-lms-wishlist i,
+.stm-lms__sidebar--actions .stm-lms-wishlist:hover i{
+    border: none !important;
+    width: 20px;
+    background: none !important;
+    color: #ff1f59 !important;
+}
+
+.stm-lms__sidebar--actions .stm-lms-wishlist span{
+    color: #1A1A18;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.stm-lms__sidebar--actions .stm-lms-wishlist.loading:before{
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
+    margin: -15px 0 0 -15px;
+}

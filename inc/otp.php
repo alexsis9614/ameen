@@ -180,27 +180,27 @@
                     }
 
                     if ( $user && method_exists($user, 'exists') && $user->exists() ) {
-//                        $limit   = $data['limit'] ?? false;
-//                        $device  = new STM_Limit_Device( $user );
-//
-//                        if ( $limit ) {
-//                            $send = $device->request();
-//
-//                            if ( $send ) {
-//                                $status  = 'sent_request_limit';
-//                                $message = esc_html__('Successfully submitted, we will contact you shortly', 'masterstudy-child');
-//                            }
-//                        }
-//                        else if ( ! $device->add() ) {
-//                            $send    = true;
-//                            $status  = 'limit';
-//                            $message = esc_html__('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
-//                        }
-//                        else {
+                        $limit   = $data['limit'] ?? false;
+                        $device  = new STM_Limit_Device( $user );
+
+                        if ( $limit ) {
+                            $send = $device->request();
+
+                            if ( $send ) {
+                                $status  = 'sent_request_limit';
+                                $message = esc_html__('Successfully submitted, we will contact you shortly', 'masterstudy-child');
+                            }
+                        }
+                        else if ( ! $device->add() ) {
+                            $send    = true;
+                            $status  = 'limit';
+                            $message = esc_html__('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
+                        }
+                        else {
                             $send    = true;
                             $status  = 'password';
                             $message = esc_html__('Enter a password for your account', 'masterstudy-child');
-//                        }
+                        }
                     }
 
                     if ( $send ) {

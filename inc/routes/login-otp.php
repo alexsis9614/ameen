@@ -7,14 +7,20 @@
                 'required' => true,
                 'sanitize_callback' => 'sanitize_text_field'
             ),
+            'limit' => array(
+                'required' => false,
+                'sanitize_callback' => 'rest_sanitize_boolean'
+            ),
         ),
         'callback' => function ( WP_REST_Request $request ) {
             $phone        = $request->get_param('phone');
+            $limit        = $request->get_param('limit');
 
             $otp          = new STM_THEME_CHILD_OTP();
             $valid_number = $otp->valid_phone( $phone );
             $data         = array(
-                'phone' => $valid_number
+                'phone' => $valid_number,
+                'limit' => $limit
             );
             $response     = $otp->sign_in( $data );
 
