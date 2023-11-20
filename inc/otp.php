@@ -141,7 +141,7 @@
                 check_ajax_referer( $this->nonce_action );
             }
 
-            $message      = esc_html__('An error occurred, please try again later', 'masterstudy-child');
+            $message      = __('An error occurred, please try again later', 'masterstudy-child');
             $status       = 'error';
             $response     = array(
                 'message' => $message,
@@ -157,25 +157,47 @@
                 $valid_number = $this->valid_phone( $data['phone'] );
 
                 if ( $valid_number ) {
-                    $user = get_user_by('login', sanitize_user( $valid_number ));
-                    $send = false;
+                    $password  = $data['password'] ?? false;
 
-                    if ( is_wp_error( $user ) || ! $user ) {
-                        $user_email = $this->get_user_email( $valid_number );
-                        $user       = get_user_by('email', $user_email);
+                    if ( ! $doing_ajax ) {
+                        $user = wp_signon( array(
+                            'user_login'    => $valid_number,
+                            'user_password' => $password,
+                            'remember'      => false
+                        ), is_ssl() );
 
                         if ( is_wp_error( $user ) || ! $user ) {
-                            $message = esc_html__('Enter confirmation code', 'masterstudy-child');
-
-                            if ( $this->testing ) {
-                                $send = $this->send_testing( $valid_number );
-                                $message .= ' - ' . $send;
+                            if ( 'incorrect_password' === $user->get_error_code() ) {
+                                $message = __('The password you entered is incorrect', 'masterstudy-child');
                             }
                             else {
-                                $send = $this->send( $valid_number );
+                                $message = $user->get_error_message();
                             }
+                        }
 
-                            $status = 'success';
+                        $send = true;
+                    }
+                    else {
+                        $user  = get_user_by('login', sanitize_user( $valid_number ));
+                        $send  = false;
+
+                        if ( is_wp_error( $user ) || ! $user ) {
+                            $user_email = $this->get_user_email( $valid_number );
+                            $user       = get_user_by('email', $user_email);
+
+                            if ( is_wp_error( $user ) || ! $user ) {
+                                $message = __('Enter confirmation code', 'masterstudy-child');
+
+                                if ( $this->testing ) {
+                                    $send = $this->send_testing( $valid_number );
+                                    $message .= ' - ' . $send;
+                                }
+                                else {
+                                    $send = $this->send( $valid_number );
+                                }
+
+                                $status = 'success';
+                            }
                         }
                     }
 
@@ -188,18 +210,23 @@
 
                             if ( $send ) {
                                 $status  = 'sent_request_limit';
-                                $message = esc_html__('Successfully submitted, we will contact you shortly', 'masterstudy-child');
+                                $message = __('Successfully submitted, we will contact you shortly', 'masterstudy-child');
                             }
                         }
                         else if ( ! $device->add() ) {
                             $send    = true;
                             $status  = 'limit';
-                            $message = esc_html__('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
+                            $message = __('Dear user, we have a limit of up to 3 devices per user. Leave a request and our staff will contact you if you want to reset the limit.', 'masterstudy-child');
+                        }
+                        else if ( ! $doing_ajax ) {
+                            $send    = true;
+                            $status  = 'success';
+                            $message = __('Successfully logged in', 'masterstudy-child');
                         }
                         else {
                             $send    = true;
                             $status  = 'password';
-                            $message = esc_html__('Enter a password for your account', 'masterstudy-child');
+                            $message = __('Enter a password for your account', 'masterstudy-child');
                         }
                     }
 
@@ -208,10 +235,16 @@
                             'message' => $message,
                             'status'  => $status,
                         );
+
+                        if ( ! $doing_ajax ) {
+                            if ( $user && method_exists( $user, 'exists' ) && $user->exists() ) {
+                                $response[ 'user' ] = $user;
+                            }
+                        }
                     }
                 }
                 else {
-                    $response['message'] = esc_html__('Validation phone number error', 'masterstudy-child');
+                    $response['message'] = __('Validation phone number error', 'masterstudy-child');
                 }
             }
 
