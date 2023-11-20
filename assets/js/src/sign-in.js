@@ -21,12 +21,14 @@ $(window).on('load', () => {
                     loading: false,
                     phone: '',
                     email: '',
+					phone_code: '998',
                     code: '',
                     enter_password: '',
                     enter_name: '',
                     password_re: '',
                     verify: false,
                     register: false,
+					sign_in: false,
                     password: false,
                     limit: false,
                     sent_limit: false,
@@ -54,6 +56,13 @@ $(window).on('load', () => {
 				}
             },
             methods: {
+				switchForms: function () {
+					let vm = this;
+
+					if ( ! vm.sign_in ) {
+						vm.sign_in = true;
+					}
+				},
                 formSubmit: function () {
                     let vm = this;
 

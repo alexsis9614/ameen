@@ -7,7 +7,7 @@
         }
         .stm_lms_login_wrapper{
             padding: 0;
-            background-color: transparent
+            background-color: transparent;
         }
         .stm_lms_login_wrapper__actions{
             flex-wrap: wrap;
@@ -92,8 +92,18 @@
         }
     }
     .stm_lms_footer_sign_in{
-        margin: 20px 0 0;
-        color: #fff;
+        margin: 32px 0 0;
+        color: #1A1A18;
+        font-size: 15px;
+        font-weight: 400;
+        .btn-switch-forms-sign{
+            background: none;
+            border: none;
+            display: inline;
+            padding: 0;
+            color: #0082FB;
+            font-weight: 500;
+        }
     }
 
     .stm-lms-message {
@@ -108,19 +118,115 @@
     .modal-body{
         padding: 0;
     }
-    .stm-lms-login__top{
-        padding: 20px 50px 0;
+    .modal-dialog{
+        max-width: 480px;
+    }
+    .modal-content{
+        border-radius: 8px;
+    }
+    .modal-close{
         position: static;
-        h3{
-            display: block;
+        display: block;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-left: auto;
+        &:after{
+            display: none;
         }
+    }
+    .stm_lms_login_wrapper{
+        max-width: 320px;
+    }
+    .stm-lms-login__top{
+        text-align: center;
+        max-width: 340px;
+        h3{
+            font-size: 20px;
+            line-height: 1.3;
+            letter-spacing: 0.2px;
+            margin: 0 0 20px;
+        }
+        p{
+            color: #707070;
+            font-size: 12px;
+            line-height: 1.5;
+            letter-spacing: 0.2px;
+            margin-bottom: 24px;
+        }
+    }
+    .stm_lms_login_wrapper,
+    .stm-lms-login__top{
+        margin: 0 auto;
     }
 
     #stm-lms-sign-in{
+        padding: 29px 29px 44px;
         .stm-lms-message {
             &.password{
                 background: transparent;
                 color: #66BB6A;
+            }
+        }
+
+        .form-group{
+            margin-bottom: 16px;
+            label{
+                font-size: 14px;
+                letter-spacing: 0.2px;
+                font-weight: 500;
+                line-height: 1.2;
+                color: #1A1A18;
+                margin-bottom: 8px;
+            }
+            .form-control{
+                border: 1px solid #97999D;
+                background: #fff;
+                border-radius: 8px;
+                padding: 5px 16px;
+                font-size: 16px;
+                height: 48px;
+            }
+            &-phone{
+                display: flex;
+                flex-wrap: wrap;
+                label{
+                    flex: 0 0 100%;
+                }
+                select{
+                    &.form-control{
+                        flex: 0 0 108px;
+                        user-select: none;
+                        background: #fff;
+                        border: 1px solid #97999D;
+                        border-radius: 8px;
+                        padding: 12px 16px;
+                        font-size: 16px;
+                        color: #97999D;
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        text-indent: 1px;
+                        text-overflow: unset;
+                        background: url('../images/expand_more.svg') top 10px right 10px no-repeat;
+                    }
+                }
+                #phone{
+                    flex: 0 0 204px;
+                    margin: 0 0 0 6px;
+                }
+            }
+        }
+
+        .stm_lms_login_wrapper__actions{
+            margin-top: 32px;
+            .btn{
+                background: #323D66;
+                color: #fff;
+                border-radius: 8px;
+                width: 100%;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                min-height: 48px;
             }
         }
     }

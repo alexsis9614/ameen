@@ -37,12 +37,21 @@
     <div id="stm-lms-sign-in" class="stm-lms-sign-in active vue_is_disabled"
          v-bind:class="{'is_vue_loaded' : vue_loaded}">
 
+        <button class="modal-close">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z" fill="#313843"/>
+            </svg>
+        </button>
+
         <div class="stm-lms-login__top">
             <template v-if="limit || sent_limit">
                 <h3><?php esc_html_e('Application for limit update', 'masterstudy-child'); ?></h3>
             </template>
             <template v-else>
-                <h3><?php esc_html_e('Enter phone number', 'masterstudy-child'); ?></h3>
+                <h3><?php esc_html_e('Sign up', 'masterstudy-child'); ?></h3>
+                <p>
+                    We'll send a one-time verification code to your phone number. Please make sure it is correct
+                </p>
                 <?php if ( is_page( $user_account ) ) : ?>
                     <p><?php esc_html_e('We\'ll send a confirmation code by sms', 'masterstudy-child'); ?></p>
                 <?php endif; ?>
@@ -91,7 +100,7 @@
                                type="password"
                                name="password"
                                v-model="enter_password"
-                               placeholder="<?php esc_html_e( 'Enter password', 'masterstudy-child' ); ?>"/>
+                               placeholder="********"/>
                     </div>
                     <template v-if="register">
                         <div class="form-group">
@@ -107,16 +116,33 @@
                 <template v-else-if="limit"></template>
                 <template v-else-if="sent_limit"></template>
                 <template v-else>
-                    <div class="form-group">
-                        <label class="heading_font"><?php esc_html_e( 'Phone', 'masterstudy-child' ); ?></label>
+                    <div class="form-group form-group-phone">
+                        <label class="heading_font" for="phone"><?php esc_html_e( 'Phone', 'masterstudy-child' ); ?></label>
+                        <select v-model="phone_code"
+                                name="phone_code"
+                                disabled
+                                class="form-control">
+                            <option value="998">+998</option>
+                        </select>
                         <masked-input
                                 v-model="phone"
                                 class="form-control"
                                 name="phone"
-                                mask="\+\998 (##) ###-##-##"
-                                placeholder="<?php esc_html_e( 'Enter phone', 'masterstudy-child' ); ?>"
+                                id="phone"
+                                mask="## ### ## ##"
+                                placeholder="-- --- -- --"
                         />
                     </div>
+                    <template v-if="sign_in">
+                        <div class="form-group">
+                            <label class="heading_font"><?php esc_html_e( 'Password', 'masterstudy-child' ); ?></label>
+                            <input class="form-control"
+                                   type="password"
+                                   name="password"
+                                   v-model="enter_password"
+                                   placeholder="********"/>
+                        </div>
+                    </template>
                 </template>
 
                 <div class="stm_lms_login_wrapper__actions" :class="{'stm_lms_sending_limit_request': limit}" v-if="!sent_limit">
@@ -129,7 +155,7 @@
                         <span v-if="verify"><?php esc_html_e('Submit', 'masterstudy-child'); ?></span>
                         <span v-else-if="password"><?php esc_html_e('Submit', 'masterstudy-child'); ?></span>
                         <span v-else-if="limit"><?php esc_html_e('Submit request', 'masterstudy-child'); ?></span>
-                        <span v-else><?php esc_html_e('Get code', 'masterstudy-child'); ?></span>
+                        <span v-else><?php esc_html_e('Sign up', 'masterstudy-child'); ?></span>
                     </button>
 
                 </div>
@@ -142,7 +168,14 @@
                         </button>
                     </p>
                 </template>
-                </p>
+                <template v-else>
+                    <p class="stm_lms_footer_sign_in text-center">
+                        <?php esc_html_e('Already have an account ?', 'masterstudy-child'); ?>
+                        <button class="btn-switch-forms-sign" @click.prevent="switchForms">
+                            <?php esc_html_e('Kirish', 'masterstudy-child'); ?>
+                        </button>
+                    </p>
+                </template>
             </form>
 
         </div>

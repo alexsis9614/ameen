@@ -3,7 +3,9 @@
 ?>
 <div class="modal fade stm-lms-modal-login" tabindex="-1" role="dialog" aria-labelledby="stm-lms-modal-login">
     <div class="modal-dialog" role="document">
-        <a href="#" class="modal-close"></a>
+        <?php if ( ! $otp->otp_enable ) : ?>
+            <a href="#" class="modal-close"></a>
+        <?php endif; ?>
         <div class="modal-content">
             <div class="modal-body">
                 <?php if ( $otp->otp_enable ) : ?>

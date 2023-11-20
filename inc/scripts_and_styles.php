@@ -12,5 +12,7 @@
                 wp_enqueue_style( 'stm-header_2-style', $assets_uri . '/css/header_2.css', array('stm_theme_style'), STM_THEME_CHILD_VERSION );
             }
 
+//            wp_dequeue_style('stm-lms-login');
+
         }, 99);
     }, 99);
