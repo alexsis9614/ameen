@@ -107,7 +107,16 @@
             </div>
         <?php endif; ?>
         <div class="stm-lms__sidebar--actions">
-            <?php if ( ! $not_salebale ) : ?>
+            <?php
+                $plans        = new LMS\inc\classes\STM_Plans;
+                $plans_enable = $plans->enable( $post_id );
+
+                if ( ! $not_salebale || $plans_enable ) :
+
+                    if ( $plans_enable ) {
+                        $price = $plans->price( $post_id, 'standard' );
+                    }
+            ?>
                 <div class="stm-lms__price--wrapper">
                     <?php if ( empty( $price ) && empty( $sale_price ) ) : ?>
                         <div class="stm-lms__sidebar--price">
@@ -130,7 +139,17 @@
                         </div>
                     <?php else: ?>
                         <div class="stm-lms__sidebar--price">
-                            <?php echo STM_LMS_Helpers::display_price( $price ); ?>
+                            <?php
+                                if ( $plans_enable ) {
+                                    echo sprintf(
+                                        __( 'Starting from %s', 'masterstudy-child' ),
+                                        STM_LMS_Helpers::display_price( $price )
+                                    );
+                                }
+                                else {
+                                    echo STM_LMS_Helpers::display_price( $price );
+                                }
+                            ?>
                         </div>
                     <?php endif; ?>
                 </div>

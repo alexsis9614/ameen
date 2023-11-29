@@ -308,11 +308,18 @@
         box-shadow: none !important;
         width: 100%;
     }
-    .modal-close{
+    .modal-plans-close{
+        position: absolute;
+        top: 20px;
         display: block;
         right: 15px;
+        z-index: 20;
+        background: none;
+        border: none;
         &:after{
+            content: "✖";
             color: #fff;
+            font-size: 1.5rem;
         }
         @media (max-width: 480px) {
             z-index: 555;

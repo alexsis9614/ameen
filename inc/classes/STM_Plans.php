@@ -84,4 +84,9 @@
         {
             return get_post_meta( $post_id, self::price_key( $plan ), true );
         }
+
+        public function get_plan_price( $post_id )
+        {
+
+        }
     }

@@ -98,21 +98,12 @@
                     $sale_price = '';
                 }
 
-                $btn_class[] = 'btn_big heading_font';
+                $btn_class[] = 'heading_font';
 
                 if ( is_user_logged_in() ) {
                     $attributes = array();
                     if ( ! $not_salebale && empty( $plans_enable ) ) {
                         $attributes[] = 'data-buy-course="' . intval( $course_id ) . '"';
-                    }
-                    else if ( ! empty( $plans_enable ) ) {
-                        $attributes = array(
-                            'data-target=".stm-lms-modal-plans"',
-                            'data-lms-modal="plans"',
-                            'data-lms-params="'. esc_attr( json_encode(['course_id' => $course_id]) ) .'"',
-                        );
-
-                        $btn_class[] = 'btn-plans';
                     }
                 } else {
                     stm_lms_register_style( 'login' );
@@ -123,6 +114,16 @@
                         'data-target=".stm-lms-modal-login"',
                         'data-lms-modal="login"',
                     );
+                }
+
+                if ( ! empty( $plans_enable ) ) {
+                    $attributes = array(
+                        'data-target=".stm-lms-modal-plans"',
+                        'data-lms-modal="plans"',
+                        'data-lms-params="'. esc_attr( json_encode(['course_id' => $course_id]) ) .'"',
+                    );
+
+                    $btn_class[] = 'btn-plans';
                 }
 
                 $subscription_enabled = ( empty( $not_in_membership ) && STM_LMS_Subscriptions::subscription_enabled() );
@@ -136,14 +137,14 @@
                     $dropdown_enabled = is_user_logged_in() && class_exists( 'STM_LMS_Point_System' );
                 }
 
-                $mixed_classes   = array( 'stm_lms_mixed_button' );
+                $mixed_classes   = array();
                 $mixed_classes[] = ( $dropdown_enabled ) ? 'subscription_enabled' : 'subscription_disabled';
 
                 $show_buttons = apply_filters( 'stm_lms_pro_show_button', empty( $plans_enable ), $course_id );
                 if ( $show_buttons ) :
         ?>
                 <div class="<?php echo esc_attr( implode( ' ', $mixed_classes ) ); ?>">
-                    <div class="buy-button <?php echo esc_attr( implode( ' ', $btn_class ) ); ?>"
+                    <div class="<?php echo esc_attr( implode( ' ', $btn_class ) ); ?>"
                         <?php
                             if ( ! $dropdown_enabled ) {
                                 echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) );
@@ -152,7 +153,14 @@
                     >
 
 					<span>
-						<?php esc_html_e( 'Get course', 'masterstudy-child' ); ?>
+						<?php
+                            if ( ! empty( $plans_enable ) ) {
+                                esc_html_e( 'See plans', 'masterstudy-child' );
+                            }
+                            else {
+                                esc_html_e( 'Get course', 'masterstudy-child' );
+                            }
+                        ?>
 					</span>
 
                         <?php

@@ -170,6 +170,12 @@
     letter-spacing: .2px;
 }
 
+.stm-lms__sidebar--price small{
+    font-size: 12px;
+    font-weight: 400;
+    color: rgb(151, 153, 157);
+}
+
 .stm-lms__sidebar--percent{
     padding: 4px;
     background: #FF3253;
@@ -186,21 +192,30 @@
     margin: 24px 0 16px;
 }
 
-.stm-lms__sidebar--actions .stm-lms-buy-buttons .btn{
+body.masterstudy-theme .stm-lms__sidebar--actions .stm-lms-buy-buttons .btn{
     padding: 16px 10px;
     font-size: 14px;
     font-weight: 600;
     text-transform: none;
-    background: #323D66 !important;
-    letter-spacing: 0.4px;
+    background: #323D66;
+    color: #fff;
+    letter-spacing: .4px;
 }
 
 .stm-lms__sidebar--actions .stm-lms-wishlist{
     border: 1px solid #707070;
     border-radius: 8px;
-    padding: 14px 10px;
     text-align: center;
     margin: 0;
+}
+
+.stm-lms__sidebar--actions .stm-lms-wishlist:not(.not-logged) {
+    padding: 14px 10px;
+}
+
+.stm-lms__sidebar--actions .stm-lms-wishlist a{
+    padding: 14px 10px;
+    display: block;
 }
 
 .stm-lms__sidebar--actions .stm-lms-wishlist i,
@@ -208,7 +223,7 @@
     border: none !important;
     width: 20px;
     background: none !important;
-    color: #ff1f59 !important;
+    color: #000 !important;
 }
 
 .stm-lms__sidebar--actions .stm-lms-wishlist span{

@@ -14,7 +14,7 @@
 </style>
 <div class="modal fade stm-lms-modal-plans" tabindex="-1" role="dialog" aria-labelledby="stm-lms-modal-login">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <a href="#" class="modal-close" data-dismiss="modal"></a>
+        <button class="modal-plans-close" data-dismiss="modal"></button>
         <div class="modal-content">
             <div class="modal-body">
                 <div class="pricing">
@@ -47,9 +47,24 @@
                                         <?php echo $plan['description']; ?>
                                     </div>
                                     <div class="d-grid">
-                                        <a href="#" class="btn <?php echo $key === 1 ? 'border' : ''; ?> btn-default text-uppercase" data-course-plan="<?php echo esc_attr( $plan['name'] ); ?>" data-course-id="<?php echo esc_attr( $course_id ); ?>">
+                                        <?php
+                                            $class = 'btn btn-default text-uppercase';
+
+                                            if ( $key === 1 ) {
+                                                $class .= ' border';
+                                            }
+
+                                            if ( ! is_user_logged_in() ) {
+                                                $class .= ' not-logged';
+                                            }
+                                        ?>
+                                        <button
+                                            class="<?php echo $class; ?>"
+                                            data-course-plan="<?php echo esc_attr( $plan['name'] ); ?>"
+                                            data-course-id="<?php echo esc_attr( $course_id ); ?>"
+                                        >
                                             <?php echo $plan['text_button'] ?: esc_html__('Get plan', 'masterstudy-child'); ?>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
