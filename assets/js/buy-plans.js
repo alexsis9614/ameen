@@ -15,8 +15,7 @@
 			setTimeout(function () {
 				$('.stm-lms-modal-login').modal('show');
 			}, 500);
-		}
-		else {
+
 			return false;
 		}
 

@@ -120,7 +120,7 @@
                 <div class="stm-lms__price--wrapper">
                     <?php if ( empty( $price ) && empty( $sale_price ) ) : ?>
                         <div class="stm-lms__sidebar--price">
-                            <?php esc_html_e('Free', 'masterstudy-lms-learning-management-system'); ?>
+                            <?php esc_html_e('Free', 'masterstudy-child'); ?>
                         </div>
                     <?php elseif ( ! empty( $price ) && !empty( $sale_price ) ) : ?>
                         <del class="stm-lms__sidebar--old-price">

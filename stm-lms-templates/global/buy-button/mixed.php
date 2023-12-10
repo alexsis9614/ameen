@@ -46,20 +46,20 @@
 
             <?php
                 $user = STM_LMS_User::get_current_user();
-                if ( empty( $user['id'] ) ) :
+                if ( ! is_user_logged_in() ) :
                     stm_lms_register_style( 'login' );
                     stm_lms_register_style( 'register' );
                     enqueue_login_script();
                     enqueue_register_script();
+                    $lesson_url = LMS\inc\classes\STM_Curriculum::item_url( $course_id, 0 );
             ?>
 
-                <a href="#" class="btn btn-default" data-target=".stm-lms-modal-login" data-lms-modal="login">
-                    <span><?php esc_html_e( 'Enroll course', 'masterstudy-child' ); ?></span>
+                <a href="<?php echo esc_url( $lesson_url ); ?>" class="btn btn-default">
+                    <span><?php esc_html_e( 'Start Course', 'masterstudy-child' ); ?></span>
                 </a>
             <?php
                 else :
-                    $user_id        = $user['id'];
-                    $course         = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( $user_id, $course_id, array( 'current_lesson_id', 'progress_percent' ) ) );
+                    $course         = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( get_current_user_id(), $course_id, array( 'current_lesson_id', 'progress_percent' ) ) );
                     $current_lesson = ( ! empty( $course['current_lesson_id'] ) ) ? $course['current_lesson_id'] : '0';
                     $progress       = ( ! empty( $course['progress_percent'] ) ) ? intval( $course['progress_percent'] ) : 0;
                     $lesson_url     = LMS\inc\classes\STM_Curriculum::item_url( $course_id, $current_lesson );

@@ -8,7 +8,7 @@ $form_position = $form_position ?? 'form';
 wp_enqueue_style(
     'stm-lms-sign-in',
     STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/sign-in.css',
-    [],
+    ['stm-lms-login'],
     STM_THEME_CHILD_VERSION
 );
 

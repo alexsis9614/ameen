@@ -1,6 +1,6 @@
 .stm_lms_course__top{
     margin: 0 0 24px;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .stm_lms_course__top .stm_lms_course__title{
@@ -99,6 +99,39 @@
     padding: 0 24px;
 }
 
+.stm-lms-course__sidebar .stm-lms-course-info{
+    border: 1px solid rgb(151, 153, 157);
+    border-radius: 6px;
+    padding: 24px 24px 16px;
+    margin: 16px 0 30px;
+}
+
+.stm-lms-course__sidebar .stm-lms-course-info__single{
+    border: none;
+    padding: 3px;
+    margin: 0 0 8px;
+}
+
+.stm-lms-course__sidebar .stm-lms-course-info__single_label,
+.stm-lms-course__sidebar .stm-lms-course-info__single_label > *{
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.stm-lms-course__sidebar .stm-lms-course-info__single_label > *:first-child{
+    color: rgb(112, 112, 112);
+}
+
+.stm-lms-course__sidebar .stm-lms-course-info__single_icon{
+    font-size: 22px;
+    margin: 0 10px 0 0;
+    color: rgb(112, 112, 112);
+}
+
+.stm-lms-course__sidebar .stm-lms-course-info__single_icon > svg{
+    vertical-align: middle;
+}
+
 .stm-lms-course__lessons{
     padding-bottom: 8px;
 }
@@ -150,6 +183,10 @@
     font-size: 15px;
     font-weight: 500;
     line-height: 21px;
+}
+
+.stm-lms-course__sidebar{
+    margin-top: 60px !important;
 }
 
 .stm-lms__sidebar--actions{
@@ -238,4 +275,45 @@ body.masterstudy-theme .stm-lms__sidebar--actions .stm-lms-buy-buttons .btn{
     left: 50%;
     transform: translateY(-50%);
     margin: -15px 0 0 -15px;
+}
+
+@media screen and (max-width: 1024px){
+    .stm_lms_course__top .stm_lms_course__title{
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 991px){
+    .stm-lms-wrapper .stm_lms_course__image{
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 740px){
+    .stm_lms_course__top .stm_lms_course__title{
+        font-size: 25px !important;
+        line-height: 1.5 !important;
+    }
+
+    .stm_lms_course__top .nav-tabs-wrapper{
+        max-width: 100%;
+        min-width: auto;
+        width: 100%;
+    }
+    .stm_lms_course__top .nav.nav-tabs{
+        width: 100%;
+    }
+
+    .stm_lms_course__top .nav.nav-tabs > li a,
+    .stm_lms_course__top .nav.nav-tabs > li.active a{
+        font-size: 17px;
+    }
+
+    .stm_lms_course__top .nav.nav-tabs{
+        border-bottom-width: 3px;
+    }
+
+    .stm_lms_course__top .nav.nav-tabs > li.active a:after{
+        height: 3px;
+    }
 }

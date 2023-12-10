@@ -26,6 +26,16 @@
         require_once __DIR__ . '/inc/classes/STM_Limit_Device.php';
         require_once __DIR__ . '/inc/classes/STM_Breadcrumb.php';
 
+        add_action( 'wp_footer', function () {
+            $post_id = get_the_ID();
+
+            if ( 'stm-courses' === get_post_type( $post_id ) ) {
+                $plans = new \LMS\inc\classes\STM_Plans;
+
+                $plans->get_modal( $post_id );
+            }
+        });
+
         new LMS\inc\classes\STM_Cart();
         new LMS\inc\classes\STM_Course();
         new LMS\inc\classes\STM_Breadcrumb();

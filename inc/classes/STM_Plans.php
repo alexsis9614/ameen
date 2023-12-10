@@ -2,6 +2,7 @@
     namespace LMS\inc\classes;
 
     use STM_LMS_Options;
+    use STM_LMS_Templates;
 
     class STM_Plans extends STM_Settings
     {
@@ -14,6 +15,42 @@
 
             $this->plans = self::get();
 
+        }
+
+        public function get_modal( $course_id )
+        {
+            $plans_enable = $this->enable( $course_id );
+
+            if ( $plans_enable ) {
+                STM_LMS_Templates::show_lms_template( 'modals/plans', array( 'course_id' => $course_id ) );
+            }
+        }
+
+        public static function display_price( $price ): string
+        {
+            if ( ! isset( $price ) ) {
+                return '';
+            }
+
+            $symbol             = '<span class="card-currency">' . STM_LMS_Options::get_option( 'currency_symbol', '$' ) . '</span>';
+            $position           = STM_LMS_Options::get_option( 'currency_position', 'left' );
+            $currency_thousands = STM_LMS_Options::get_option( 'currency_thousands', ',' );
+            $currency_decimals  = STM_LMS_Options::get_option( 'currency_decimals', '.' );
+            $decimals_num       = STM_LMS_Options::get_option( 'decimals_num', 2 );
+
+            $price = floatval( $price );
+
+            if ( strpos( $price, '.' ) ) {
+                $price = number_format( $price, $decimals_num, $currency_decimals, $currency_thousands );
+            } else {
+                $price = number_format( $price, 0, '', $currency_thousands );
+            }
+
+            if ( 'left' === $position ) {
+                return $symbol . $price;
+            } else {
+                return $price . $symbol;
+            }
         }
 
         public static function get()
