@@ -7,17 +7,24 @@
     $curriculum   = ( new CurriculumRepository() )->get_curriculum( $post_id, true );
     $price        = get_post_meta( $post_id, 'price', true );
     $sale_price   = STM_LMS_Course::get_sale_price( $post_id );
+    $course_price = STM_LMS_Course::get_course_price( $post_id );
     $percent      = 0;
     $not_salebale = get_post_meta(get_the_ID(), 'not_single_sale', true);
 
     if ( ! empty( $sale_price ) ) {
         $percent = (( (float) $price - (float) $sale_price ) / (float) $price) * 100;
     }
+
+    $is_prerequisite_passed = true;
+
+    if ( class_exists( 'STM_LMS_Prerequisites' ) ) {
+        $is_prerequisite_passed = STM_LMS_Prerequisites::is_prerequisite( true, $post_id );
+    }
 ?>
 
 <div class="stm-lms-course__sidebar">
 
-    <div class="stm-lms__sidebar--info">
+    <div class="stm-lms-course__sidebar--info">
         <?php if ( ! empty( $curriculum ) ) : ?>
             <div class="stm-lms-course__lessons">
                 <div class="stm-lms-course__curriculum--title">
@@ -28,17 +35,39 @@
                         foreach ( $curriculum as $section ) :
                             if ( isset( $section['title'] ) && ! empty( $section['title'] ) ) :
                     ?>
-                                <div class="stm-curriculum-section">
+                                <div class="stm-lms-course__curriculum-section">
                                     <h3><?php echo wp_kses_post( $section['title'] ); ?></h3>
                                 </div>
                     <?php
                         endif;
 
-                        foreach ( $section['materials'] as $index => $material ) :
-                            if ( empty( $section['materials'] ) ) continue;
+                        $course = STM_LMS_Helpers::simplify_db_array(
+                            stm_lms_get_user_course(
+                                get_current_user_id(),
+                                $post_id,
+                                array(
+                                    'current_lesson_id',
+                                    'progress_percent'
+                                )
+                            )
+                        );
 
-                            $icon    = 'stmlms-text';
-                            $hint    = esc_html__( 'Text Lesson', 'masterstudy-lms-learning-management-system' );
+                        $current_lesson = ( ! empty( $course['current_lesson_id'] ) ) ? $course['current_lesson_id'] : '0';
+
+                        foreach ( $section['materials'] as $index => $material ) :
+                            $lesson_id = stm_lms_get_wpml_binded_id( $material['post_id'] );
+                            $icon      = 'stmlms-text';
+                            $hint      = esc_html__( 'Text Lesson', 'masterstudy-lms-learning-management-system' );
+                            $type      = '';
+                            $classes   = 'stm-lms-course__lessons--item';
+
+                            $has_course   = STM_LMS_User::has_course_access( $post_id, $lesson_id, false );
+
+                            if ( isset( $has_access ) ) {
+                                $has_course = $has_access;
+                            }
+
+                            $has_access = ( $has_course || ( empty( $course_price ) && ! $not_salebale ) ) && $is_prerequisite_passed;
 
                             if ( 'stm-quizzes' === $material['post_type'] ) {
                                 $questions = get_post_meta( $material['post_id'], 'questions', true );
@@ -84,9 +113,17 @@
                                         break;
                                 endswitch;
                             }
+
+                            if ( $has_access ) :
+                                if ( absint( $current_lesson ) === absint( $lesson_id ) ) {
+                                    $classes .= " stm-lms-course__lessons--item__current";
+                                }
                     ?>
-                        <div class="stm-lms-course__lessons--item">
-                            <div class="stm-curriculum-item__icon" data-toggle="tooltip" data-placement="bottom" title="<?php echo wp_kses_post( $hint ); ?>">
+                                <a href="<?php echo esc_url( STM_LMS_Lesson::get_lesson_url( $post_id, $lesson_id ) ); ?>" class="<?php echo esc_attr( $classes ); ?>">
+                            <?php else : ?>
+                                <div class="<?php echo esc_attr( $classes ); ?>">
+                            <?php endif; ?>
+                            <div class="stm-lms-course__curriculum-item--icon" data-toggle="tooltip" data-placement="bottom" title="<?php echo wp_kses_post( $hint ); ?>">
                                 <?php
                                     if ( 'video' === $type ) :
                                         echo $icon;
@@ -95,10 +132,14 @@
                                         <i class="<?php echo esc_attr( $icon ); ?>"></i>
                                 <?php endif; ?>
                             </div>
-                            <span class="stm-curriculum-item__name">
+                            <span class="stm-lms-course__curriculum-item--name">
                                 <?php echo esc_html( $material['title'] ); ?>
                             </span>
-                        </div>
+                        <?php if ( $has_access ) : ?>
+                            </a>
+                        <?php else : ?>
+                            </div>
+                        <?php endif; ?>
                     <?php
                             endforeach;
                         endforeach;
@@ -106,7 +147,7 @@
                 </div>
             </div>
         <?php endif; ?>
-        <div class="stm-lms__sidebar--actions">
+        <div class="stm-lms-course__sidebar--actions">
             <?php
                 $plans        = new LMS\inc\classes\STM_Plans;
                 $plans_enable = $plans->enable( $post_id );
@@ -119,26 +160,26 @@
             ?>
                 <div class="stm-lms__price--wrapper">
                     <?php if ( empty( $price ) && empty( $sale_price ) ) : ?>
-                        <div class="stm-lms__sidebar--price">
+                        <div class="stm-lms-course__sidebar--price">
                             <?php esc_html_e('Free', 'masterstudy-child'); ?>
                         </div>
                     <?php elseif ( ! empty( $price ) && !empty( $sale_price ) ) : ?>
-                        <del class="stm-lms__sidebar--old-price">
+                        <del class="stm-lms-course__sidebar--old-price">
                             <?php echo STM_LMS_Helpers::display_price( $price ); ?>
                         </del>
-                        <div class="stm-lms__sidebar--price">
+                        <div class="stm-lms-course__sidebar--price">
                             <?php
                                 echo STM_LMS_Helpers::display_price( $sale_price );
 
                                 if ( ! empty( $percent ) ) :
                             ?>
-                                <span class="stm-lms__sidebar--percent">
+                                <span class="stm-lms-course__sidebar--percent">
                                     <?php echo $percent . '%'; ?>
                                 </span>
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
-                        <div class="stm-lms__sidebar--price">
+                        <div class="stm-lms-course__sidebar--price">
                             <?php
                                 if ( $plans_enable ) {
                                     echo sprintf(

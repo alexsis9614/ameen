@@ -32,7 +32,7 @@
 <div class="row">
 	<div class="col-md-8">
         <div class="stm_lms_course__top">
-            <h1 class="stm_lms_course__title"><?php the_title(); ?></h1>
+            <h1 class="stm_lms_course__top--title"><?php the_title(); ?></h1>
 
             <?php if ( $tabs_length > 0 ) : ?>
                 <div class="nav-tabs-wrapper">

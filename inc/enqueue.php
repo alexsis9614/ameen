@@ -27,7 +27,7 @@
         if ( is_singular( 'stm-courses' ) ) {
             wp_enqueue_style(
                 'stm-lms-child-course',
-                STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/course.css',
+                STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/course.css',
                 array('masterstudy-lms-learning-management-system'),
                 STM_THEME_CHILD_VERSION
             );

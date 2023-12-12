@@ -1,43 +1,14 @@
 <?php
-<<<<<<< HEAD
-/**
- * @var $form_position
- */
+    /**
+     * @var $form_position
+     */
 
-$form_position = $form_position ?? 'form';
+    $form_position = $form_position ?? 'form';
 
-wp_enqueue_style(
-    'stm-lms-sign-in',
-    STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/sign-in.css',
-    ['stm-lms-login'],
-    STM_THEME_CHILD_VERSION
-);
-
-wp_enqueue_script(
-    'stm-lms-sign-in',
-    STM_THEME_CHILD_DIRECTORY_URI . '/assets/bookit/dist/auth/sign-in.js',
-    ['jquery', 'vue.js', 'vue-resource.js'],
-    STM_THEME_CHILD_VERSION
-);
-
-$otp = new STM_THEME_CHILD_OTP();
-
-wp_localize_script('stm-lms-sign-in', 'stm_lms_sign_in_' . $form_position, array(
-    'actions'             => $otp->actions,
-    'nonce'               => $otp->nonce,
-    'position'            => $form_position,
-    'lost_password_nonce' => $otp->lost_password_nonce,
-));
-
-stm_lms_register_style('login');
-
-$settings            = get_option( 'stm_lms_settings', array() );
-$user_account        = ! empty( $settings['user_url'] ) ? $settings['user_url'] : 0;
-=======
     wp_enqueue_style(
         'stm-lms-sign-in',
         STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/sign-in.css',
-        [],
+        ['stm-lms-login'],
         STM_THEME_CHILD_VERSION
     );
 
@@ -50,17 +21,17 @@ $user_account        = ! empty( $settings['user_url'] ) ? $settings['user_url'] 
 
     $otp = new STM_THEME_CHILD_OTP();
 
-    wp_localize_script('stm-lms-sign-in', 'stm_lms_sign_in', array(
-        'actions' => $otp->actions,
-        'nonce'   => $otp->nonce
+    wp_localize_script('stm-lms-sign-in', 'stm_lms_sign_in_' . $form_position, array(
+        'actions'             => $otp->actions,
+        'nonce'               => $otp->nonce,
+        'position'            => $form_position,
+        'lost_password_nonce' => $otp->lost_password_nonce,
     ));
 
     stm_lms_register_style('login');
 
-    $stm_otp_email_phone = STM_LMS_Options::get_option('stm_otp_email_phone', 'phone');
     $settings            = get_option( 'stm_lms_settings', array() );
     $user_account        = ! empty( $settings['user_url'] ) ? $settings['user_url'] : 0;
->>>>>>> 83b1ed8ff4df6f765af91e276c8d970ed258ceee
 ?>
 
     <div id="stm-lms-sign-in" class="stm-lms-sign-in active vue_is_disabled"

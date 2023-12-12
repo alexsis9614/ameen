@@ -1,0 +1,346 @@
+.stm{
+    &_lms{
+        &_course{
+            &__top{
+                margin: 0 0 24px;
+                &--title{
+                    margin: 0;
+                    font-size: 36px;
+                    line-height: 1.3;
+                    text-align: left;
+                    @media screen and (max-width: 1024px){
+                        font-size: 25px;
+                    }
+                    @media screen and (max-width: 740px) {
+                        font-size: 25px !important;
+                        line-height: 1.5 !important;
+                    }
+                }
+
+                .nav{
+                    &-tabs{
+                        margin: 0;
+                        border-bottom: 3px solid #F0F0F0;
+                        padding: 0 0 8px;
+                        @media screen and (max-width: 740px){
+                            width: 100%;
+                            border-bottom-width: 3px;
+                        }
+                        &-wrapper{
+                            padding: 35px 0 0;
+                            min-width: 400px;
+                            display: inline-block;
+                            text-align: center;
+                            @media screen and (max-width: 740px){
+                                max-width: 100%;
+                                min-width: auto;
+                                width: 100%;
+                            }
+                        }
+                        > li{
+                            a, &.active a{
+                                background: none !important;
+                                border: none !important;
+                                padding: 0 10px;
+                                font-size: 20px;
+                                @media screen and (max-width: 740px){
+                                    font-size: 17px;
+                                }
+                            }
+                            &.active{
+                                a{
+                                    color: #323D66 !important;
+                                    &:after{
+                                        content: '';
+                                        position: absolute;
+                                        bottom: -11px;
+                                        left: 0;
+                                        right: 0;
+                                        background: #323D66;
+                                        height: 5px;
+                                        border-radius: 4px 4px 0 0;
+                                        @media screen and (max-width: 740px){
+                                            height: 3px;
+                                        }
+                                    }
+                                }
+                            }
+                            a{
+                                color: #97999D;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &-lms{
+        &-wrapper{
+            .stm{
+                &_lms{
+                    &_course{
+                        &__image{
+                            border: 1px solid #ECECEC;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            margin-bottom: 16px;
+                            @media screen and (max-width: 991px){
+                                display: inline-block;
+                            }
+                        }
+                        &__published{
+                            margin: 0 0 15px;
+                            font-size: 14px;
+                            line-height: 16px;
+                            color: #182F43;
+                            text-transform: uppercase;
+                        }
+                        &__content{
+                            p{
+                                font-size: 16px;
+                                color: #182F43;
+                            }
+                        }
+                    }
+                }
+                &-lms{
+                    &-course{
+                        &__lessons{
+                            padding-bottom: 8px;
+                            &--list{
+                                height: 270px;
+                                overflow-y: auto;
+                                overflow-x: hidden;
+                                padding: 0 24px;
+                                &::-webkit-scrollbar{
+                                    width: 6px;
+                                }
+                                &::-webkit-scrollbar-track{
+                                    background: transparent;
+                                }
+                                &::-webkit-scrollbar-thumb{
+                                    background: #E6E8EC;
+                                    border-radius: 48px 0 0 48px;
+                                    &:hover{
+                                        background: #E6E8EC;
+                                    }
+                                }
+                            }
+                            &--item{
+                                padding: 13px 10px 13px 18px;
+                                border-radius: 6px;
+                                background: rgb(230, 232, 236);
+                                border: 1px solid rgb(230, 232, 236);
+                                margin: 0 0 8px;
+                                display: flex;
+                                align-items: center;
+                                &__current{
+                                    background: rgba(30, 110, 235, 0.18);
+                                }
+                            }
+                        }
+                        &__sidebar{
+                            margin: 60px 0 0;
+                            &--info{
+                                border: 1px solid #97999D;
+                                border-radius: 6px;
+                                padding: 24px 0 25px 0;
+                            }
+                            .stm{
+                                &-lms{
+                                    &-course{
+                                        &-info{
+                                            border: 1px solid rgb(151, 153, 157);
+                                            border-radius: 6px;
+                                            padding: 24px 24px 16px;
+                                            margin: 16px 0 30px;
+                                            &__single{
+                                                border: none;
+                                                padding: 3px;
+                                                margin: 0 0 8px;
+                                                &_label, &_label > *{
+                                                    font-size: 16px;
+                                                    line-height: 1.3;
+                                                }
+                                                &_label > *{
+                                                    &:first-child{
+                                                        color: rgb(112, 112, 112);
+                                                    }
+                                                }
+                                                &_icon{
+                                                    font-size: 22px;
+                                                    margin: 0 10px 0 0;
+                                                    color: rgb(112, 112, 112);
+                                                    > svg{
+                                                        vertical-align: middle;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            &--actions{
+                                border-top: 1px solid #E6E8EC;
+                                padding: 24px 24px 0 24px;
+                                .stm-lms-buy-buttons{
+                                    margin: 24px 0 16px;
+                                }
+                                .stm-lms-wishlist{
+                                    border: 1px solid #707070;
+                                    border-radius: 8px;
+                                    text-align: center;
+                                    margin: 0;
+                                    &:not(.not-logged), a{
+                                        padding: 14px 10px;
+                                    }
+                                    a{
+                                        display: block;
+                                    }
+                                    i, &:hover i{
+                                        border: none !important;
+                                        width: 20px;
+                                        background: none !important;
+                                        color: #000 !important;
+                                    }
+                                    span{
+                                        color: #1A1A18;
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                        letter-spacing: 0.2px;
+                                    }
+                                    &.loading{
+                                        &:before{
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translateY(-50%);
+                                            margin: -15px 0 0 -15px;
+                                        }
+                                    }
+                                }
+                            }
+                            &--old{
+                                &-price{
+                                    color: #707070;
+                                    font-size: 14px;
+                                    letter-spacing: .2px;
+                                }
+                            }
+                            &--price{
+                                margin: 8px 0 0;
+                                font-size: 18px;
+                                font-weight: 800;
+                                letter-spacing: .2px;
+                                small{
+                                    font-size: 12px;
+                                    font-weight: 400;
+                                    color: rgb(151, 153, 157);
+                                }
+                            }
+                            &--percent{
+                                padding: 4px;
+                                background: #FF3253;
+                                color: #fff;
+                                font-size: 12px;
+                                letter-spacing: 0.2px;
+                                font-weight: 400;
+                                border-radius: 4px;
+                                vertical-align: top;
+                                margin-left: 10px;
+                            }
+                        }
+                        &__curriculum{
+                            &--title{
+                                color: #182F43;
+                                font-size: 22px;
+                                line-height: 35px;
+                                font-weight: 700;
+                                margin: 0 0 12px;
+                                padding: 0 24px;
+                            }
+                            &-item{
+                                &--icon{
+                                    margin: 4px 14px 0 0;
+                                }
+                                &--name{
+                                    color: #000;
+                                    font-size: 15px;
+                                    font-weight: 500;
+                                    line-height: 21px;
+                                }
+                            }
+                            &-section{
+                                &:not(:first-child){
+                                    h3{
+                                        margin-top: 16px;
+                                    }
+                                }
+                                h3{
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                    line-height: 1.2;
+                                    color: #000;
+                                    margin-bottom: 16px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.single{
+    &_product{
+        &_after{
+            &_title{
+                .meta{
+                    &-unit{
+                        .meta{
+                            &_values{
+                                margin: 8px 0 0;
+                            }
+                        }
+                        &.teacher{
+                            .value{
+                                font-size: 16px;
+                                font-weight: 600;
+                                text-transform: none;
+                                color: #182F43;
+                            }
+                        }
+                        .label{
+                            margin: 8px 0 0;
+                            font-size: 14px;
+                            color: #182F43;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+body{
+    &.masterstudy-theme{
+        .stm-lms-course{
+            &__sidebar{
+                &--actions{
+                    .stm-lms-buy-buttons{
+                        .btn{
+                            padding: 16px 10px;
+                            font-size: 14px;
+                            font-weight: 600;
+                            text-transform: none;
+                            background: #323D66;
+                            color: #fff;
+                            letter-spacing: .4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -273,8 +273,6 @@
         {
             $materials = self::curriculum_filter( $course_id, self::get_curriculum( $course_id ) );
 
-            error_log( print_r( $materials, true ) );
-
             return ! empty( $materials ) ? reset( $materials ) : 0;
         }
 
