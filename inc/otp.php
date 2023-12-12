@@ -19,8 +19,6 @@
         {
             $this->testing = STM_LMS_Options::get_option('stm_otp_testing', false);
 
-            $this->nonce_action = $this->prefix . $this->nonce_action;
-
             $email    = STM_LMS_Options::get_option('stm_api_eskiz_email', false);
             $password = STM_LMS_Options::get_option('stm_api_eskiz_password', false);
 
@@ -28,15 +26,12 @@
                 parent::__construct( $email, $password );
             }
 
-            $this->otp_enable           = STM_LMS_Options::get_option('stm_otp_enable', false);
-            $this->nonce                = wp_create_nonce( $this->nonce_action );
-            $this->lost_password_nonce  = wp_create_nonce( $this->prefix . 'lost_password' );
-            $this->actions              = array(
-                'sign_in'         => $this->nonce_action,
-                'lost_password'   => $this->prefix . 'custom_lost_password',
-                'reset_password'  => $this->prefix . 'custom_reset_password',
-                'verification'    => $this->nonce_action . '_verification',
-                'create_account'  => $this->nonce_action . '_create_account'
+            $this->otp_enable = STM_LMS_Options::get_option('stm_otp_enable', false);
+            $this->nonce      = wp_create_nonce( $this->nonce_action );
+            $this->actions    = array(
+                'sign_in'        => $this->nonce_action,
+                'verification'   => $this->nonce_action . '_verification',
+                'create_account' => $this->nonce_action . '_create_account'
             );
             $this->routes               = array(
                 'login-otp',
@@ -475,14 +470,43 @@
 
                 if ($valid_number) {
                     $user_email   = $this->get_user_email( $valid_number );
+                    $pass_invalid = false;
 
                     if ( $register ) {
                         $user_name       = $data['name'];
                         $pass_invalid    = $this->pass_invalid( $user_password, $user_password_re );
 
-                        if ( $pass_invalid['invalid'] ) {
-                            $response['message'] = $pass_invalid['message'];
+                        /* If Password shorter than 8 characters*/
+                        if ( strlen( $user_password ) < 8 ) {
+                            $response['message'] = esc_html__( 'Password must have at least 8 characters', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
 
+                        /* if Password longer than 20 -for some tricky user try to enter long characters to block input.*/
+                        if ( strlen( $user_password ) > 20 ) {
+                            $response['message'] = esc_html__( 'Password too long', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains letter */
+                        if ( ! preg_match( '#[a-z]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one lowercase letter!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains number */
+                        if ( ! preg_match( '#[0-9]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one number!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        /* if contains CAPS */
+                        if ( ! preg_match( '#[A-Z]+#', $user_password ) ) {
+                            $response['message'] = esc_html__( 'Password must include at least one capital letter!', 'masterstudy-lms-learning-management-system' );
+                            $pass_invalid = true;
+                        }
+
+                        if ( $pass_invalid ) {
                             wp_send_json( $response );
                         }
 
