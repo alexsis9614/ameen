@@ -5,6 +5,7 @@
     use STM_LMS_Helpers;
     use STM_LMS_Lesson;
     use STM_LMS_User;
+    use STM_LMS_Templates;
 
     class STM_Course extends STM_Curriculum
     {
@@ -18,6 +19,58 @@
 
             remove_action('stm_lms_before_item_template_start', 'STM_LMS_Course::check_course_item');
             add_action( 'stm_lms_before_item_template_start', array( $this, 'check_course_item' ), 10, 2 );
+
+            add_filter( 'stm_lms_buy_button_auth', array( $this, 'buy_button_attributes' ), 20, 2 );
+
+            add_filter( 'stm_lms_components/buy-button/paid-courses/buy-course', array( $this, 'change_vars' ), 20, 2 );
+        }
+
+        public function buy_button_attributes( $attributes, $course_id )
+        {
+            $plans    = new STM_Plans;
+
+            if ( $plans->enable( $course_id ) ) {
+                $attributes = array(
+                    'data-target=".stm-lms-modal-plans"',
+                    'data-lms-modal="plans"',
+                    'data-lms-params="'. esc_attr( wp_json_encode(['course_id' => $course_id]) ) .'"',
+                );
+
+                wp_enqueue_script('buy-plans');
+                wp_enqueue_style('buy-plans');
+            }
+
+            return $attributes;
+        }
+
+        public function change_vars( $template, $stm_lms_vars )
+        {
+            $lms_page_path = get_query_var( 'lms_page_path' );
+
+            if ( empty( $lms_page_path ) ) {
+                return $template;
+            }
+
+            $course = get_page_by_path( $lms_page_path, OBJECT, 'stm-courses' );
+
+            if ( ! isset( $stm_lms_vars[ 'attributes' ] ) ) {
+                return $template;
+            }
+
+            $attributes = $stm_lms_vars[ 'attributes' ];
+
+            if (
+                ! empty( $course ) &&
+                in_array( 'data-purchased-course="' . intval( $course->ID ) . '"', $stm_lms_vars[ 'attributes' ] )
+            ) {
+                $stm_lms_vars['attributes'] = $this->buy_button_attributes( $attributes, $course->ID );
+
+                extract( $stm_lms_vars );
+
+                $template = STM_LMS_Templates::load_lms_template('components/buy-button/paid-courses/buy-course', $stm_lms_vars );
+            }
+
+            return $template;
         }
 
         public function check_course_item( $course_id, $item_id )

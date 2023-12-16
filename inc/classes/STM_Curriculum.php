@@ -9,6 +9,7 @@
     use STM_LMS_Course;
     use STM_LMS_Bookit_Sync;
     use STM_LMS_Instructor;
+    use STM_LMS_Prerequisites;
 
     class STM_Curriculum extends STM_Plans
     {
@@ -53,6 +54,33 @@
             add_filter( 'masterstudy_lms_lesson_custom_fields', array( $this, 'curriculum_custom_fields' ), 20, 1 );
 
             add_filter( 'masterstudy_lms_quiz_custom_fields', array( $this, 'curriculum_custom_fields' ), 20, 1 );
+
+//            add_filter( 'stm_lms_pro_show_button', array( $this, 'is_enable_plans' ), 101, 2 );
+        }
+
+        public function is_enable_plans( $show, $course_id )
+        {
+            $plans    = new STM_Plans;
+
+            if ( $plans->enable( $course_id ) ) {
+                if ( class_exists( 'STM_LMS_Prerequisites' ) ) {
+                    $is_prerequisite = STM_LMS_Prerequisites::is_prerequisite( true, $course_id );
+
+                    if ( $is_prerequisite ) {
+                        $show = false;
+                    }
+                }
+                else {
+                    $show = false;
+                }
+            }
+
+            return $show;
+        }
+
+        public function masterstudy_prerequisite_button()
+        {
+
         }
 
         public function curriculum_custom_fields( $custom_fields )
@@ -287,11 +315,14 @@
                     $author_id = absint( $author_id );
                 }
 
-                if ( ( ! STM_LMS_Instructor::is_instructor( $_user_id ) || $_user_id !== $author_id ) ) {
+                if ( ( ! STM_LMS_Instructor::is_instructor( $_user_id ) && $_user_id !== $author_id ) ) {
                     $user_plan = self::get_user_meta_key( $_user_id, $course_id );
 
-                    if ( ! empty( $user_plan ) ) {
+                    if ( ! empty( $user_plan ) || ! STM_LMS_User::has_course_access( $course_id ) ) {
                         foreach ( $materials as $material_index => $material_id ) {
+                            if ( STM_LMS_Lesson::is_previewed( $course_id, $material_id ) ) {
+                                continue;
+                            }
 
                             if ( self::plan_exists( $material_id, $user_plan ) ) {
                                 unset( $materials[ $material_index ] );

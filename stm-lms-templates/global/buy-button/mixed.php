@@ -9,8 +9,8 @@
 
     stm_lms_register_script( 'buy-button', array( 'jquery.cookie' ) );
     if ( ! empty( $plans_enable ) ) {
-        wp_enqueue_script('buy-plans', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/buy-plans.js', [], STM_THEME_CHILD_VERSION);
-        wp_enqueue_style('buy-plans', STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/buy-plans.css', [], STM_THEME_CHILD_VERSION);
+        wp_enqueue_script('buy-plans');
+        wp_enqueue_style('buy-plans');
     }
     stm_lms_register_style( 'buy-button-mixed' );
 

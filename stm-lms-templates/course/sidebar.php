@@ -55,11 +55,12 @@
                         $current_lesson = ( ! empty( $course['current_lesson_id'] ) ) ? $course['current_lesson_id'] : '0';
 
                         foreach ( $section['materials'] as $index => $material ) :
-                            $lesson_id = stm_lms_get_wpml_binded_id( $material['post_id'] );
-                            $icon      = 'stmlms-text';
-                            $hint      = esc_html__( 'Text Lesson', 'masterstudy-lms-learning-management-system' );
-                            $type      = '';
-                            $classes   = 'stm-lms-course__lessons--item';
+                            $lesson_id    = stm_lms_get_wpml_binded_id( $material['post_id'] );
+                            $icon         = 'stmlms-text';
+                            $hint         = esc_html__( 'Text Lesson', 'masterstudy-lms-learning-management-system' );
+                            $type         = '';
+                            $classes      = 'stm-lms-course__lessons--item';
+                            $is_previewed = STM_LMS_Lesson::is_previewed( $post_id, $lesson_id );
 
                             $has_course   = STM_LMS_User::has_course_access( $post_id, $lesson_id, false );
 
@@ -114,8 +115,8 @@
                                 endswitch;
                             }
 
-                            if ( $has_access ) :
-                                if ( absint( $current_lesson ) === absint( $lesson_id ) ) {
+                            if ( $has_access || $is_previewed ) :
+                                if ( absint( $current_lesson ) === absint( $lesson_id ) || $is_previewed ) {
                                     $classes .= " stm-lms-course__lessons--item__current";
                                 }
                     ?>
@@ -135,7 +136,7 @@
                             <span class="stm-lms-course__curriculum-item--name">
                                 <?php echo esc_html( $material['title'] ); ?>
                             </span>
-                        <?php if ( $has_access ) : ?>
+                        <?php if ( $has_access || $is_previewed ) : ?>
                             </a>
                         <?php else : ?>
                             </div>
