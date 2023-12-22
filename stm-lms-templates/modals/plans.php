@@ -20,8 +20,8 @@
 </style>
 <div class="modal fade stm-lms-modal-plans" tabindex="-1" role="dialog" aria-labelledby="stm-lms-modal-login">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <button class="modal-plans-close" data-dismiss="modal"></button>
         <div class="modal-content">
+            <button class="modal-plans-close" data-dismiss="modal"></button>
             <div class="modal-body">
                 <div class="pricing">
                     <div class="pricing__title text-center">

@@ -60,7 +60,7 @@
 	});
 
 	body.on('click', modal_plans, function ( element ) {
-		if ( ! $( element.target ).closest('.card').length ) {
+		if ( ! $( element.target ).closest('.modal-content').length ) {
 			$( modal_plans ).modal('hide');
 		}
 	});

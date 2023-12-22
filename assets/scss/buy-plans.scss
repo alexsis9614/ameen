@@ -71,7 +71,7 @@
                 max-width: 350px;
                 width: 100%;
             }
-            &:last-child{
+            &:nth-child(2){
                 .card-body{
                     background: rgb(235, 245, 255);
                 }
@@ -110,9 +110,9 @@
                     }
                 }
             }
-            &:nth-child(2){
-                z-index: 100;
-            }
+            //&:nth-child(2){
+            //    z-index: 100;
+            //}
             &-header{
                 display: flex;
                 align-items: center;
