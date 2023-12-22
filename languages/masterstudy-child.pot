@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Master Study Child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-09 20:35+0000\n"
+"POT-Creation-Date: 2023-12-22 07:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Accept to send notifications"
 msgstr ""
 
-#: inc/classes/STM_Course.php:57
+#: inc/classes/STM_Course.php:110
 msgid "Access - time limit for plans"
 msgstr ""
 
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Archive bundle"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:64
+#: stm-lms-templates/global/completed_info.php:65
 #: stm-lms-templates/lesson/finish_score_popup.php:119
 msgid "Assignments:"
 msgstr ""
@@ -175,7 +175,7 @@ msgstr ""
 msgid "Coupon codes: %s"
 msgstr ""
 
-#: inc/classes/STM_Course.php:147
+#: inc/classes/STM_Course.php:200
 #, php-format
 msgid "Course %s expiration (days)"
 msgstr ""
@@ -222,7 +222,7 @@ msgstr ""
 msgid "Created time: %s"
 msgstr ""
 
-#: stm-lms-templates/course/sidebar.php:24
+#: stm-lms-templates/course/sidebar.php:31
 msgid "Curriculum"
 msgstr ""
 
@@ -246,7 +246,7 @@ msgstr ""
 msgid "Didn't get the code? Wrong number?"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:82
+#: stm-lms-templates/global/completed_info.php:83
 msgid "Download your Certificate"
 msgstr ""
 
@@ -260,10 +260,6 @@ msgstr ""
 
 #: inc/otp.php:619
 msgid "Enable OTP auth"
-msgstr ""
-
-#: stm-lms-templates/global/buy-button/mixed.php:57
-msgid "Enroll course"
 msgstr ""
 
 #: stm-lms-templates/global/buy-button/mixed.php:248
@@ -334,7 +330,7 @@ msgstr ""
 msgid "For Enterprise"
 msgstr ""
 
-#: stm-lms-templates/course/sidebar.php:123
+#: stm-lms-templates/course/sidebar.php:165
 msgid "Free"
 msgstr ""
 
@@ -361,7 +357,7 @@ msgstr ""
 msgid "Get course"
 msgstr ""
 
-#: inc/classes/STM_Settings.php:58 stm-lms-templates/modals/plans.php:66
+#: inc/classes/STM_Settings.php:58 stm-lms-templates/modals/plans.php:74
 msgid "Get plan"
 msgstr ""
 
@@ -423,7 +419,7 @@ msgstr ""
 msgid "Media:"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:44
+#: stm-lms-templates/global/completed_info.php:45
 msgid "Multimedia:"
 msgstr ""
 
@@ -431,7 +427,7 @@ msgstr ""
 msgid "My account"
 msgstr ""
 
-#: inc/classes/STM_History_Table.php:234 inc/classes/STM_Settings.php:77
+#: inc/classes/STM_Settings.php:77 inc/classes/STM_History_Table.php:234
 #: stm-lms-templates/account/v1/sign-in.php:79
 msgid "Name"
 msgstr ""
@@ -451,6 +447,10 @@ msgstr ""
 #: inc/classes/STM_History_Table.php:311
 #, php-format
 msgid "No %s yet. Once they sign up they'll appear here."
+msgstr ""
+
+#: stm-lms-templates/modals/plans.php:31
+msgid "No contract cancel anytime you want"
 msgstr ""
 
 #: stm-lms-templates/account/private/parts/enrolled-courses.php:125
@@ -490,7 +490,7 @@ msgstr ""
 msgid "OTP Testing"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:34
+#: stm-lms-templates/global/completed_info.php:35
 #: stm-lms-templates/lesson/finish_score_popup.php:95
 msgid "Pages:"
 msgstr ""
@@ -541,7 +541,7 @@ msgstr ""
 msgid "Phone number: %s"
 msgstr ""
 
-#: inc/classes/STM_Curriculum.php:71
+#: inc/classes/STM_Curriculum.php:99
 #, php-format
 msgid "Plan - %s"
 msgstr ""
@@ -568,9 +568,13 @@ msgid "Preview Course"
 msgstr ""
 
 #. %s: number
-#: inc/classes/STM_Course.php:107
+#: inc/classes/STM_Course.php:160
 #, php-format
 msgid "Price %s ( %s )"
+msgstr ""
+
+#: stm-lms-templates/modals/plans.php:28
+msgid "Pricing list "
 msgstr ""
 
 #: inc/bookit/main.php:235
@@ -585,7 +589,7 @@ msgstr ""
 msgid "Progress (increasing)"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:54
+#: stm-lms-templates/global/completed_info.php:55
 #: stm-lms-templates/lesson/finish_score_popup.php:111
 msgid "Quizzes:"
 msgstr ""
@@ -626,7 +630,7 @@ msgid "Review: %s"
 msgstr ""
 
 #. %s will be replaced with a string.
-#: stm-lms-templates/global/completed_info.php:21
+#: stm-lms-templates/global/completed_info.php:22
 #, php-format
 msgid "Score %s"
 msgstr ""
@@ -644,11 +648,11 @@ msgstr ""
 msgid "See plans"
 msgstr ""
 
-#: inc/classes/STM_Course.php:128
+#: inc/classes/STM_Course.php:181
 msgid "Select Plan"
 msgstr ""
 
-#: inc/classes/STM_Course.php:118
+#: inc/classes/STM_Course.php:171
 msgid "Select plan"
 msgstr ""
 
@@ -686,6 +690,7 @@ msgstr ""
 msgid "Stars"
 msgstr ""
 
+#: stm-lms-templates/global/buy-button/mixed.php:58
 #: stm-lms-templates/account/private/parts/enrolled-courses.php:108
 msgid "Start Course"
 msgstr ""
@@ -694,7 +699,7 @@ msgstr ""
 msgid "Start course"
 msgstr ""
 
-#: stm-lms-templates/course/sidebar.php:145
+#: stm-lms-templates/course/sidebar.php:187
 #, php-format
 msgid "Starting from %s"
 msgstr ""
@@ -835,7 +840,7 @@ msgstr ""
 msgid "We'll send a confirmation code by sms"
 msgstr ""
 
-#: stm-lms-templates/global/completed_info.php:20
+#: stm-lms-templates/global/completed_info.php:21
 msgid "You have completed the course:"
 msgstr ""
 
