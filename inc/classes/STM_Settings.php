@@ -128,6 +128,14 @@
                                 ),
                             )
                         );
+
+                        if (
+                            isset( $setup[ 'fields' ][ 'section_2' ] ) &&
+                            isset( $setup[ 'fields' ][ 'section_2' ][ 'fields' ] ) &&
+                            isset( $setup[ 'fields' ][ 'section_2' ][ 'fields' ][ 'course_card_style' ] )
+                        ) {
+                            $setup[ 'fields' ][ 'section_2' ][ 'fields' ][ 'course_card_style' ][ 'options' ]['style_4'] = __( 'Ameen Card', 'masterstudy-lms-learning-management-system' );
+                        }
                     }
                 }
             }

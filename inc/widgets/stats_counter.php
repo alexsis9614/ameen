@@ -1,16 +1,12 @@
 <?php
     namespace LMS\inc\Elementor;
 
+    use Elementor\Group_Control_Typography;
     use Elementor_STM_Stats_Counter;
     use Elementor\Controls_Manager;
 
     class Stats_Counter extends Elementor_STM_Stats_Counter
     {
-        public function get_style_depends(): array
-        {
-            return array( 'stm-stats_counter-style_1' );
-        }
-
         public function get_script_depends(): array
         {
             return array( 'stm-stats_counter', 'countUp.min.js' );
@@ -36,15 +32,7 @@
             $this->start_controls_section(
                 'section_content',
                 array(
-                    'label' => __( 'Content', 'masterstudy-elementor-widgets' ),
-                )
-            );
-
-            $this->add_control(
-                'title',
-                array(
-                    'label' => __( 'Title', 'masterstudy-elementor-widgets' ),
-                    'type'  => Controls_Manager::TEXT,
+                    'label' => Controls_Manager::TAB_CONTENT,
                 )
             );
 
@@ -85,111 +73,20 @@
             );
 
             $this->add_control(
+                'title',
+                array(
+                    'label' => __( 'Text', 'masterstudy-elementor-widgets' ),
+                    'type'  => Controls_Manager::WYSIWYG,
+                )
+            );
+
+            $this->add_control(
                 'icon',
                 array(
                     'label'   => __( 'Icon', 'masterstudy-elementor-widgets' ),
-                    'type'    => \Elementor\Controls_Manager::ICONS,
+                    'type'    => Controls_Manager::ICONS,
                     'default' => array(
                         'value' => '',
-                    ),
-                )
-            );
-
-            $this->add_control(
-                'icon_size',
-                array(
-                    'label'       => __( 'Icon Size', 'masterstudy-elementor-widgets' ),
-                    'type'        => Controls_Manager::NUMBER,
-                    'default'     => '65',
-                    'description' => __( 'Enter icon size in px', 'masterstudy-elementor-widgets' ),
-                )
-            );
-
-            $this->add_control(
-                'icon_width',
-                array(
-                    'label'       => __( 'Icon Width', 'masterstudy-elementor-widgets' ),
-                    'type'        => Controls_Manager::NUMBER,
-                    'description' => __( 'Enter icon width in px', 'masterstudy-elementor-widgets' ),
-                )
-            );
-
-            $this->add_control(
-                'icon_height',
-                array(
-                    'label'       => __( 'Icon Height', 'masterstudy-elementor-widgets' ),
-                    'type'        => Controls_Manager::NUMBER,
-                    'default'     => '90',
-                    'description' => __( 'Enter icon height in px', 'masterstudy-elementor-widgets' ),
-                )
-            );
-
-            $this->add_control(
-                'icon_text_alignment',
-                array(
-                    'label'       => __( 'Text alignment', 'masterstudy-elementor-widgets' ),
-                    'type'        => Controls_Manager::SELECT,
-                    'options'     => array(
-                        'left'   => __( 'Left', 'masterstudy-elementor-widgets' ),
-                        'right'  => __( 'Right', 'masterstudy-elementor-widgets' ),
-                        'center' => __( 'Center', 'masterstudy-elementor-widgets' ),
-                    ),
-                    'default'     => 'left',
-                    'description' => __( 'Text alignment in block', 'masterstudy-elementor-widgets' ),
-                )
-            );
-
-            $this->add_control(
-                'icon_text_color',
-                array(
-                    'label'       => __( 'Text color', 'masterstudy-elementor-widgets' ),
-                    'type'        => \Elementor\Controls_Manager::COLOR,
-                    'description' => __( 'Text color(white - default)', 'masterstudy-elementor-widgets' ),
-                    'default'     => 'white',
-                )
-            );
-
-            $this->add_control(
-                'icon_background_color',
-                array(
-                    'label' => __( 'Icon background color', 'masterstudy-elementor-widgets' ),
-                    'type'  => \Elementor\Controls_Manager::COLOR,
-                )
-            );
-
-            $this->add_control(
-                'text_font_size',
-                array(
-                    'label' => __( 'Text font size (px)', 'masterstudy-elementor-widgets' ),
-                    'type'  => Controls_Manager::NUMBER,
-                )
-            );
-
-            $this->add_control(
-                'counter_text_color',
-                array(
-                    'label'       => __( 'Counter text color', 'masterstudy-elementor-widgets' ),
-                    'type'        => \Elementor\Controls_Manager::COLOR,
-                    'description' => __( 'Counter Text color(yellow - default)', 'masterstudy-elementor-widgets' ),
-                )
-            );
-
-            $this->add_control(
-                'counter_text_font_size',
-                array(
-                    'label' => __( 'Counter text font size (px)', 'masterstudy-elementor-widgets' ),
-                    'type'  => Controls_Manager::NUMBER,
-                )
-            );
-
-            $this->add_control(
-                'border',
-                array(
-                    'label'   => __( 'Include Border', 'masterstudy-elementor-widgets' ),
-                    'type'    => Controls_Manager::SELECT,
-                    'options' => array(
-                        'none'  => __( 'None', 'masterstudy-elementor-widgets' ),
-                        'right' => __( 'Right', 'masterstudy-elementor-widgets' ),
                     ),
                 )
             );
@@ -197,6 +94,233 @@
             $this->end_controls_section();
 
             $this->add_dimensions( '.masterstudy_elementor_stats_counter_' );
+
+            $this->get_icon_style();
+
+            $this->get_counter_style();
+
+            $this->get_counter_text_style();
+        }
+
+        protected function get_icon_style()
+        {
+            $selector    = '{{WRAPPER}} .stats_counter .icon > i';
+            $align_style = $this->get_align_style();
+
+            $align_style['selectors'] = array(
+                '{{WRAPPER}} .stats_counter .icon' => 'text-align: {{VALUE}}',
+            );
+
+            $this->start_controls_section(
+                'section_icon_style',
+                array(
+                    'label' => esc_html__( 'Icon', 'masterstudy-elementor-widgets' ),
+                    'tab'   => Controls_Manager::TAB_STYLE,
+                )
+            );
+
+            $this->add_control(
+                'icon_size',
+                [
+                    'label'       => esc_html_x( 'Image Dimension', 'Image Size Control', 'elementor' ),
+                    'type'        => Controls_Manager::IMAGE_DIMENSIONS,
+                    'description' => esc_html__( 'You can crop the original image size to any custom size. You can also set a single value for height or width in order to keep the original size ratio.', 'elementor' ),
+                    'default'     => [
+                        'width'  => '',
+                        'height' => '90',
+                    ],
+                    'selectors'   => array(
+                        '{{WRAPPER}} .stats_counter .icon' => 'width: {{WIDTH}}; height: {{HEIGHT}};',
+                    )
+                ]
+            );
+
+            $this->add_control(
+                'font_icon_size',
+                array(
+                    'label'       => __( 'Font Icon Size', 'masterstudy-elementor-widgets' ),
+                    'type'        => Controls_Manager::NUMBER,
+                    'default'     => '65',
+                    'description' => __( 'Enter icon size in px', 'masterstudy-elementor-widgets' ),
+                )
+            );
+
+            $this->add_control( 'icon_text_alignment', $align_style );
+
+            $this->add_control(
+                'icon_text_color',
+                array(
+                    'label'       => __( 'Color', 'elementor' ),
+                    'type'        => Controls_Manager::COLOR,
+                    'default'     => 'white',
+                    'selectors'   => [
+                        $selector => 'color: {{VALUE}};',
+                    ],
+                )
+            );
+
+            $this->end_controls_section();
+        }
+
+        protected function get_counter_style()
+        {
+            $selector    = '{{WRAPPER}} .stats_counter .h1';
+            $align_style = $this->get_align_style();
+
+            $align_style['selectors'] = array(
+                $selector => 'text-align: {{VALUE}}',
+            );
+
+            $this->start_controls_section(
+                'section_counter_style',
+                array(
+                    'label' => esc_html__( 'Counter', 'masterstudy-elementor-widgets' ),
+                    'tab'   => Controls_Manager::TAB_STYLE,
+                )
+            );
+
+            $this->add_group_control(
+                Group_Control_Typography::get_type(),
+                array(
+                    'name'     => 'counter_typography',
+                    'selector' => $selector,
+                )
+            );
+
+            $this->add_control(
+                'counter_color',
+                array(
+                    'label'       => __( 'Color', 'elementor' ),
+                    'type'        => Controls_Manager::COLOR,
+                    'default'     => 'white',
+                    'selectors'   => [
+                        $selector => 'color: {{VALUE}};',
+                    ],
+                )
+            );
+
+            $this->add_responsive_control( 'align_counter_style', $align_style );
+
+            $this->add_responsive_control(
+                'counter_padding',
+                [
+                    'label' => esc_html__( 'Padding', 'elementor' ),
+                    'type' => Controls_Manager::DIMENSIONS,
+                    'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
+                    'selectors' => [
+                        $selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    ],
+                    'separator' => 'before',
+                ]
+            );
+
+            $this->add_responsive_control(
+                'counter_margin',
+                [
+                    'label' => esc_html__( 'Margin', 'elementor' ),
+                    'type' => Controls_Manager::DIMENSIONS,
+                    'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
+                    'selectors' => [
+                        $selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+                    ],
+                ]
+            );
+
+            $this->end_controls_section();
+        }
+
+        protected function get_counter_text_style()
+        {
+            $align_style = $this->get_align_style();
+            $selector    = '{{WRAPPER}} .stats_counter_title.h5';
+
+            $align_style['selectors'] = array(
+                $selector => 'text-align: {{VALUE}}',
+            );
+
+            $this->start_controls_section(
+                'section_counter_text_style',
+                array(
+                    'label' => esc_html__( 'Counter text', 'masterstudy-elementor-widgets' ),
+                    'tab'   => Controls_Manager::TAB_STYLE,
+                )
+            );
+
+            $this->add_group_control(
+                Group_Control_Typography::get_type(),
+                array(
+                    'name'     => 'counter_text_typography',
+                    'selector' => $selector,
+                )
+            );
+
+            $this->add_control(
+                'counter_text_color',
+                array(
+                    'label'       => __( 'Color', 'elementor' ),
+                    'type'        => Controls_Manager::COLOR,
+                    'default'     => 'white',
+                    'selectors'   => [
+                        $selector => 'color: {{VALUE}};',
+                    ],
+                )
+            );
+
+            $this->add_responsive_control( 'align_counter_text_style', $align_style );
+
+            $this->add_responsive_control(
+                'counter_text_padding',
+                [
+                    'label' => esc_html__( 'Padding', 'elementor' ),
+                    'type' => Controls_Manager::DIMENSIONS,
+                    'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
+                    'selectors' => [
+                        $selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    ],
+                    'separator' => 'before',
+                ]
+            );
+
+            $this->add_responsive_control(
+                'counter_text_margin',
+                [
+                    'label' => esc_html__( 'Margin', 'elementor' ),
+                    'type' => Controls_Manager::DIMENSIONS,
+                    'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
+                    'selectors' => [
+                        $selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+                    ],
+                ]
+            );
+
+            $this->end_controls_section();
+        }
+
+        protected function get_align_style()
+        {
+            return array(
+                'label'     => esc_html__( 'Alignment', 'elementor' ),
+                'type'      => Controls_Manager::CHOOSE,
+                'options'   => array(
+                    'left'    => array(
+                        'title' => esc_html__( 'Left', 'elementor' ),
+                        'icon'  => 'eicon-text-align-left',
+                    ),
+                    'center'  => array(
+                        'title' => esc_html__( 'Center', 'elementor' ),
+                        'icon'  => 'eicon-text-align-center',
+                    ),
+                    'right'   => array(
+                        'title' => esc_html__( 'Right', 'elementor' ),
+                        'icon'  => 'eicon-text-align-right',
+                    ),
+                    'justify' => array(
+                        'title' => esc_html__( 'Justified', 'elementor' ),
+                        'icon'  => 'eicon-text-align-justify',
+                    ),
+                ),
+                'default'   => '',
+            );
         }
 
         protected function render() {

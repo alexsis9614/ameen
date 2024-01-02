@@ -22,6 +22,10 @@
                 wp_register_script('stm-stats_counter', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/stm_stats_counter.js', [], STM_THEME_CHILD_VERSION);
             }
 
+//            wp_dequeue_style('stm-lms-courses');
+
+            wp_register_style('stm-courses_carousel-style_4', get_stylesheet_directory_uri() . '/assets/css/courses_carousel/style_4.css', [], STM_THEME_CHILD_VERSION);
+
 //            wp_dequeue_style('stm-lms-login');
 
         }, 99);

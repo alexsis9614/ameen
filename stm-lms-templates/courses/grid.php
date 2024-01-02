@@ -29,23 +29,25 @@
     $class        = ( ! empty( $args['class'] ) ) ? $args['class'] : '';
     $course_view  = 'stm_lms_courses__grid_' . STM_LMS_Options::get_option( 'course_card_view', 'center' );
     $course_style = STM_LMS_Options::get_option( 'course_card_style', 'style_1' );
-    stm_lms_register_style( 'courses' );
-    stm_lms_register_style( "courses/{$course_style}" );
+
+    if ( 'style_4' !== $course_style ) {
+        stm_lms_register_style( 'courses' );
+        stm_lms_register_style( "courses/{$course_style}" );
+    }
 
     if ( $q->have_posts() ) :
 
 	do_action( 'stm_lms_courses_have_posts', $args, $q );
 
-	if ( empty( $args['isAjax'] ) ) : ?>
-		<?php
-		if ( ! empty( $args['is_featured'] ) ) :
-			$link = add_query_arg(
-				array(
-					'status[]'      => 'featured',
-					'only_featured' => '1',
-				)
-			);
-			?>
+	if ( empty( $args['isAjax'] ) ) :
+            if ( ! empty( $args['is_featured'] ) ) :
+                $link = add_query_arg(
+                    array(
+                        'status[]'      => 'featured',
+                        'only_featured' => '1',
+                    )
+                );
+		?>
 			<div class="featured-head">
 				<h3>
 					<?php esc_html_e( 'Featured Courses', 'masterstudy-lms-learning-management-system' ); ?>
