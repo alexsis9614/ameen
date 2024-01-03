@@ -13,6 +13,10 @@
 
     $free_course   = STM_LMS_Options::get_option('stm_bundle_free_course');
     $bundle_course = STM_LMS_Options::get_option('stm_bundle_course');
+
+    if ( is_page( STM_LMS_Options::get_option( 'courses_page' ) ) || is_category() ) {
+        wp_enqueue_style('stm-courses_carousel-style_4');
+    }
 ?>
 
 <div class="stm_lms_courses_wrapper">

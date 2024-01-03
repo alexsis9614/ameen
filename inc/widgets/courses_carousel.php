@@ -47,6 +47,14 @@
             $card_style['options']['style_4'] = __( 'Ameen Card', 'masterstudy-lms-learning-management-system' );
 
             $this->update_control(  'course_card_style', $card_style );
+
+            $title_color = $this->get_controls('title_color');
+
+            $title_color['selectors'] = array(
+                '{{WRAPPER}} .stm_lms_courses_carousel__top h3 ' => 'color: {{VALUE}}',
+            );
+
+            $this->update_control( 'title_color', $title_color);
         }
 
         protected function render()

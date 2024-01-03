@@ -1,0 +1,57 @@
+.stm_lms_courses_carousel__buttons{
+    margin: 0 0 0 24px;
+}
+
+.stm_lms_courses_carousel__button{
+    background: rgba(241, 245, 249, 1);
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    color: rgba(49, 56, 67, 1);
+    border: none;
+}
+
+.stm_lms_courses_carousel__button:hover{
+    background: rgba(50, 61, 102, 1);
+    color: #fff;
+}
+
+.stm_lms_courses_carousel__top{
+    margin: 0 0 32px;
+}
+
+.stm_lms_courses_carousel__top .h4{
+    color: rgba(28, 28, 28, 1) !important;
+    border: 1px solid rgba(28, 28, 28, 1);
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.stm_lms_courses_carousel__top .h4:hover{
+    background: rgba(28, 28, 28, 1);
+    color: #fff !important;
+}
+
+.stm_lms_courses__single__inner__image{
+    width: 100%;
+}
+
+.stm_lms_courses__grid_4 .stm_lms_courses__single--image .stm_lms_lazy_image{
+    padding: 0;
+    height: 168px;
+    width: 100%;
+}
+
+.stm_lms_courses__single--image__container .stm_lms_lazy_image > img{
+    position: static;
+    object-fit: cover;
+}
+
+.stm_lms_post_status{
+    position: static;
+    width: auto;
+    display: inline-block;
+    max-width: max-content;
+}

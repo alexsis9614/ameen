@@ -187,25 +187,24 @@
                                     'masterstudy-lms-learning-management-system'
                                 );
 							?>
-							<i class="lnr lnr-arrow-right"></i>
 						</a>
 					<?php endif; ?>
+
+                    <?php if ( 'disable' !== $prev_next ) : ?>
+                        <div class="stm_lms_courses_carousel__buttons">
+                            <div class="stm_lms_courses_carousel__button stm_lms_courses_carousel__button_prev sbc_h sbrc_h">
+                                <i class="fa fa-chevron-left"></i>
+                            </div>
+                            <div class="stm_lms_courses_carousel__button stm_lms_courses_carousel__button_next sbc_h sbrc_h">
+                                <i class="fa fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
 				</div>
 			<?php endif; ?>
 
 			<?php STM_LMS_Templates::show_lms_template( 'courses/grid', array( 'args' => $args ) ); ?>
-
-			<?php if ( 'disable' !== $prev_next ) : ?>
-				<div class="stm_lms_courses_carousel__buttons">
-					<div class="stm_lms_courses_carousel__button stm_lms_courses_carousel__button_prev sbc_h sbrc_h">
-						<i class="fa fa-chevron-left"></i>
-					</div>
-					<div class="stm_lms_courses_carousel__button stm_lms_courses_carousel__button_next sbc_h sbrc_h">
-						<i class="fa fa-chevron-right"></i>
-					</div>
-				</div>
-			<?php endif; ?>
 		</div>
 	</div>
 	<?php
