@@ -14,29 +14,10 @@
         $img_container_height = '';
     }
 
-    $progress = 0;
-    if ( is_user_logged_in() ) {
-        $my_progress = STM_LMS_Helpers::simplify_db_array( stm_lms_get_user_course( get_current_user_id(), $id, array( 'progress_percent' ) ) );
-        if ( ! empty( $my_progress['progress_percent'] ) ) {
-            $progress = $my_progress['progress_percent'];
-        }
-
-        if ( $progress > 100 ) {
-            $progress = 100;
-        }
-    }
+    $lectures = STM_LMS_Course::curriculum_info( $id );
 ?>
 
 <div class="stm_lms_courses__single--image">
-
-    <?php if ( ! empty( $progress ) ) : ?>
-        <div class="stm_lms_courses__single--image__progress">
-            <div class="stm_lms_courses__single--image__progress_bar"
-                 style="width : <?php echo esc_attr( $progress ); ?>%">
-                <span class="stm_lms_courses__single--image__progress_label"><?php echo esc_html( "{$progress}%" ); ?></span>
-            </div>
-        </div>
-    <?php endif; ?>
 
     <a href="<?php the_permalink(); ?>"
        class="heading_font"
@@ -50,6 +31,10 @@
                     the_post_thumbnail( $img_size );
                 }
             ?>
+
+            <div class="stm_lms_courses__single--info_meta">
+                <?php STM_LMS_Templates::show_lms_template( 'courses/parts/meta', compact('lectures' ) ); ?>
+            </div>
         </div>
     </a>
 

@@ -17,10 +17,6 @@
         $classes[] = 'stm_lms_courses__single--list';
     }
 
-    $level    = get_post_meta( $id, 'level', true );
-    $duration = get_post_meta( $id, 'duration_info', true );
-    $lectures = STM_LMS_Course::curriculum_info( $id );
-
     $post_status = STM_LMS_Course::get_post_status( $id );
 ?>
 
@@ -52,32 +48,25 @@
 
         <div class="stm_lms_courses__single--inner">
 
-            <?php
-                STM_LMS_Templates::show_lms_template( 'courses/parts/title' );
+            <?php STM_LMS_Templates::show_lms_template( 'courses/parts/title' ); ?>
 
-                if ( $bundle_courses && absint( $bundle_course ) === absint( $id ) ) :
-            ?>
+            <div class="stm_lms_courses__author">
+                <?php
+                    $user = STM_LMS_User::get_current_user( $author_id );
+                    echo sprintf(
+                        esc_html__( 'Created by: %s', 'masterstudy-child' ),
+                        $user['login']
+                    );
+                ?>
+            </div>
+
+            <?php STM_LMS_Templates::show_lms_template( 'courses/parts/rating', array( 'id' => $id ) ); ?>
+
+            <?php if ( $bundle_courses && absint( $bundle_course ) === absint( $id ) ) : ?>
                 <div class="stm_lms_courses__single--content">
                     <?php echo get_the_excerpt( $id ); ?>
                 </div>
             <?php endif; ?>
-
-            <div class="stm_lms_courses__single--info_meta">
-                <?php STM_LMS_Templates::show_lms_template( 'courses/parts/meta', compact( 'level', 'duration', 'lectures' ) ); ?>
-            </div>
-
-            <div class="stm_lms_courses__single--info_meta <?php echo ( $bundle_courses && absint( $bundle_course ) === absint( $id ) ) ? 'stm_lms_courses__single--info_meta__bottom' : '' ?>">
-                <?php
-                    do_action(
-                        'stm_lms_archive_card_price',
-                        compact(
-                            'price',
-                            'sale_price',
-                            'id'
-                        )
-                    );
-                ?>
-            </div>
 
             <?php if ( ! empty( $featured ) ) : ?>
                 <div class="featured-course-container">

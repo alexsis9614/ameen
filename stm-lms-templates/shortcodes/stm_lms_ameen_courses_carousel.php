@@ -41,16 +41,17 @@
     if ( class_exists( 'STM_LMS_Helpers' ) ) :
 
         if ( 'style_4' === $course_card_style ) {
-            wp_add_inline_style( 'stm-courses_carousel-style_4', $inline );
+//            wp_add_inline_style( 'stm-courses_carousel-style_4', $inline );
         }
         else {
             wp_enqueue_script( 'imagesloaded' );
             wp_enqueue_script( 'owl.carousel' );
             wp_enqueue_style( 'owl.carousel' );
-            stm_lms_module_styles( 'courses_carousel', 'style_1', array(), $inline );
-            stm_lms_module_scripts( 'courses_carousel' );
             stm_lms_module_scripts( 'image_container', 'card_image' );
         }
+
+        stm_lms_module_styles( 'courses_carousel', 'style_1', array(), $inline );
+        stm_lms_module_scripts( 'courses_carousel' );
 
         $args = array(
             'per_row'        => intval( $per_row ),
