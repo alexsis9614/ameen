@@ -24,7 +24,10 @@
 
 //            wp_dequeue_style('stm-lms-courses');
 
-            wp_register_style('stm-courses_carousel-style_4', get_stylesheet_directory_uri() . '/assets/css/courses_carousel/style_4.css', [], STM_THEME_CHILD_VERSION);
+            wp_register_style('stm-courses_carousel-style_4', STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/courses_carousel/style_4.css', [], STM_THEME_CHILD_VERSION);
+
+            wp_dequeue_style('elementor-accordion');
+            wp_register_style('stm-accordion-style_1', STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/accordion.css', [], STM_THEME_CHILD_VERSION);
 
 //            wp_dequeue_style('stm-lms-login');
 

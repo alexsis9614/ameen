@@ -1,0 +1,38 @@
+.elementor-accordion-style-style_1 .elementor-accordion-item {
+    border-radius: 8px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
+}
+.elementor-accordion-style-style_1 .elementor-accordion-item:last-child {
+    margin-bottom: 0;
+}
+.elementor-accordion-style-style_1 .elementor-accordion-item .elementor-tab-title {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.elementor-accordion-style-style_1 .elementor-tab-title.elementor-active{
+    background: rgba(241, 248, 255, 1);
+}
+
+.elementor-accordion-style-style_1 .elementor-tab-title .elementor-accordion-icon{
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0 auto;
+    padding: 0 0 0 10px;
+    order: 1;
+}
+
+.elementor-accordion-style-style_1 .elementor-tab-title .elementor-accordion-icon .elementor-accordion-icon-opened svg,
+.elementor-accordion-style-style_1 .elementor-tab-title .elementor-accordion-icon .elementor-accordion-icon-closed svg{
+    width: 32px;
+    height: 32px;
+}
+
+.elementor-accordion-style-style_1 .elementor-tab-content p:last-child{
+    margin-bottom: 0;
+}

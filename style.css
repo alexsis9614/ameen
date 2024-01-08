@@ -79,6 +79,14 @@ body.home #wrapper #main > .container{
     font-weight: 700;
 }
 
+.icon-platform .elementor-icon-box-description > span{
+    color: rgba(30, 110, 235, 1);
+}
+
+#main-video-platform .e-hosted-video{
+    margin: 0 auto;
+}
+
 .stm_lms_courses__single.style_3 .stm_lms_courses__single__inner .stm_lms_courses__single--title h5{
     min-height: 52px;
 }
@@ -112,29 +120,14 @@ body.logged-in.admin-bar{
     padding-right: 10px;
     padding-left: 10px;
 }
-/*.col-md-12{*/
-/*    margin-top: -1px;*/
-/*    max-width: 1140px;*/
-/*    padding: 0px 7px 0px 7px;*/
-/*}*/
-/*.container{*/
-/*    max-width: 1140px;*/
-/*}*/
-/*.header_2 .container{*/
-/*    max-width: 1140px;*/
-/*}*/
-/*.pull-left {*/
-/*    color: white;*/
-/*}*/
-/*.transparent_header_off .header_default{*/
-/*    padding-top: 8px;*/
-/*    padding-bottom: 8px;*/
-/*}*/
-/*.main__content-title {*/
-/*    font-size: 36px;*/
-/*    line-height: 52px;*/
-/*    font-weight: 700;*/
-/*}*/
+
+#footer-contacts p{
+    margin-bottom: 16px;
+}
+
+#footer-contacts p:last-child{
+    margin-bottom: 0;
+}
 
 @media screen and (max-width: 480px) {
     .stm_lms_user_info_top .stm_lms_user_info_top__sort{
