@@ -18,7 +18,7 @@
 				})
 			};
 
-			$(window).scroll(function () {
+			$(window).on('load', function () {
 				if ($('#' + id).is_on_screen() && !counters[id]['started']) {
 					counters[id]['counter'].start();
 					counters[id]['started'] = true;

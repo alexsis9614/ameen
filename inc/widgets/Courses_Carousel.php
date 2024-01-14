@@ -1,5 +1,5 @@
 <?php
-    namespace LMS\inc\Elementor;
+    namespace LMS\inc\widgets;
 
     use Elementor\Plugin;
     use StmLmsElementor\Widgets\StmLmsCoursesCarousel;

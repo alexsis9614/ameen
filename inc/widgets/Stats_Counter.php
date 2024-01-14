@@ -1,5 +1,5 @@
 <?php
-    namespace LMS\inc\Elementor;
+    namespace LMS\inc\widgets;
 
     use Elementor\Group_Control_Typography;
     use Elementor_STM_Stats_Counter;
@@ -14,7 +14,7 @@
 
         public function get_name(): string
         {
-            return 'ameen_stm_stats_counter';
+            return 'ameen_' . parent::get_name();
         }
 
         public function get_title(): string
