@@ -12,6 +12,8 @@
     require_once __DIR__ . '/inc/fix-crop-images-svg.php';
     require_once __DIR__ . '/inc/scripts_and_styles.php';
 
+    new LMS\inc\Elementor();
+
     if ( is_plugin_active('telegram-bot/telegram-bot.php') ) {
         require_once __DIR__ . '/inc/telegram.php';
     }
