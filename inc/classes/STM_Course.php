@@ -79,6 +79,29 @@
 
             $materials = self::curriculum_filter( $course_id, $materials );
 
+			wp_add_inline_script( 'masterstudy-course-player-lesson', "
+				(function($) {
+					$(document).ready( function() {
+						$('[data-id=\"masterstudy-curriculum-switcher\"]').addClass('masterstudy-switch-button_active');
+						$('.masterstudy-course-player-curriculum').addClass('masterstudy-course-player-curriculum_open');
+						$('body').addClass('masterstudy-course-player-body-hidden');
+						
+						if (!$('.masterstudy-course-player-discussions').hasClass('masterstudy-course-player-discussions_open')) {
+							$('.masterstudy-course-player-content').addClass('masterstudy-course-player-content_open-sidebar');
+						}
+						
+						if (window.matchMedia('(max-width: 1366px)').matches) {
+							$('.masterstudy-course-player-discussions').removeClass('masterstudy-course-player-discussions_open');
+							$('.masterstudy-course-player-header__discussions').removeClass('masterstudy-course-player-header__discussions_open');
+							if (url.searchParams.has('discussions_open')) {
+								url.searchParams[\"delete\"]('discussions_open');
+								history.pushState({}, '', url.toString());
+							}
+						}
+					});
+				}) ( jQuery );
+			");
+
             $is_scorm  = ( '0' == $item_id ); // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 
             if ( empty( $materials ) && ! $is_scorm ) {
