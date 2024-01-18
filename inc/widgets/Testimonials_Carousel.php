@@ -25,10 +25,15 @@
          */
         private $lightbox_slide_index;
 
-//        public function get_style_depends(): array
-//        {
-//            return array( 'stm-style-testimonials' );
-//        }
+        public function get_style_depends(): array
+        {
+            return array( 'stm-style-testimonials' );
+        }
+
+        public function get_script_depends(): array
+        {
+            return array( 'stm-script-testimonials' );
+        }
 
         public function get_name(): string
         {

@@ -13,6 +13,8 @@
             add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 20 );
 
             add_filter( 'elementor/widget/render_content', array( $this, 'render_content' ), 10, 2 );
+
+            add_action( 'elementor/widget/before_render_content', array( $this, 'before_render_content' ), 10, 1 );
         }
 
         public function register_widgets( $widgets_manager )
@@ -52,6 +54,13 @@
             return $widget_content;
         }
 
+        public function before_render_content( $widget )
+        {
+            if ( 'media-carousel' === $widget->get_name() ) {
+                wp_enqueue_script('stm-script-testimonials');
+            }
+        }
+
         public function render_accordion( &$widget_content, Widget_Base $widget )
         {
             $widget_content = preg_replace(
@@ -82,11 +91,8 @@
 
             $widget->end_controls_section();
 
-            $widget->set_settings( 'container_class', 'asdds' );
-            $widget->set_config( 'container_class', 'asdds' );
-
-            error_log( print_r( $widget->get_settings('container_class'), true ) );
-
-            $widget->add_style_depends('stm-style-testimonials');
+            if ( $widget->get_settings_for_display( $prefix . 'settings_enable' ) ) {
+                $widget->add_style_depends( 'stm-style-testimonials' );
+            }
         }
     }
