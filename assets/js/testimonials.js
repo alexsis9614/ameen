@@ -2,8 +2,10 @@
     $(window).load( function () {
         let swiper = $( '#main-carousel .swiper-container' ).data( 'swiper' );
 
+        console.log(swiper);
+        swiper.params.loop = false;
         swiper.params.centeredSlides = true;
-        swiper.params.autoplay = false;
-        swiper.slideTo(0);
+        swiper.autoplay.running = false;
+        swiper.update();
     });
 })( jQuery );

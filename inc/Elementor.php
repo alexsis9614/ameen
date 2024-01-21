@@ -8,6 +8,9 @@
 
     class Elementor
     {
+
+        public $prefix = 'ameen_';
+
         public function __construct()
         {
             add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 20 );
@@ -57,7 +60,33 @@
         public function before_render_content( $widget )
         {
             if ( 'media-carousel' === $widget->get_name() ) {
-                wp_enqueue_script('stm-script-testimonials');
+                $widget->start_controls_section('section_ameen_settings', array(
+                    'label' => esc_html__( 'Ameen Settings', 'masterstudy-child' ),
+                ));
+
+                $widget->add_control(
+                    $this->prefix . 'settings_enable',
+                    array(
+                        'type' => Controls_Manager::SWITCHER,
+                        'label' => esc_html__( 'Enable settings', 'masterstudy-child' ),
+                        'default' => 'yes',
+                    )
+                );
+
+                $widget->end_controls_section();
+
+                if ( $widget->get_settings( $this->prefix . 'settings_enable' ) ) {
+//                    $widget->add_style_depends( 'stm-style-testimonials' );
+
+                    wp_enqueue_script( 'stm-style-testimonials' );
+
+                    $widget->add_render_attribute(
+                        '_wrapper',
+                        [
+                            'class' => $this->prefix . 'main-page-carousel',
+                        ]
+                    );
+                }
             }
         }
 
@@ -74,25 +103,10 @@
 
         public function render_media_carousel( Widget_Base $widget )
         {
-            $prefix = 'ameen_';
-
-            $widget->start_controls_section('section_ameen_settings', array(
-                'label' => esc_html__( 'Ameen Settings', 'masterstudy-child' ),
-            ));
-
-            $widget->add_control(
-                $prefix . 'settings_enable',
-                array(
-                    'type' => Controls_Manager::SWITCHER,
-                    'label' => esc_html__( 'Enable settings', 'masterstudy-child' ),
-                    'default' => 'yes',
-                )
-            );
-
-            $widget->end_controls_section();
-
-            if ( $widget->get_settings_for_display( $prefix . 'settings_enable' ) ) {
+            $widget->add_style_depends( 'stm-style-testimonials' );
+            if ( $widget->get_settings( $this->prefix . 'settings_enable' ) ) {
                 $widget->add_style_depends( 'stm-style-testimonials' );
+//                wp_enqueue_script('stm-script-testimonials');
             }
         }
     }
