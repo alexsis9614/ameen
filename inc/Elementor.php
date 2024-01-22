@@ -2,7 +2,8 @@
     namespace LMS\inc;
 
     use Elementor\Controls_Manager;
-    use Elementor\Widget_Base;
+	use Elementor\Element_Base;
+	use Elementor\Widget_Base;
     use Elementor_STM_Testimonials;
     use Elementor_STM_Child_Testimonials;
 
@@ -49,10 +50,9 @@
         {
             if ( 'accordion' === $widget->get_name() ) {
                 $this->render_accordion( $widget_content, $widget );
-            }
-            else if ( 'media-carousel' === $widget->get_name() ) {
-                $this->render_media_carousel( $widget );
-            }
+            } else if ( 'media-carousel' === $widget->get_name() ) {
+
+			}
 
             return $widget_content;
         }
@@ -60,33 +60,30 @@
         public function before_render_content( $widget )
         {
             if ( 'media-carousel' === $widget->get_name() ) {
-                $widget->start_controls_section('section_ameen_settings', array(
-                    'label' => esc_html__( 'Ameen Settings', 'masterstudy-child' ),
-                ));
+//                $widget->start_controls_section('section_ameen_settings', array(
+//                    'label' => esc_html__( 'Ameen Settings', 'masterstudy-child' ),
+//                ));
+//
+//                $widget->add_control(
+//                    $this->prefix . 'settings_enable',
+//                    array(
+//                        'type' => Controls_Manager::SWITCHER,
+//                        'label' => esc_html__( 'Enable settings', 'masterstudy-child' ),
+//                        'default' => 'yes',
+//                    )
+//                );
+//
+//                $widget->end_controls_section();
 
-                $widget->add_control(
-                    $this->prefix . 'settings_enable',
-                    array(
-                        'type' => Controls_Manager::SWITCHER,
-                        'label' => esc_html__( 'Enable settings', 'masterstudy-child' ),
-                        'default' => 'yes',
-                    )
-                );
+				wp_enqueue_script( 'stm-script-testimonials' );
+				$widget->add_style_depends( 'stm-style-testimonials' );
 
-                $widget->end_controls_section();
-
-                if ( $widget->get_settings( $this->prefix . 'settings_enable' ) ) {
-//                    $widget->add_style_depends( 'stm-style-testimonials' );
-
-                    wp_enqueue_script( 'stm-style-testimonials' );
-
-                    $widget->add_render_attribute(
-                        '_wrapper',
-                        [
-                            'class' => $this->prefix . 'main-page-carousel',
-                        ]
-                    );
-                }
+				$widget->add_render_attribute(
+					'_wrapper',
+					[
+						'class' => $this->prefix . 'main-page-carousel',
+					]
+				);
             }
         }
 
@@ -99,14 +96,5 @@
             );
 
             $widget->add_style_depends( 'stm-accordion-style_1' );
-        }
-
-        public function render_media_carousel( Widget_Base $widget )
-        {
-            $widget->add_style_depends( 'stm-style-testimonials' );
-            if ( $widget->get_settings( $this->prefix . 'settings_enable' ) ) {
-                $widget->add_style_depends( 'stm-style-testimonials' );
-//                wp_enqueue_script('stm-script-testimonials');
-            }
         }
     }
