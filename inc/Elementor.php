@@ -78,6 +78,8 @@
 				wp_enqueue_script( 'stm-script-testimonials' );
 				$widget->add_style_depends( 'stm-style-testimonials' );
 
+                $widget->set_settings( 'asd', '123' );
+
 				$widget->add_render_attribute(
 					'_wrapper',
 					[
