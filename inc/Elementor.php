@@ -51,7 +51,7 @@
             if ( 'accordion' === $widget->get_name() ) {
                 $this->render_accordion( $widget_content, $widget );
             } else if ( 'media-carousel' === $widget->get_name() ) {
-
+                $widget_content .= '<div class="main-swiper-pagination"></div>';
 			}
 
             return $widget_content;
@@ -77,8 +77,6 @@
 
 				wp_enqueue_script( 'stm-script-testimonials' );
 				$widget->add_style_depends( 'stm-style-testimonials' );
-
-                $widget->set_settings( 'asd', '123' );
 
 				$widget->add_render_attribute(
 					'_wrapper',

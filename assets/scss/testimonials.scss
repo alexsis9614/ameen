@@ -118,33 +118,63 @@ $swiper-mobile-inactive-scale: .95;
         position: relative;
         width: 100%;
         //height: calc($swiper-width * $swiper-image-ratio / 100%);
-        overflow: unset;
-        padding-bottom: 0 !important;
+        //overflow: unset;
+        padding-bottom: 90px !important;
+
+        &.elementor-main-swiper {
+            height: 468px;
+
+            .swiper-wrapper{
+                align-items: center;
+            }
+        }
     }
 
     .swiper-slide {
         position: relative;
         width: $swiper-width;
         opacity: .5;
-        transform: scale(.84);
+        //transform: scale(.84);
         transition: all .3s ease-in-out;
         overflow: hidden;
         border-radius: 0.4285rem;
-    }
 
-    .swiper-backface-hidden .swiper-slide {
-        transform: scale(.84) translateZ(0);
-    }
-
-    .swiper-slide {
         &-active{
-            transform: scale(1) !important;
-            opacity: 1 !important;
+            transform: translatex(0%) scale(1.72);
+            opacity: 1;
+            z-index: 1;
         }
-    }
+        &-prev{
+            transform: translatex(10%) scale(1.2);
+        }
+        &-next{
+            transform: translatex(-10%) scale(1.2);
+        }
+        &-prev, &-next{
+            height: 254px;
+            >[data-elementor-open-lightbox="yes"]{
+                pointer-events: none;
+            }
 
-    .swiper-backface-hidden .swiper-slide.swiper-slide-active {
-        transform: scale(1) translateZ(0) !important;
+            .elementor-custom-embed-play{
+                display: none;
+            }
+        }
+
+        .elementor-carousel-image{
+            background-size: contain;
+
+            .elementor-custom-embed-play{
+                .eicon-play{
+                    width: 42px;
+                    height: 37px;
+                    background: url('/wp-content/themes/masterstudy-child/assets/icons/main-page/play-button.svg') 100%/contain no-repeat;
+                    &:before{
+                        display: none;
+                    }
+                }
+            }
+        }
     }
 
     .swiper-image {
@@ -200,7 +230,7 @@ $swiper-mobile-inactive-scale: .95;
     }
 
     .swiper-pagination-bullets{
-        bottom: -73px;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: center;
