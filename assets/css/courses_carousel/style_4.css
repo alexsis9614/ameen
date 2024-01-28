@@ -1,8 +1,8 @@
-.stm_lms_courses_carousel__buttons{
+.stm_lms_courses_carousel__top .stm_lms_courses_carousel__buttons{
     margin: 0 0 0 24px;
 }
 
-.stm_lms_courses_carousel__button{
+.stm_lms_courses_carousel__top .stm_lms_courses_carousel__button{
     background: rgba(241, 245, 249, 1);
     width: 32px;
     height: 32px;
@@ -11,7 +11,7 @@
     border: none;
 }
 
-.stm_lms_courses_carousel__button:hover{
+.stm_lms_courses_carousel__top .stm_lms_courses_carousel__button:hover{
     background: rgba(50, 61, 102, 1);
     color: #fff;
 }

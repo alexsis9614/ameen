@@ -32,6 +32,10 @@
             wp_register_style( 'stm-style-testimonials', STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/testimonials.css', array( 'elementor-frontend' ), STM_THEME_CHILD_VERSION );
             wp_register_script( 'stm-script-testimonials', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/testimonials.js', array( 'elementor-frontend' ), STM_THEME_CHILD_VERSION );
 
+            wp_dequeue_style( 'stm-instructors_carousel-style_1' );
+            wp_dequeue_style( 'stm-instructors_carousel-style_2' );
+            wp_register_style( 'stm-instructors_carousel-style_3', STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/instructors_carousel.css', array( 'elementor-frontend' ), STM_THEME_CHILD_VERSION );
+
 //            wp_dequeue_style('stm-lms-login');
 
         }, 99);

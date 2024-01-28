@@ -26,8 +26,9 @@
 
         public function current_user_data( $user_data )
         {
-            $current_user = wp_get_current_user();
-            $stm_lms_user_avatar = get_user_meta( $current_user->ID, 'stm_lms_user_avatar', true );
+            $current_user        = wp_get_current_user();
+            $id                  = $user_data['id'] ?? $current_user->ID;
+            $stm_lms_user_avatar = get_user_meta( $id, 'stm_lms_user_avatar', true );
 
             if ( empty( $stm_lms_user_avatar ) ) {
                 $avatar_size         = 215;
