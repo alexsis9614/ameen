@@ -9,6 +9,8 @@
 
     class STM_Course extends STM_Curriculum
     {
+        public static $meta_key_bundle = 'stm_course_bundle-';
+
         public function __construct()
         {
             parent::__construct();
@@ -139,9 +141,67 @@
                 }
 
                 $fields = array_merge( $fields, $pricing_fields, $expiration_fields );
+
+                $bundle_course_field = $this->course_bundle();
+
+                if ( ! empty( $bundle_course_field ) ) {
+                    $fields = array_merge( $fields, $bundle_course_field );
+                }
             }
 
             return $fields;
+        }
+
+        public function course_bundle(): array
+        {
+            $args    = array(
+                'post_type'      => self::$courses_slug,
+                'posts_per_page' => -1,
+                'fields'         => 'ids'
+            );
+            $courses = new \WP_Query( $args );
+
+            if ( empty( $courses->posts ) ) {
+                return array();
+            }
+
+            $courses = $courses->posts;
+
+            array_walk( $courses, function ( &$course ) {
+                $course = $this->field_checkbox( $this->meta_key_bundle . $course, html_entity_decode( get_the_title( $course ) ) );
+            });
+
+            return $courses;
+        }
+
+        public static function get_course_bundle( $course_id )
+        {
+            global $wpdb;
+
+            $query = "
+                SELECT pm.meta_key FROM {$wpdb->postmeta} as pm
+                LEFT JOIN {$wpdb->posts} as p ON pm.post_id = p.ID AND p.post_type = %s
+                WHERE pm.meta_key LIKE %s AND p.ID = %d
+            ";
+
+            $prepare = $wpdb->prepare( $query, self::$courses_slug, '%' . self::$meta_key_bundle . '%', $course_id );
+            $results = $wpdb->get_results( $prepare, ARRAY_A );
+
+            array_walk( $results, function ( &$result ) {
+                $result = str_replace( self::$meta_key_bundle, '', $result['meta_key'] );
+            });
+
+            return $results;
+        }
+
+        public function field_checkbox( $field_name, $label ): array
+        {
+            return array(
+                'type'        => 'checkbox',
+                'name'        => $field_name,
+                'label'       => $label,
+                'required'    => false
+            );
         }
 
         public function save( $course_id )
