@@ -12,6 +12,16 @@
 
     class Course_Bundle extends Widget_Base
     {
+        public function get_style_depends(): array
+        {
+            return array( 'swiper', 'ameen-bundle' );
+        }
+
+        public function get_script_depends(): array
+        {
+            return array( 'swiper', 'swiper-ameen-bundle' );
+        }
+
         public function get_name(): string
         {
             return 'ameen_stm_lms_course_bundle';

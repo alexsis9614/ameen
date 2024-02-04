@@ -4,6 +4,8 @@
      * @var $item_id
      */
 
+    use LMS\inc\classes\STM_Course;
+
     $plans        = new LMS\inc\classes\STM_Plans;
     $plans_enable = $plans->enable( $course_id );
 
@@ -37,8 +39,15 @@
     $is_affiliate = STM_LMS_Courses_Pro::is_external_course( $course_id );
     $not_salebale = get_post_meta( $course_id, 'not_single_sale', true );
 
+    $bundle_arrow = '
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.08711 5L6.91211 6.175L10.7288 10L6.91211 13.825L8.08711 15L13.0871 10L8.08711 5Z" fill="#323D66"/>
+        </svg>
+    ';
+
 
     if ( ! $is_affiliate ) :
+        $_courses = STM_Course::get_course_bundle( $course_id );
 ?>
 
     <div class="stm-lms-buy-buttons stm-lms-buy-buttons-mixed stm-lms-buy-buttons-mixed-pro">
@@ -70,7 +79,15 @@
                     }
             ?>
                 <a href="<?php echo esc_url( $lesson_url ); ?>" class="btn btn-default start-course">
-                    <span><?php echo esc_html( sanitize_text_field( $btn_label ) ); ?></span>
+                    <span>
+                        <?php
+                            echo esc_html( sanitize_text_field( $btn_label ) );
+
+                            if ( ! empty( $_courses ) ) {
+                                echo $bundle_arrow;
+                            }
+                        ?>
+                    </span>
                 </a>
 
             <?php endif; ?>
@@ -116,7 +133,7 @@
                     );
                 }
 
-                if ( ! empty( $plans_enable ) ) {
+                if ( ! empty( $plans_enable ) && empty( $_courses ) ) {
                     $attributes = array(
                         'data-target=".stm-lms-modal-plans"',
                         'data-lms-modal="plans"',
@@ -144,20 +161,32 @@
                 if ( $show_buttons ) :
         ?>
                 <div class="<?php echo esc_attr( implode( ' ', $mixed_classes ) ); ?>">
-                    <div class="<?php echo esc_attr( implode( ' ', $btn_class ) ); ?>"
-                        <?php
-                            if ( ! $dropdown_enabled ) {
-                                echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) );
-                            }
-                        ?>
-                    >
+                    <?php if ( empty( $_courses ) ) : ?>
+                        <div class="<?php echo esc_attr( implode( ' ', $btn_class ) ); ?>"
+                            <?php
+                                if ( ! $dropdown_enabled ) {
+                                    echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) );
+                                }
+                            ?>
+                        >
+                    <?php else : ?>
+                        <a href="<?php echo esc_url( get_the_permalink( $course_id ) ); ?>" class="<?php echo esc_attr( implode( ' ', $btn_class ) ); ?>"
+                            <?php
+                                if ( ! $dropdown_enabled ) {
+                                    echo wp_kses_post( implode( ' ', apply_filters( 'stm_lms_buy_button_auth', $attributes, $course_id ) ) );
+                                }
+                            ?>
+                        >
+                    <?php endif; ?>
 
 					<span>
 						<?php
-                            if ( ! empty( $plans_enable ) ) {
+                            if ( ! empty( $plans_enable ) && empty( $_courses ) ) {
                                 esc_html_e( 'See plans', 'masterstudy-child' );
-                            }
-                            else {
+                            } else if ( ! empty( $_courses ) ) {
+                                esc_html_e( 'View collection', 'masterstudy-child' );
+                                echo $bundle_arrow;
+                            } else {
                                 esc_html_e( 'Get course', 'masterstudy-child' );
                             }
                         ?>
@@ -180,7 +209,11 @@
                             </div>
                         <?php endif; endif; ?>
 
-                    </div>
+                    <?php if ( empty( $_courses ) ) : ?>
+                        </a>
+                    <?php else : ?>
+                        </a>
+                    <?php endif; ?>
 
                     <div class="stm_lms_mixed_button__list">
                         <?php

@@ -5,15 +5,8 @@
 
     $post_id      = ( ! empty( $post_id ) ) ? $post_id : get_the_ID();
     $curriculum   = ( new CurriculumRepository() )->get_curriculum( $post_id, true );
-    $price        = get_post_meta( $post_id, 'price', true );
-    $sale_price   = STM_LMS_Course::get_sale_price( $post_id );
     $course_price = STM_LMS_Course::get_course_price( $post_id );
-    $percent      = 0;
-    $not_salebale = get_post_meta(get_the_ID(), 'not_single_sale', true);
-
-    if ( ! empty( $sale_price ) ) {
-        $percent = (( (float) $price - (float) $sale_price ) / (float) $price) * 100;
-    }
+    $not_salebale = get_post_meta( $post_id, 'not_single_sale', true );
 
     $is_prerequisite_passed = true;
 
@@ -150,54 +143,7 @@
         <?php endif; ?>
         <div class="stm-lms-course__sidebar--actions">
             <?php
-                $plans        = new LMS\inc\classes\STM_Plans;
-                $plans_enable = $plans->enable( $post_id );
-
-                if ( ! $not_salebale || $plans_enable ) :
-
-                    if ( $plans_enable ) {
-                        $price = $plans->price( $post_id, 'standard' );
-                    }
-            ?>
-                <div class="stm-lms__price--wrapper">
-                    <?php if ( empty( $price ) && empty( $sale_price ) ) : ?>
-                        <div class="stm-lms-course__sidebar--price">
-                            <?php esc_html_e('Free', 'masterstudy-child'); ?>
-                        </div>
-                    <?php elseif ( ! empty( $price ) && !empty( $sale_price ) ) : ?>
-                        <del class="stm-lms-course__sidebar--old-price">
-                            <?php echo STM_LMS_Helpers::display_price( $price ); ?>
-                        </del>
-                        <div class="stm-lms-course__sidebar--price">
-                            <?php
-                                echo STM_LMS_Helpers::display_price( $sale_price );
-
-                                if ( ! empty( $percent ) ) :
-                            ?>
-                                <span class="stm-lms-course__sidebar--percent">
-                                    <?php echo $percent . '%'; ?>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="stm-lms-course__sidebar--price">
-                            <?php
-                                if ( $plans_enable ) {
-                                    echo sprintf(
-                                        __( 'Starting from %s', 'masterstudy-child' ),
-                                        STM_LMS_Helpers::display_price( $price )
-                                    );
-                                }
-                                else {
-                                    echo STM_LMS_Helpers::display_price( $price );
-                                }
-                            ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            <?php
-                endif;
-
+                STM_LMS_Templates::show_lms_template( 'course/parts/am-course-price', array( 'course_id' => $post_id ) );
                 STM_LMS_Templates::show_lms_template( 'global/buy-button', array( 'course_id' => $post_id ) );
                 STM_LMS_Templates::show_lms_template( 'global/wish-list', array( 'course_id' => $post_id ) );
             ?>
