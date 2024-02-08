@@ -4,6 +4,10 @@
      * @var $item_id
      */
 
+    global $wp_query;
+
+	$bundle_widget = $wp_query->get( 'bundle_widget' );
+
     use LMS\inc\classes\STM_Course;
 
     $plans        = new LMS\inc\classes\STM_Plans;
@@ -83,7 +87,7 @@
                         <?php
                             echo esc_html( sanitize_text_field( $btn_label ) );
 
-                            if ( ! empty( $_courses ) ) {
+                            if ( ! empty( $_courses ) && $bundle_widget ) {
                                 echo $bundle_arrow;
                             }
                         ?>
@@ -133,7 +137,7 @@
                     );
                 }
 
-                if ( ! empty( $plans_enable ) && empty( $_courses ) ) {
+                if ( ! empty( $plans_enable ) && empty( $_courses ) && ! $bundle_widget ) {
                     $attributes = array(
                         'data-target=".stm-lms-modal-plans"',
                         'data-lms-modal="plans"',
@@ -161,7 +165,7 @@
                 if ( $show_buttons ) :
         ?>
                 <div class="<?php echo esc_attr( implode( ' ', $mixed_classes ) ); ?>">
-                    <?php if ( empty( $_courses ) ) : ?>
+                    <?php if ( ! $bundle_widget ) : ?>
                         <div class="<?php echo esc_attr( implode( ' ', $btn_class ) ); ?>"
                             <?php
                                 if ( ! $dropdown_enabled ) {
@@ -181,9 +185,9 @@
 
 					<span>
 						<?php
-                            if ( ! empty( $plans_enable ) && empty( $_courses ) ) {
+                            if ( ! empty( $plans_enable ) && empty( $_courses ) && ! $bundle_widget ) {
                                 esc_html_e( 'See plans', 'masterstudy-child' );
-                            } else if ( ! empty( $_courses ) ) {
+                            } else if ( ! empty( $_courses ) && $bundle_widget ) {
                                 esc_html_e( 'View collection', 'masterstudy-child' );
                                 echo $bundle_arrow;
                             } else {
@@ -192,25 +196,8 @@
                         ?>
 					</span>
 
-                        <?php
-                            if ( empty( $plans_enable ) ) :
-                                if ( ! empty( $price ) || ! empty( $sale_price ) ) :
-                        ?>
-                            <div class="btn-prices btn-prices-price">
-
-                                <?php if ( ! empty( $sale_price ) ) : ?>
-                                    <label class="sale_price" title="<?php echo esc_attr( STM_LMS_Helpers::display_price( $sale_price ) ); ?>"><?php echo wp_kses_post( STM_LMS_Helpers::display_price( $sale_price ) ); ?></label>
-                                <?php endif; ?>
-
-                                <?php if ( ! empty( $price ) ) : ?>
-                                    <label class="price" title="<?php echo esc_attr( STM_LMS_Helpers::display_price( $price ) ); ?>"><?php echo wp_kses_post( STM_LMS_Helpers::display_price( $price ) ); ?></label>
-                                <?php endif; ?>
-
-                            </div>
-                        <?php endif; endif; ?>
-
-                    <?php if ( empty( $_courses ) ) : ?>
-                        </a>
+                    <?php if ( ! $bundle_widget ) : ?>
+                        </div>
                     <?php else : ?>
                         </a>
                     <?php endif; ?>

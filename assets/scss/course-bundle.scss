@@ -48,6 +48,31 @@
             object-fit: cover;
         }
     }
+    &__info{
+        position: absolute;
+        top: 230px;
+        z-index: 55;
+        left: 16px;
+        right: 16px;
+    }
+    &__category{
+        color: #B4B4B4;
+        display: block;
+        margin: 0 0 4px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+    &__course_name{
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        line-height: 1.4;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     &__content{
         padding: 64px 0 0 64px;
         h3, p{

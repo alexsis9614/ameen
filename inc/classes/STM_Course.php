@@ -29,10 +29,12 @@
 
         public function buy_button_attributes( $attributes, $course_id )
         {
+            global $wp_query;
+
             $plans   = new STM_Plans;
             $courses = self::get_course_bundle( $course_id );
 
-            if ( $plans->enable( $course_id ) && empty( $courses ) ) {
+            if ( $plans->enable( $course_id ) && ( empty( $courses ) || ! $wp_query->get( 'bundle_widget', false ) ) ) {
                 $attributes = array(
                     'data-target=".stm-lms-modal-plans"',
                     'data-lms-modal="plans"',
@@ -43,7 +45,7 @@
                 wp_enqueue_style('buy-plans');
             }
 
-            if ( ! empty( $courses ) ) {
+            if ( ! empty( $courses ) && $wp_query->get( 'bundle_widget', false ) ) {
                 return array();
             }
 
