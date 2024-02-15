@@ -1,0 +1,211 @@
+.stm_lms_courses_carousel__top{
+    margin: 0 0 32px;
+
+    .stm_lms_courses_carousel__buttons{
+        margin: 0 0 0 24px;
+    }
+
+    .stm_lms_courses_carousel__button{
+        background: rgba(241, 245, 249, 1);
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        color: rgba(49, 56, 67, 1);
+        border: none;
+
+        &:hover{
+            background: rgba(50, 61, 102, 1);
+            color: white;
+        }
+    }
+
+    .h4{
+        color: rgba(28, 28, 28, 1) !important;
+        border: 1px solid rgba(28, 28, 28, 1);
+        border-radius: 8px;
+        padding: 6px 12px;
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 1.4;
+
+        &:hover{
+            background: rgba(28, 28, 28, 1);
+            color: white !important;
+        }
+    }
+}
+
+.stm_lms_courses__single__inner__image{
+    width: 100%;
+}
+
+.stm_lms_courses__grid_4 .stm_lms_courses__single--image{
+    margin-bottom: 0;
+
+    .stm_lms_lazy_image{
+        padding: 0;
+        height: 168px;
+        width: 100%;
+
+        &:after{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(356.57deg, rgba(0, 0, 0, 0.5) 10.81%, rgba(0, 0, 0, 0) 73.79%);
+            z-index: 5;
+        }
+
+        > img{
+            position: static;
+            object-fit: cover;
+        }
+    }
+}
+
+.stm_lms_courses__single--info_meta{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: 100%;
+    z-index: 22;
+    margin: 0;
+
+    .stm_lms_course__meta{
+        background: rgba(#000, 0.5);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 8px;
+        margin: 0 0 8px;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+}
+
+.stm_lms_courses__single__inner,
+.stm_lms_courses__single__inner .stm_lms_courses__single--inner{
+    display: flex;
+    flex-direction: column;
+}
+
+.stm_lms_courses_carousel .owl-stage .owl-item .stm_lms_courses__single.style_4 .stm_lms_courses__single__inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 8px 0 rgba(#000, 0.15);
+}
+
+.stm_lms_courses_carousel .owl-stage{
+    margin: 0 0 10px;
+}
+
+.stm_lms_courses__single__inner{
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stm_lms_courses__single__inner .stm_lms_courses__single--inner{
+    padding: 12px 16px 16px;
+    @import "components/price";
+
+    .stm-lms-course__sidebar--price{
+        font-size: 16px;
+        margin-top: 4px;
+    }
+}
+
+.stm_lms_post_status,
+.stm_lms_courses__single__inner .stm_lms_courses__single--inner .stm-lms-course__price--free{
+    position: static;
+    width: auto;
+    display: inline-block;
+    max-width: fit-content;
+
+    padding: 4px 12px;
+    font-size: 16px;
+    text-transform: capitalize;
+    letter-spacing: 0.2px;
+    font-weight: 500;
+    background: rgba(76, 175, 80, 1);
+    border-radius: 4px;
+    margin-top: auto;
+    color: white;
+}
+
+.stm_lms_courses__single--title{
+    margin: 0 0 14.5px;
+
+    .h5{
+        font-size: 16px;
+        line-height: 1.4;
+        letter-spacing: 0.2px;
+        font-weight: 700;
+        color: black;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+}
+
+.stm_lms_courses__single .star-rating,
+.stm_lms_courses__single .star-rating > span{
+    height: 20px;
+    background-size: 20px 20px;
+}
+
+.stm_lms_courses__single .star-rating{
+    background-image: url("/wp-content/themes/masterstudy-child/assets/icons/course/grade.svg");
+
+    > span {
+        background-image: url("/wp-content/themes/masterstudy-child/assets/icons/course/grade-yellow.svg");
+    }
+}
+
+.stm_lms_courses__author{
+    font-size: 14px;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    font-weight: 400;
+    margin: 0 0 8px;
+}
+
+.stm_lms_courses__single .stm_lms_courses__author{
+    flex-grow: 2;
+}
+
+.stm_lms_course__panel_rate:not(:last-child){
+    margin: 0 0 8px;
+}
+
+.average-rating-stars{
+    &__top{
+        display: flex;
+        align-items: center;
+
+        .average-rating-stars__av{
+            color: rgba(255, 193, 7, 1);
+            font-size: 16px;
+            letter-spacing: 0.2px;
+            line-height: 20px;
+            margin-right: 8px;
+        }
+    }
+
+    &__reviews{
+        font-size: 16px;
+        color: black;
+        letter-spacing: 0.2px;
+        font-weight: 400;
+    }
+}
+
+.star-rating{
+    width: 100px;
+}

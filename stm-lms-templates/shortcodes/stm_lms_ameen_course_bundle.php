@@ -16,8 +16,6 @@
 
         $_courses_length = count( $_courses );
 
-//        var_dump($_courses_length);
-
         if ( $_courses_length % 2 !== 0 ) {
             $_courses[] = $_courses[ array_key_first( $_courses ) ];
         }

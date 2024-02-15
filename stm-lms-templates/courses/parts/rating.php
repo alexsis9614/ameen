@@ -4,6 +4,10 @@
      *
      */
 
+    if ( ! STM_LMS_Options::get_option( 'enable_card_rating', false ) ) {
+        return;
+    }
+
     $rating = get_post_meta($id, 'course_marks', true);
 
     $average = $percent = $total = '';

@@ -75,12 +75,8 @@
             <?php
                 endif;
 
-                if ( ! empty( $post_status ) ) :
+                STM_LMS_Templates::show_lms_template( 'course/parts/am-course-price', array( 'course_id' => $id ) );
             ?>
-                <div class="stm_lms_post_status heading_font <?php echo esc_html( sanitize_text_field( $post_status['status'] ) ); ?>">
-                    <?php echo esc_html( sanitize_text_field( $post_status['label'] ) ); ?>
-                </div>
-            <?php endif; ?>
 
         </div>
 

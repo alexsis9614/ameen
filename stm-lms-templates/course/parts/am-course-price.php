@@ -3,6 +3,8 @@
      * @var $course_id
      * */
 
+    use LMS\inc\classes\STM_Course;
+
     $not_salebale = get_post_meta( $course_id, 'not_single_sale', true );
     $price        = get_post_meta( $course_id, 'price', true );
     $sale_price   = STM_LMS_Course::get_sale_price( $course_id );
@@ -18,15 +20,22 @@
     if ( ! $not_salebale || $plans_enable ) :
 
         if ( $plans_enable ) {
-            $price = $plans->price( $course_id, 'standard' );
+//            $price = $plans->price( $course_id, 'standard' );
         }
 ?>
     <div class="stm-lms__price--wrapper">
         <?php if ( empty( $price ) && empty( $sale_price ) ) : ?>
-            <div class="stm-lms-course__sidebar--price">
-                <?php esc_html_e('Free', 'masterstudy-child'); ?>
+            <div class="stm-lms-course__sidebar--price stm-lms-course__price--free">
+                <?php
+                    $_courses = STM_Course::get_course_bundle( $course_id );
+                    if ( empty( $_courses ) ) {
+                        esc_html_e('Free', 'masterstudy-child');
+                    } else {
+                        esc_html_e('Free Courses', 'masterstudy-child');
+                    }
+                ?>
             </div>
-        <?php elseif ( ! empty( $price ) && !empty( $sale_price ) ) : ?>
+        <?php elseif ( ! empty( $price ) && ! empty( $sale_price ) ) : ?>
             <del class="stm-lms-course__sidebar--old-price">
                 <?php echo STM_LMS_Helpers::display_price( $price ); ?>
             </del>

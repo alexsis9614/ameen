@@ -31,6 +31,8 @@
                 array('masterstudy-lms-learning-management-system'),
                 STM_THEME_CHILD_VERSION
             );
+
+            wp_enqueue_script('stm-lms-child-course', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/tabs-course.js', array(), STM_THEME_CHILD_VERSION);
         }
 
         return $template;

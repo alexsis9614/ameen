@@ -135,8 +135,13 @@
                             isset( $setup[ 'fields' ][ 'section_2' ][ 'fields' ] ) &&
                             isset( $setup[ 'fields' ][ 'section_2' ][ 'fields' ][ 'course_card_style' ] )
                         ) {
-                            $setup[ 'fields' ][ 'section_2' ][ 'fields' ][ 'course_card_style' ][ 'options' ]['style_4'] = __( 'Ameen Card', 'masterstudy-lms-learning-management-system' );
+                            $setup[ 'fields' ][ 'section_2' ][ 'fields' ][ 'course_card_style' ][ 'options' ]['style_4'] = __( 'Ameen Card', 'masterstudy-child' );
                         }
+
+                        $setup[ 'fields' ][ 'section_2' ][ 'fields' ]['enable_card_rating'] = array(
+                            'type'    => 'checkbox',
+                            'label'   => esc_html__( 'Card Rating', 'masterstudy-child' )
+                        );
                     }
                 }
             }

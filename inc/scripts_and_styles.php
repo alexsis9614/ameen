@@ -24,9 +24,14 @@
                 wp_register_script( 'stm-stats_counter', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/stm_stats_counter.js', array(), STM_THEME_CHILD_VERSION );
             }
 
+            if ( is_singular( 'stm-courses' ) ) {
+                wp_deregister_script('masterstudy-bootstrap-custom');
+                wp_dequeue_script('masterstudy-bootstrap-custom');
+            }
+
 //            wp_dequeue_style( 'stm-lms-courses' );
 
-            wp_register_style( 'stm-courses_carousel-style_4', STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/courses_carousel/style_4.css', array(), STM_THEME_CHILD_VERSION );
+            wp_register_style( 'stm-courses_carousel-style_4', STM_THEME_CHILD_DIRECTORY_URI . '/assets/dist/css/style_4.css', array(), STM_THEME_CHILD_VERSION );
 
             wp_dequeue_style( 'elementor-accordion' );
             wp_register_style( 'stm-accordion-style_1', STM_THEME_CHILD_DIRECTORY_URI . '/assets/css/accordion.css', array( 'elementor-frontend' ), STM_THEME_CHILD_VERSION );
