@@ -47,6 +47,7 @@ mix.setResourceRoot('../../').setPublicPath('assets/bookit/dist')
     .sass('assets/scss/instructors_carousel.scss', '../../../assets/dist/css')
     .sass('assets/scss/buy-plans.scss', '../../../assets/dist/css')
     .sass('assets/scss/course-bundle.scss', '../../../assets/dist/css')
+    .sass('assets/scss/header_2.scss', '../../../assets/dist/css')
     .sass('assets/scss/style_4.scss', '../../../assets/dist/css')
     .clean()
     .disableNotifications();

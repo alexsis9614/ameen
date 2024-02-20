@@ -4,11 +4,11 @@
     }
     $header_margin = stm_option('menu_top_margin');
 
-    if ( empty( $header_margin ) ) {
+    if ( empty( $header_margin ) && $header_margin === '' ) {
         $header_margin = 5;
     }
 
-    if ( ! empty( $transparent_header ) && !$transparent_header ) {
+    if ( ! empty( $transparent_header ) ) {
         $header_margin += 4;
     }
 

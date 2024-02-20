@@ -11,7 +11,7 @@
 
                 $assets_uri = STM_THEME_CHILD_DIRECTORY_URI . '/assets/';
 
-                wp_enqueue_style( 'stm-header_2-style', $assets_uri . '/css/header_2.css', array('stm_theme_style'), STM_THEME_CHILD_VERSION );
+                wp_enqueue_style( 'stm-header_2-style', $assets_uri . '/dist/css/header_2.css', array('stm_theme_style'), STM_THEME_CHILD_VERSION );
             }
 
             wp_register_script('buy-plans', STM_THEME_CHILD_DIRECTORY_URI . '/assets/js/buy-plans.js', array(), STM_THEME_CHILD_VERSION);

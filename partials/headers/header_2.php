@@ -5,6 +5,10 @@
             <?php get_template_part('partials/headers/parts/logo'); ?>
         </div>
 
+        <div class="header-center-top">
+            <?php get_template_part('partials/headers/parts/menu'); ?>
+        </div>
+
         <div class="center-unit">
             <?php get_template_part('partials/headers/parts/center'); ?>
         </div>
