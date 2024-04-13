@@ -91,9 +91,11 @@
 			wp_add_inline_script( 'masterstudy-course-player-lesson', "
 				(function($) {
 					$(document).ready( function() {
-						$('[data-id=\"masterstudy-curriculum-switcher\"]').addClass('masterstudy-switch-button_active');
-						$('.masterstudy-course-player-curriculum').addClass('masterstudy-course-player-curriculum_open');
-						$('body').addClass('masterstudy-course-player-body-hidden');
+						if ( $( window ).width() > 1024 ) {
+						    $('[data-id=\"masterstudy-curriculum-switcher\"]').addClass('masterstudy-switch-button_active');
+						    $('.masterstudy-course-player-curriculum').addClass('masterstudy-course-player-curriculum_open');
+						    $('body').addClass('masterstudy-course-player-body-hidden');
+						}
 						
 						if (!$('.masterstudy-course-player-discussions').hasClass('masterstudy-course-player-discussions_open')) {
 							$('.masterstudy-course-player-content').addClass('masterstudy-course-player-content_open-sidebar');
