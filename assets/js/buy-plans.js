@@ -5,7 +5,7 @@
 		body = $('body'),
 		modal_plans = '.stm-lms-modal-plans';
 
-    $(document).on('click', '[data-course-id]', function (e) {
+    $(document).on('click', '[data-course-id]:not(.stm_lms_course_completed_summary__certificate)', function (e) {
         const $this   = $(this),
               item_id = $this.data('course-id'),
               plan    = $this.data('course-plan');
